@@ -1,0 +1,48 @@
+@charset "UTF-8";
+body {
+	background-color:#F8F9FA;
+}
+
+.font-white{color:#FFFFFF;}
+.font-red{color:#FF4444;}
+.font-yellow{color:#FFBB33;}
+.font-green{color:#00C851;}
+.font-blue{color:#33B5E5;}
+
+.main-banner {
+	background-image: url('../image/main/main-banner.jpg');
+	background-size: cover;
+	max-width: 100%;
+	height: auto !important;
+	
+}
+.a-font-white{
+	visited { color: black; text-decoration: none;}
+}
+.font-black{
+	color: black;
+}
+.mdb-color{
+	background-color: #45526e;
+}
+.bg-main{
+	background-color: #ff5722 ;
+}
+.jumbotron {
+	text-shadow: black 0.2em 0.2em 0.2em;
+	color: white;
+}
+.font-color {
+	margin: 0px 0px;
+	text-align: center;
+	font-size:20px;
+	color: white;
+}
+
+.removecaret.dropdown-toggle::after {
+    display: none;
+}
+
+a:link { color: black; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+a:hover { color: gray; text-decoration: none;}
