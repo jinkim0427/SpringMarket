@@ -92,7 +92,7 @@
                 </div>
 		    </div> 
 		    <div class="text-center">
-			    <button type="button" class="btn btn-secondary">처음으로</button>
+			    <a href="javascript:history.back();"><button type="button" class="btn btn-secondary">처음으로</button></a>
 		        <a href="#" id="signUpInfo"><button type="button" class="btn btn-primary">동의하고 회원가입</button></a>
 		    </div>
 		    
@@ -103,9 +103,19 @@
 				e.preventDefault();
 				fn_moveToSignUpInfoIndividual();
 			});
+			
+			$("#jb-checkbox-0").change(function(e){
+				e.preventDefault();
+				if($("#jb-checkbox-0").prop("checked") == true) fn_allCheck();
+			});
 		});
+		
 		function fn_moveToSignUpInfoIndividual() {
-			window.location.href = "<c:url value='/signUpInfoIndividual.do'/>";
+			if ($("#jb-checkbox-1").prop("checked") == false || $("#jb-checkbox-2").prop("checked") == false) alert("약관에 동의해주시기 바랍니다.");
+			else window.location.href = "<c:url value='/signUpInfoIndividual.do'/>";	
+		}
+		function fn_allCheck() {
+			$("input[name=jb-checkbox]:checkbox").prop("checked", true);
 		}
 	</script>
 </body>

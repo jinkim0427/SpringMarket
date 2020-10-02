@@ -13,7 +13,7 @@
 		SELECT
 			ID, NAME, PWD
 		FROM
-			USER
+			USER_INFO
 		WHERE
 			ID = #{id}
 	</select>
