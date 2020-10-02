@@ -69,29 +69,15 @@
 		    <div class="text-center">
 			    <a href="javascript:history.back();"><button type="button" class="btn btn-secondary">처음으로</button></a>
 		        <a href="#" id="signUpInfo"><button type="button" class="btn btn-primary">동의하고 회원가입</button>	</a>
+		        <form id="frm" name ="frm">
+		       		<input type="hidden" id="pageName" name="pageName">
+		        	<input type="hidden" id="user_acc" value="sales">
+		        </form>
 		    </div>
 		    
 	</div><!-- container-->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#signUpInfo").unbind("click").click(function(e){
-				e.preventDefault();
-				fn_moveToSignUpInfoSales();
-			});
-			$("#jb-checkbox-0").change(function(e){
-				e.preventDefault();
-				if($("#jb-checkbox-0").prop("checked") == true) fn_allCheck();
-			});
-		});
-
-		function fn_allCheck() {
-			$("input[name=jb-checkbox]:checkbox").prop("checked", true);
-		}
-		function fn_moveToSignUpInfoSales() {
-			if ($("#jb-checkbox-1").prop("checked") == false || $("#jb-checkbox-2").prop("checked") == false) alert("약관에 동의해주시기 바랍니다.");
-			else window.location.href = "<c:url value='/signUpInfoSales.do'/>";	
-		}
-	</script>
+	
+	<script src="<c:url value='/resources/market/js/signUp-term.js'/>"></script>
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

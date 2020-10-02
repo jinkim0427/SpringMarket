@@ -116,6 +116,12 @@
 		function fn_moveToMyPage() {
 			window.location.href = "<c:url value='/myPage.do'/>";
 		}
+		function fn_pageSubmit(pageName, form) {
+			$("#pageName").val(pageName);                   
+            $("#"+form).attr("action",pageName+".do");
+            $("#"+form).submit();
+		}
+		
 	</script>
 </body>
 </html>

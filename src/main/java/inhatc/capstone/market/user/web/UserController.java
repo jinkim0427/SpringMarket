@@ -3,6 +3,7 @@ package inhatc.capstone.market.user.web;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +19,6 @@ public class UserController {
 	@Resource(name="userService")
 	private UserService userService;
 	
-	
-	
 	@RequestMapping(value = "/signUp.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		
@@ -32,22 +31,19 @@ public class UserController {
 		return "/user/individual-signUp-term";
 	}
 	
-	@RequestMapping(value = "/signUpInfoIndividual.do", method = RequestMethod.GET)
-	public String signUpInfoIndividual(Locale locale, Model model) {
-		
-		return "/user/individual-signUp-info";
-	}
-	
 	@RequestMapping(value = "/signUpTermSales.do", method = RequestMethod.GET)
 	public String signUpTermSales(Locale locale, Model model) {
 		
 		return "/user/sales-signUp-term";
 	}
 	
-	@RequestMapping(value = "/signUpInfoSales.do", method = RequestMethod.GET)
-	public String signUpInfoSales(Locale locale, Model model) {
+	@RequestMapping(value = "/signUpInfo.do", method = RequestMethod.GET)
+	public String signUpInfo(Locale locale, Model model, HttpServletRequest request) {
 		
-		return "/user/sales-signUp-info";
+		String acc = request.getParameter("user_acc");
+		System.out.println(acc);
+		
+		return "/user/user-signUp-info";
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = RequestMethod.GET)
@@ -56,11 +52,11 @@ public class UserController {
 		userVO.setId("root");
 		
 		UserVO tempVO = new UserVO();
-		tempVO = userService.selectUserInfo(userVO);
+		//tempVO = userService.selectUserInfo(userVO);
 		//tempVO.getId();
 		//tempVO.getName();
 		//tempVO.getPwd();
-		System.out.println(tempVO.toString());
+		//System.out.println(tempVO.toString());
 		//model.addAttribute("사용할 변수이름", userService.selectUserInfo(userVO));
 		
 		//return "/user/individual-myPage";
