@@ -14,10 +14,18 @@ public class UserServiceImpl implements UserService{
 	private UserDAO userDAO;
 	
 	@Override
+	public int selectUserID(UserVO vo) throws Exception {
+		int result = userDAO.selectUserID(vo);
+		return result;
+	}
+	
+	@Override
 	public UserVO selectUserInfo(UserVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		UserVO resultVO = userDAO.selectUserInfo(vo);
 		return resultVO;
 	}
+
+	
 	
 }

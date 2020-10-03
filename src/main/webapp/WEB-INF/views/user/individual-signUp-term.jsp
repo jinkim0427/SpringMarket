@@ -94,9 +94,8 @@
 		    <div class="text-center">
 			    <a href="javascript:history.back();"><button type="button" class="btn btn-secondary">처음으로</button></a>
 		        <a href="#" id="signUpInfo"><button type="button" class="btn btn-primary">동의하고 회원가입</button></a>
-		        <form id="frm" name ="frm">
-		        	<input type="hidden" id="pageName" name="pageName">
-		        	<input type="hidden" id="user_acc" value="customer">
+		        <form id="frm" name ="frm" method="POST">
+		        	<input type="hidden" id="userAcc" name="userAcc" value="customer">
 		        </form>
 		        
 		    </div>

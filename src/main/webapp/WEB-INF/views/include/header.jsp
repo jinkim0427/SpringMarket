@@ -82,42 +82,30 @@
 		$(document).ready(function() {
 			$("#home").unbind("click").click(function(e){
 				e.preventDefault();
-				fn_moveToHome();
+				fn_pageMove("home");
 			});
 			$("#findMarket").unbind("click").click(function(e){
 				e.preventDefault();
-				fn_moveToFindMarket();
+				fn_pageMove("findMarket");
 			});
 			$("#shopping").unbind("click").click(function(e){
 				e.preventDefault();
-				fn_moveToShopping();
+				fn_pageMove("shopping");
 			});
 			$("#signUp").unbind("click").click(function(e){
 				e.preventDefault();
-				fn_moveToSignUp();
+				fn_pageMove("signUp");
 			});
 			$("#myPage").unbind("click").click(function(e){
 				e.preventDefault();
-				fn_moveToMyPage();
+				fn_pageMove("myPage");
 			});
-		});
-		function fn_moveToHome() {
-			window.location.href = "<c:url value='/home.do'/>";
+		}); 
+
+		function fn_pageMove(pageName) {
+			window.location.href = "<c:url value='/"+pageName+".do'/>";
 		}
-		function fn_moveToFindMarket() {
-			window.location.href = "<c:url value='/findMarket.do'/>";
-		}
-		function fn_moveToShopping() {
-			window.location.href = "<c:url value='/shopping.do'/>";
-		}
-		function fn_moveToSignUp() {
-			window.location.href = "<c:url value='/signUp.do'/>";
-		}
-		function fn_moveToMyPage() {
-			window.location.href = "<c:url value='/myPage.do'/>";
-		}
-		function fn_pageSubmit(pageName, form) {
-			$("#pageName").val(pageName);                   
+		function fn_pageSubmit(pageName, form) {            
             $("#"+form).attr("action",pageName+".do");
             $("#"+form).submit();
 		}

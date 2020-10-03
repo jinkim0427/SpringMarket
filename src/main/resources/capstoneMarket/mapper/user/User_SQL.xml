@@ -9,6 +9,15 @@
 		<result property="pwd" column="pwd"/>
 	</resultMap>
 
+	<select id="selectUserID" resultType="int">
+		SELECT
+			COUNT(ID)
+		FROM
+			USER_INFO
+		WHERE
+			ID = #{id}
+	</select>
+	
 	<select id="selectUserInfo" resultMap="user">
 		SELECT
 			ID, NAME, PWD
@@ -17,5 +26,6 @@
 		WHERE
 			ID = #{id}
 	</select>
+	
 </mapper>
 				

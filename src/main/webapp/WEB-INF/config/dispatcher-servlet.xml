@@ -22,5 +22,5 @@
 	</bean>
 	
 	<!-- component-scan -->
-	<context:component-scan base-package="inhatc.capstone" />
+	<context:component-scan base-package="inhatc.capstone.market" />
 </beans>

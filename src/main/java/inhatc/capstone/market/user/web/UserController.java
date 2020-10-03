@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import inhatc.capstone.market.user.UserService;
 import inhatc.capstone.market.user.UserVO;
@@ -37,13 +39,29 @@ public class UserController {
 		return "/user/sales-signUp-term";
 	}
 	
-	@RequestMapping(value = "/signUpInfo.do", method = RequestMethod.GET)
-	public String signUpInfo(Locale locale, Model model, HttpServletRequest request) {
+	@RequestMapping(value = "/signUpInfo.do", method = RequestMethod.POST)
+	public ModelAndView signUpInfo(HttpServletRequest request) {
 		
-		String acc = request.getParameter("user_acc");
-		System.out.println(acc);
+		String acc = request.getParameter("userAcc");
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("user/user-signUp-info");
+		mv.addObject("signAcc", acc);
 		
-		return "/user/user-signUp-info";
+		return mv;
+	}
+	
+	//구현중
+	@RequestMapping(value = "/checkUserID.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int checkUserID(HttpServletRequest request) throws Exception {
+		
+		UserVO userVO = new UserVO();
+		userVO.setId(request.getParameter("id"));
+		
+		int result = userService.selectUserID(userVO);
+		System.out.println(result);
+		
+		return result;
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = RequestMethod.GET)

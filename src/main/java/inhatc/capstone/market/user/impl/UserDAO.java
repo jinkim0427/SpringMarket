@@ -7,6 +7,10 @@ import inhatc.capstone.market.user.UserVO;
 
 @Repository("userDAO")
 public class UserDAO extends AbstractDAO{
+	
+	public int selectUserID(UserVO vo) {
+		return (int) selectOne("user.selectUserID", vo);
+	}
 
 	public UserVO selectUserInfo(UserVO vo) {
 		// TODO Auto-generated method stub
