@@ -20,12 +20,31 @@
 	
 	<select id="selectUserInfo" resultMap="user">
 		SELECT
-			ID, NAME, PWD
+			*
 		FROM
 			USER_INFO
 		WHERE
 			ID = #{id}
 	</select>
+	
+	<insert id="insertUserData" >
+		INSERT INTO USER_INFO (
+	   		ID,
+	   		PASSWORD, 
+	   	 	NAME, 
+	   	 	EMAIL,
+	    	TEL,
+	    	ACC
+	    ) 
+	    VALUES (
+	   		#{id}, 
+	    	#{password},
+	    	#{name}, 
+	    	#{email},
+	    	#{tel},
+	    	#{acc}
+	    )
+	</insert>
 	
 </mapper>
 				

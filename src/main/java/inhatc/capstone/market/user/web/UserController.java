@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,18 +51,80 @@ public class UserController {
 		return mv;
 	}
 	
-	//구현중
 	@RequestMapping(value = "/checkUserID.do", method = RequestMethod.POST)
 	@ResponseBody
 	public int checkUserID(HttpServletRequest request) throws Exception {
 		
 		UserVO userVO = new UserVO();
 		userVO.setId(request.getParameter("id"));
-		
 		int result = userService.selectUserID(userVO);
-		System.out.println(result);
 		
 		return result;
+	}
+	
+	@RequestMapping(value = "/insertUserData.do", method = RequestMethod.POST)
+	public ModelAndView insertUserData(HttpServletRequest request) throws Exception {
+		
+		UserVO userVO = new UserVO();
+		BCryptPasswordEncoder bpe = new BCryptPasswordEncoder(10);
+		String encodePwd = bpe.encode(request.getParameter("signPwd"));
+		
+		userVO.setId(request.getParameter("signId"));
+		userVO.setPassword(encodePwd);
+		userVO.setName(request.getParameter("signName"));
+		userVO.setTel(request.getParameter("signPhone"));
+		userVO.setEmail(request.getParameter("signEmail"));
+		userVO.setAcc(request.getParameter("signAcc"));
+		userService.insertUserData(userVO);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("home/popup");
+		mv.addObject("msg","회원가입을 완료하였습니다.");
+		mv.addObject("loc","/home.do");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/loginUser.do", method = RequestMethod.POST)
+	public ModelAndView loginUser(HttpServletRequest request) throws Exception {
+		
+		UserVO userVO = new UserVO();
+		UserVO resultVO = new UserVO();
+		BCryptPasswordEncoder bpe = new BCryptPasswordEncoder(10);
+		ModelAndView mv = new ModelAndView();
+		String msg;
+			
+		userVO.setId(request.getParameter("loginId"));
+		userVO.setPassword(request.getParameter("loginPwd"));
+		resultVO = userService.selectUserInfo(userVO);
+
+		if(resultVO == null) msg = "로그인 정보가 올바르지 않습니다.";
+		else {
+			boolean result = bpe.matches(userVO.getPassword(), resultVO.getPassword());
+			if(result) {
+				request.getSession().setAttribute("loginInfo", resultVO);
+				request.getSession().setMaxInactiveInterval(60*30); //세션 사라지는 시간
+				msg = "로그인 하였습니다.";
+			}
+			else msg = "로그인 정보가 올바르지 않습니다.";
+		}
+		
+		mv.setViewName("home/popup");
+		mv.addObject("msg", msg);
+		mv.addObject("loc","/home.do");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/logoutUser.do", method = RequestMethod.GET)
+	public ModelAndView logoutUser(HttpServletRequest request) {
+		
+		request.getSession().removeAttribute("loginInfo");
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("home/popup");
+		mv.addObject("msg", "로그아웃 하였습니다.");
+		mv.addObject("loc","/home.do");
+		return mv;
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = RequestMethod.GET)

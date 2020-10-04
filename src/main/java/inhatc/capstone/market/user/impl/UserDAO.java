@@ -18,4 +18,8 @@ public class UserDAO extends AbstractDAO{
 		return (UserVO) selectOne("user.selectUserInfo", vo);
 	}
 	
+	public void insertUserData(UserVO vo) {
+		insert("user.insertUserData", vo);
+	}
+	
 }

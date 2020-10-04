@@ -33,12 +33,22 @@
 	    </ul>
 	
 	    <ul class="navbar-nav ml-auto">
-	    	<li class="nav-item">
-	        	<a class="nav-link" data-toggle="modal" data-target="#loginModal">로그인</a>
-	      	</li>
-	      	<li class="nav-item">
-	        	<a class="nav-link" href="#" id="signUp">회원가입</a>
-	      	</li>
+	    	<c:if test="${empty loginInfo}">
+		    	<li class="nav-item">
+		        	<a class="nav-link" data-toggle="modal" data-target="#loginModal">로그인</a>
+		      	</li>
+		      	<li class="nav-item">
+		        	<a class="nav-link" href="#" id="signUp">회원가입</a>
+		      	</li>
+	      	</c:if>
+	      	<c:if test="${not empty loginInfo}">
+		    	<li class="nav-item">
+		        	<a class="nav-link" href="#" id="logout">로그아웃</a>
+		      	</li>
+		      	<li class="nav-item">
+		      		<a class="nav-link">${loginInfo.name }님</a>
+		      	</li>
+	      	</c:if>
 	      	<button class="btn btn-outline-secondary btn-sm removecaret" id="myPage">
 			    	<p class="font-color"><i class="fa fa-user" aria-hidden="true"></i></p>
 			</button>
@@ -61,17 +71,18 @@
 	        </button>
 	      </div>
 	      <div class="modal-body">
-	      	<h3 class="text-center">로그인</h3>
-	      	<p class="text-center">Log in</p>
-	        <strong>아이디</strong>
-	        <input type="text" class="form-control" placeholder="ID">
-	        <strong>비밀번호</strong>
-	        <input type="password" class="form-control" placeholder="password">
-	        
+	      	<form id="frmLogin" name="frmLogin" method="POST">
+		      	<h3 class="text-center">로그인</h3>
+		      	<p class="text-center">Log in</p>
+		        <strong>아이디</strong>
+		        <input type="text" class="form-control" placeholder="ID" id="loginId" name="loginId">
+		        <strong>비밀번호</strong>
+		        <input type="password" class="form-control" placeholder="password" id="loginPwd" name="loginPwd">
+	        </form>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	        <button type="button" class="btn btn-primary">로그인</button>
+	        <button type="button" class="btn btn-primary" id="login">로그인</button>
 	      </div>
 	    </div>
 	  </div>
@@ -99,6 +110,16 @@
 			$("#myPage").unbind("click").click(function(e){
 				e.preventDefault();
 				fn_pageMove("myPage");
+			});
+			$("#login").unbind("click").click(function(e){
+				e.preventDefault();
+				if($("#loginId").val().length < 1) alert("아이디를 입력해주세요.");
+				else if($("#loginPwd").val().length < 1) alert("비밀번호를 입력해주세요.");
+				else fn_pageSubmit("loginUser","frmLogin");
+			});
+			$("#logout").unbind("click").click(function(e){
+				e.preventDefault();
+				fn_pageMove("logoutUser");
 			});
 		}); 
 

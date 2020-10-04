@@ -23,4 +23,14 @@
 	
 	<!-- component-scan -->
 	<context:component-scan base-package="inhatc.capstone.market" />
+	
+	<!-- interceptors -->
+	<bean id="loginInterceptor" class="inhatc.capstone.market.user.interceptor.UserInterceptor" />
+	
+	<mvc:interceptors>
+	  	<mvc:interceptor>
+	  		<mvc:mapping path="/myPage.do"/>
+			<ref bean="loginInterceptor"/>
+	  	</mvc:interceptor>
+	</mvc:interceptors>
 </beans>
