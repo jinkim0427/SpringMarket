@@ -3,10 +3,13 @@
 						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user">
 
-	<resultMap id="user" type="inhatc.capstone.market.user.UserVO">
+	<resultMap id="userVO" type="inhatc.capstone.market.user.UserVO">
 		<result property="id" column="id"/>
-		<result property="name" column="name"/>
 		<result property="pwd" column="pwd"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>
+		<result property="tel" column="tel"/>
+		<result property="acc" column="acc"/>
 	</resultMap>
 
 	<select id="selectUserID" resultType="int">
@@ -18,7 +21,7 @@
 			ID = #{id}
 	</select>
 	
-	<select id="selectUserInfo" resultMap="user">
+	<select id="selectUserInfo" resultMap="userVO">
 		SELECT
 			*
 		FROM
