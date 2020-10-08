@@ -127,6 +127,16 @@ public class UserController {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/needLogin.do", method = RequestMethod.GET)
+	public ModelAndView needLogin() {
+
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("home/popup");
+		mv.addObject("msg", "로그인이 필요합니다.");
+		mv.addObject("loc","/home.do");
+		return mv;
+	}
+	
 	@RequestMapping(value = "/myPage.do", method = RequestMethod.GET)
 	public String myPage(Locale locale, Model model) throws Exception {
 		UserVO userVO = new UserVO();

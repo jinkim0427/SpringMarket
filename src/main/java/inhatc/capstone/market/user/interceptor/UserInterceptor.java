@@ -12,7 +12,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 	 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		 try {
 			 if (request.getSession().getAttribute("loginInfo") == null) {
-				 response.sendRedirect(request.getContextPath() + "/home.do");
+				 response.sendRedirect(request.getContextPath() + "/needLogin.do");
 				 return false;
 			 }
 			 else {

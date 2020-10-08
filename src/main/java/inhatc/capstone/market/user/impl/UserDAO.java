@@ -9,7 +9,7 @@ import inhatc.capstone.market.user.UserVO;
 public class UserDAO extends AbstractDAO{
 	
 	public int selectUserID(UserVO vo) {
-		return (int) selectOne("user.selectUserID", vo);
+		return Integer.valueOf(String.valueOf(selectOne("user.selectUserID", vo)));
 	}
 
 	public UserVO selectUserInfo(UserVO vo) {
