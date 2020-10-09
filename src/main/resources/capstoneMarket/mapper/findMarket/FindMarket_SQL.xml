@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="findMarketDAO">
+
+	<resultMap id="findMarket" type="inhatc.capstone.market.findMarket.FindMarketVO">
+		<result property="mk_number" column="mk_number"/>
+		<result property="mk_name" column="mk_name"/>
+		<result property="mk_address" column="mk_address"/>
+		<result property="mk_tel" column="mk_tel"/>
+		<result property="mk_open_time" column="mk_open_time"/>
+		<result property="mk_close_time" column="mk_close_time"/>
+		<result property="mk_closed" column="mk_closed"/>
+		<result property="mk_delivery" column="mk_delivery"/>
+		<result property="mk_intro" column="mk_intro"/>
+	</resultMap>
+	
+	<select id="selectMarketList" resultMap="findMarket">
+		SELECT
+			MK_NUMBER, MK_NAME, MK_ADDRESS, MK_TEL
+		FROM
+			MARKET
+		WHERE
+			MK_ADDRESS 
+		LIKE
+			CONCAT('%', #{searchKeyword}, '%')
+	</select>
+	
+	<select id="selectUserChoiceMarket" resultType="Integer">
+		SELECT
+			MK_NUMBER
+		FROM
+			CUSTOMER
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<select id="selectUserChoiceMarketName" resultType="string">
+		SELECT
+			MK_NAME
+		FROM
+			MARKET
+		WHERE
+			MK_NUMBER = #{searchKey}
+	</select>
+	
+	<insert id="insertUserChoiceMarket" parameterType="hashmap">
+		INSERT
+			INTO CUSTOMER
+		VALUES
+			(#{id},#{mk_number},'');
+	</insert>
+	
+	<update id="updateUserChoiceMarket" parameterType="hashmap">
+		UPDATE
+			CUSTOMER
+		SET
+			MK_NUMBER = #{mk_number}
+		WHERE
+			ID = #{id}
+	</update>
+	
+	<select id="selectMarketInfo" resultMap="findMarket">
+		SELECT
+			*
+		FROM
+			MARKET
+		WHERE
+			MK_NUMBER = #{searchKey}
+	</select>
+	
+</mapper>

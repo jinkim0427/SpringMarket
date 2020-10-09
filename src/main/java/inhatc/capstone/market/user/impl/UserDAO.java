@@ -2,7 +2,7 @@ package inhatc.capstone.market.user.impl;
 
 import org.springframework.stereotype.Repository;
 
-import inhatc.capstone.market.impl.AbstractDAO;
+import inhatc.capstone.market.common.impl.AbstractDAO;
 import inhatc.capstone.market.user.UserVO;
 
 @Repository("userDAO")

@@ -1,4 +1,4 @@
-package inhatc.capstone.market.impl;
+package inhatc.capstone.market.common.impl;
 
 import java.util.List;
 
