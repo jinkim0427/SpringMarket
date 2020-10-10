@@ -2,7 +2,7 @@ package inhatc.capstone.market.user.impl;
 
 import org.springframework.stereotype.Repository;
 
-import inhatc.capstone.market.impl.AbstractDAO;
+import inhatc.capstone.market.common.impl.AbstractDAO;
 import inhatc.capstone.market.user.UserVO;
 
 @Repository("userDAO")
@@ -20,6 +20,10 @@ public class UserDAO extends AbstractDAO{
 	
 	public void insertUserData(UserVO vo) {
 		insert("user.insertUserData", vo);
+	}
+	
+	public void insertSallerData(UserVO vo) {
+		insert("user.insertSallerData", vo);
 	}
 	
 }

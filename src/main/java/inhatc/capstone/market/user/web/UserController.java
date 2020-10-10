@@ -76,6 +76,7 @@ public class UserController {
 		userVO.setEmail(request.getParameter("signEmail"));
 		userVO.setAcc(request.getParameter("signAcc"));
 		userService.insertUserData(userVO);
+		if(userVO.getAcc().equals("sales")) userService.insertSallerData(userVO);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("home/popup");

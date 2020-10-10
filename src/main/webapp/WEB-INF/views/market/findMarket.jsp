@@ -22,12 +22,12 @@
 	<body>
 		
 		<div class="bg-dark">
-			<div>
-				<h3 class="font-white text-center">현재 등록된 마트 : OO마트 ##점</h3>
+			<div class="market-name">
+				<h3 class="font-white text-center mk-name">현재 등록된 마트 : ${mk_name}</h3>
 			</div>
 			<div class="d-flex justify-content-center h-100 pb-3">
 	   			<div class="search"> 
-	   				<input type="text" class="search-input" placeholder="마트명 or 지역명을 검색하세요." name=""> <a href="#" class="search-icon"> <i class="fa fa-search"></i> </a> 
+	   				<input type="text" id="searchAddress" class="search-input" oninput="searchMarket()" placeholder="마트명 or 지역명을 검색하세요." name=""> <a href="#" class="search-icon" > <i class="fa fa-search"></i> </a> 
 	   			</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 		        <div class="col-md-12">
 		            <div class="rounded">
 		                <div class="table-responsive table-borderless">
-		                    <table class="table text-center">
+		                    <table class="table table-market text-center">
 		                        <thead>
 		                            <tr>
 		                                
@@ -53,81 +53,7 @@
 		                            </tr>
 		                        </thead>
 		                        <tbody class="table-body">
-		                            <tr class="cell-1">
-		                                <td>oo마트 ##점</td>
-		                                <td>인천시 미추홀구</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-warning pt-0 pb-0" data-toggle="modal" data-target="#detailModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0">
-											  기본상점등록
-											</button>
-										</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td>%%마트 @@점</td>
-		                                <td>인천시 미추홀구</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-warning pt-0 pb-0" data-toggle="modal" data-target="#detailModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0">
-											  기본상점등록
-											</button>
-										</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td>&&마트 $$점</td>
-		                                <td>인천시 미추홀구</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-warning pt-0 pb-0" data-toggle="modal" data-target="#detailModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0">
-											  기본상점등록
-											</button>
-										</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td>**마트 ^^점</td>
-		                                <td>인천시 미추홀구</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-warning pt-0 pb-0" data-toggle="modal" data-target="#detailModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0">
-											  기본상점등록
-											</button>
-										</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td>%%마트 @@점</td>
-		                                <td>인천시 미추홀구</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-warning pt-0 pb-0" data-toggle="modal" data-target="#detailModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0">
-											  기본상점등록
-											</button>
-										</td>
-		                            </tr>
+		                            
 		                        </tbody>
 		                    </table>
 	
@@ -154,26 +80,10 @@
 			        <h3 class="text-center">상세 매장 정보</h3>
 			        <p class="text-center">detail info</p>
 			        
-			        <table class="table text-lfet">
+			        <table class="table table-modal text-lfet">
 		                        
-		                        <tbody class="table-body">
-		                            <tr class="cell-1">
-		                                <td><strong>마트명 : </strong></td>
-		                                <td>oo마트 ##점</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td><strong>주소 : </strong></td>
-		                                <td>인천시 미추홀구</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td><strong>전화번호 : </strong></td>
-		                                <td>010-2124-2719</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                <td><strong>마트소개 : </strong></td>
-		                                <td>저희 마트를 찾아주셔서 갑사합니다.</td>
-		                            </tr>
-		                            
+		                        <tbody class="table-modal-body">
+		                           
 		                        </tbody>
 		                    </table>
 			      </div>
@@ -184,6 +94,119 @@
 			    </div>
 			  </div>
 			</div>
+
+<script type="text/javascript">
+function searchMarket() {
+	var mk_address = $('#searchAddress').val();
+	//alert(mk_address);
+	$.ajax({
+		data : {
+			searchKeyword : mk_address
+		},
+		url : "${pageContext.request.contextPath}/searchMarket.do",
+		success : function(data) {
+			$(".table-body").remove();
+			$newTbody = $("<tbody class='table-body'></tbody>")
+			$(".table-market").append($newTbody);
+			for(var i in data){
+				//alert(data[i].mk_name);
+				
+				var $cellsOfRow = $("<tr class='cell-1'>" +
+						"<td>" + data[i].mk_name + "</td>" +
+						"<td>" + data[i].mk_address + "</td>" +
+						"<td>" + data[i].mk_tel + "</td>" +
+						"<td>" +
+						"<button type='button' onclick='detailMarket(" + data[i].mk_number + ")' class='btn btn-warning pt-0 pb-0' data-toggle='modal' data-target='#detailModal'>" +
+						"상세보기" +
+						"</button>" +
+						"</td>" +
+						"<td>" +
+						"<a class='btn btn-success pt-0 pb-0' onclick='choiceMarket(" + data[i].mk_number + ")'>" +
+						"<input type='hidden' id='mk_number' value=" + data[i].mk_number + ">" +
+						"단골상점등록" + 
+						"</a>" +
+						"</td>" +
+						"</tr>");
+				$(".table-body").append($cellsOfRow);
+			}
+		},
+		error : function(error){
+			alert("오류");
+		}
+	});
+}
+function choiceMarket(mk_number){
+	//var mk_address = $('#searchAddress').val();
+	//alert(mk_number);
+	var mk_number = mk_number;
+	$.ajax({
+		data : {
+			searchKey : mk_number
+		},
+		url : "${pageContext.request.contextPath}/choiceMarket.do",			
+		success : function(data) {
+			//alert(data.mk_name);
+			$(".mk-name").remove();
+			$newTbody = $("<h3 class='font-white text-center mk-name'>현재 등록된 마트 : " + data.mk_name + "</h3>")
+			$(".market-name").append($newTbody);
+		},
+		error : function(error){
+			alert("오류");
+		}
+	});
+}
+function detailMarket(mk_number){
+	//alert(mk_number);
+	$.ajax({
+		data : {
+			searchKey : mk_number
+		},
+		url : "${pageContext.request.contextPath}/detailMarket.do",		
+
+		
+		
+   	 
+		success : function(data) {
+			//alert(data.mk_name);
+			$(".table-modal-body").remove();
+			$newTbody = $("<tbody class='table-modal-body'></tbody>")
+			$(".table-modal").append($newTbody);
+			
+			var $cellsOfRow = $(
+					"<tr>" +
+					"<td><strong>마트명 : </strong></td>" +
+					"<td>" + data.mk_name + "</td>" +
+					"</tr>" +
+					"<tr>" +
+					"<td><strong>주소 : </strong></td>" +
+					"<td>" + data.mk_address + "</td>" +
+					"</tr>" +
+					"<tr>" +
+					"<td><strong>전화번호 : </strong></td>" +
+					"<td>" + data.mk_tel + "</td>" +
+					"</tr>" +
+					"<tr>" +
+					"<td><strong>영업시간 : </strong></td>" +
+					"<td>" + data.mk_open_time + " ~ "+ data.mk_close_time + "</td>" +
+					"</tr>" +
+					"<tr>" +
+					"<td><strong>쉬는 날 : </strong></td>" +
+					"<td>" + data.mk_closed + "</td>" +
+					"</tr>" +
+					"<tr>" +
+					"<td><strong>마트 소개 : </strong></td>" +
+					"<td>" + data.mk_intro + "</td>" +
+					"</tr>"
+					);
+			$(".table-modal-body").append($cellsOfRow);
+			
+		},
+		error : function(error){
+			alert("오류");
+		}
+	});
+}
+</script>
 
 	</body>
 </html>

@@ -30,6 +30,7 @@
 	<mvc:interceptors>
 	  	<mvc:interceptor>
 	  		<mvc:mapping path="/myPage.do"/>
+	  		<mvc:mapping path="/findMarket.do"/>
 			<ref bean="loginInterceptor"/>
 	  	</mvc:interceptor>
 	</mvc:interceptors>
