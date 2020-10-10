@@ -51,11 +51,12 @@
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#menu2">장바구니</a>
 				</li>
+				<!--  
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#menu3">내가 쓴 댓글</a>
-				</li>
+				</li> -->
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#menu4">나의 설정</a>
+					<a class="nav-link" data-toggle="tab" href="#menu3">내 정보</a>
 				</li>
 			</ul>
 		</div>
@@ -291,7 +292,7 @@
 				                    <td>
 	                                	<div class="custom-control custom-radio">
 	    									<input type="radio" name="pay-radio" id="pay-radio-1" class="custom-control-input" checked>
-	    									<label class="custom-control-label" for="pay-radio-1">현장 결제</label>
+	    									<label class="custom-control-label" for="pay-radio-1">현금 결제</label>
 	    								</div>
 	    							</td>
 	                            </tr>
@@ -299,7 +300,7 @@
 	                                <td>
 	                                	<div class="custom-control custom-radio">
 	    									<input type="radio" name="pay-radio" id="pay-radio-2" class="custom-control-input">
-	    									<label class="custom-control-label" for="pay-radio-2">온라인 결제</label>
+	    									<label class="custom-control-label" for="pay-radio-2">카드 결제</label>
 	    								</div>
 	    							</td>
 	                            </tr>        
@@ -361,12 +362,141 @@
 
 			</div><!-- menu2 끝-->
 
+			
 			<div id="menu3" class="tab-pane"><br>
-				<h3>내가 쓴 댓글</h3>
-				<p>개발중 입니다.</p>
+				<h3>내 정보</h3><br>
+				<p>기본정보</p>
+				<form id="frm" name="frm" method="POST">
+					<!--justify-content-center 테이블 센터 속성 -->
+					<div class="d-flex row">
+					<div class="col-md-12">
+					<div class="rounded">
+					    <div class="table-responsive table-borderless">
+					        <table class="table text-left">
+					            <tbody class="table-body">
+					                <tr class="cell-1">           
+					                    <td>ID</td>
+					                    <td>:</td>
+		    							<td>${loginInfo.id }</td>
+		                            </tr>
+		                            <tr class="cell-1">       
+		                                <td>새 비밀번호</td>
+		                                <td>:</td>
+		    							<td><input type="password" class="form-control" id="signPwd" name="signPwd" placeholder="···"></td>
+		                            </tr> 
+		                            <tr class="cell-1">
+		                            	<td>새 비밀번호 확인</td>
+		                            	<td>:</td>
+		    							<td><input type="password" class="form-control"  id="signPwdCheck" placeholder="···"></td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>이름</td>
+		                            	<td>:</td>
+		    							<td>${loginInfo.name }</td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>전화번호</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="signPhone" name="signPhone" value="${loginInfo.tel }"></td>
+		                            </tr> 
+		                            <tr class="cell-1">
+		                            	<td>이메일</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="signEmail" name="signEmail" value="${loginInfo.email }"></td>
+		                            </tr> 
+		                        </tbody>
+		                    </table>
+		                </div>
+				    </div>
+					</div>
+					
+					<div class="col-md-6">
+				    	<p>제품 받는 방법</p>			    		
+				    	<div class="rounded">
+						    <div class="table-responsive table-borderless">
+						        <table class="table text-left">
+						            <tbody class="table-body">
+						                <tr class="cell-1">           
+						                    <td>
+			                                	<div class="custom-control custom-radio">
+			    									<input type="radio" name="jb-radio-defult" id="jb-radio-defult-1" class="custom-control-input" checked>
+			    									<label class="custom-control-label" for="jb-radio-defult-1">집으로 배달</label>
+			    								</div>
+			    							</td>
+			                            </tr>
+			                            <tr class="cell-1">       
+			                                <td>
+			                                	<div class="custom-control custom-radio">
+			    									<input type="radio" name="jb-radio-defult" id="jb-radio-defult-2" class="custom-control-input">
+			    									<label class="custom-control-label" for="jb-radio-defult-2">마트 방문</label>
+			    								</div>
+			    							</td>
+			                            </tr>        
+			                        </tbody>
+			                    </table>
+			                </div>
+					    </div>    
+				    </div>
+				    <div class="col-md-6">
+				    	<p>결제 수단 선택</p> 		
+				    	<div class="rounded">
+						    <div class="table-responsive table-borderless">
+						        <table class="table text-left">
+						            <tbody class="table-body">
+						                <tr class="cell-1">           
+						                    <td>
+			                                	<div class="custom-control custom-radio">
+			    									<input type="radio" name="pay-radio-defult" id="pay-radio-defult-1" class="custom-control-input" checked>
+			    									<label class="custom-control-label" for="pay-radio-defult-1">현금 결제</label>
+			    								</div>
+			    							</td>
+			                            </tr>
+			                            <tr class="cell-1">       
+			                                <td>
+			                                	<div class="custom-control custom-radio">
+			    									<input type="radio" name="pay-radio-defult" id="pay-radio-defult-2" class="custom-control-input">
+			    									<label class="custom-control-label" for="pay-radio-defult-2">카드 결제</label>
+			    								</div>
+			    							</td>
+			                            </tr>        
+			                        </tbody>
+			                    </table>
+			                </div>
+					    </div>    
+				    </div>
+		
+				    <div class="col-md-12">
+				    	<p>배송 정보</p>
+				    	<div class="rounded">
+						    <div class="table-responsive table-borderless">
+						        <table class="table text-left">
+						            <tbody class="table-body">
+						                <tr class="cell-1">           
+						                    <td>받는분</td>
+						                    <td>:</td>
+			    							<td><input type="text" class="form-control" id="name" placeholder="예: 홍길동"></td>
+			                            </tr>
+			                            <tr class="cell-1">       
+			                                <td>주소</td>
+			                                <td>:</td>
+			    							<td><input type="text" class="form-control" id="addr" placeholder="예: 인천관역시 미추홀구 인하로 100" maxlength="14"></td>
+			                            </tr> 
+			                            <tr class="cell-1">
+			                            	<td>연락처</td>
+			                            	<td>:</td>
+			    							<td><input type="text" class="form-control"  id="phone" placeholder="예: 010-1234-5678"></td>
+			                            </tr>       
+			                        </tbody>
+			                    </table>
+			                </div>
+					    </div>
+				    </div>
+		    		</div><!-- <div class="d-flex row"> -->
+		    </form>
 			</div>
+			
 			<div id="menu4" class="tab-pane"><br>
-				<h3>나의 설정</h3>
+				<h3>내가 쓴 댓글</h3>
 				<p>개발중 입니다.</p>
 			</div>
 		</div>
