@@ -2,6 +2,7 @@ package inhatc.capstone.market.findMarket;
 
 public class FindMarketVO {
 	private int mk_number;
+	private int seller_number;
 	private String mk_name;
 	private String mk_address;
 	private String mk_tel;
@@ -16,6 +17,12 @@ public class FindMarketVO {
 	}
 	public void setMk_number(int mk_number) {
 		this.mk_number = mk_number;
+	}
+	public int getSeller_number() {
+		return seller_number;
+	}
+	public void setSeller_number(int seller_number) {
+		this.seller_number = seller_number;
 	}
 	public String getMk_name() {
 		return mk_name;
