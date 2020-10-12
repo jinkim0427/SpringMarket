@@ -22,4 +22,8 @@ public class UserDAO extends AbstractDAO{
 		insert("user.insertUserData", vo);
 	}
 	
+	public void insertSallerData(UserVO vo) {
+		insert("user.insertSallerData", vo);
+	}
+	
 }

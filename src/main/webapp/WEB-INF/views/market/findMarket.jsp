@@ -171,7 +171,8 @@ function detailMarket(mk_number){
 			$(".table-modal-body").remove();
 			$newTbody = $("<tbody class='table-modal-body'></tbody>")
 			$(".table-modal").append($newTbody);
-			
+			var state = (data.mk_state>0) ? '오픈':'오픈준비중';
+			var delivery = (data.mk_delivery>0) ? '배달가능':'배달불가능';
 			var $cellsOfRow = $(
 					"<tr>" +
 					"<td><strong>마트명 : </strong></td>" +
@@ -186,12 +187,12 @@ function detailMarket(mk_number){
 					"<td>" + data.mk_tel + "</td>" +
 					"</tr>" +
 					"<tr>" +
-					"<td><strong>영업시간 : </strong></td>" +
-					"<td>" + data.mk_open_time + " ~ "+ data.mk_close_time + "</td>" +
+					"<td><strong>영업 : </strong></td>" +
+					"<td>" + state + "</td>" +
 					"</tr>" +
 					"<tr>" +
-					"<td><strong>쉬는 날 : </strong></td>" +
-					"<td>" + data.mk_closed + "</td>" +
+					"<td><strong>배달 : </strong></td>" +
+					"<td>" + delivery + "</td>" +
 					"</tr>" +
 					"<tr>" +
 					"<td><strong>마트 소개 : </strong></td>" +

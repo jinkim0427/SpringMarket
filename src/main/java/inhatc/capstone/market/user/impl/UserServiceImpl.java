@@ -29,7 +29,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void insertUserData(UserVO vo) throws Exception {
 		userDAO.insertUserData(vo);
-		
+	}
+
+	@Override
+	public void insertSallerData(UserVO vo) throws Exception {
+		userDAO.insertSallerData(vo);
 	}
 
 	

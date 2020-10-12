@@ -70,7 +70,7 @@ public class FindMarketController {
 		Integer mk_number = findMarketService.selectUserChoiceMarket(userVO); 
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		System.out.println(userVO.getId());
+		//System.out.println(userVO.getId());
 		if(null == mk_number) {
 			map.put("id", userVO.getId());
 			map.put("mk_number", searchKey);

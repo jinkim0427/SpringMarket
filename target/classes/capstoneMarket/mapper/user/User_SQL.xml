@@ -49,5 +49,14 @@
 	    )
 	</insert>
 	
+	<insert id="insertSallerData" >
+		INSERT INTO SELLER (
+	   		ID
+	    ) 
+	    VALUES (
+	   		#{id}
+	    )
+	</insert>
+	
 </mapper>
 				

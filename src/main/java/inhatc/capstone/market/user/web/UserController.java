@@ -76,6 +76,7 @@ public class UserController {
 		userVO.setEmail(request.getParameter("signEmail"));
 		userVO.setAcc(request.getParameter("signAcc"));
 		userService.insertUserData(userVO);
+		if(userVO.getAcc().equals("sales")) userService.insertSallerData(userVO);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("home/popup");
@@ -138,20 +139,13 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = RequestMethod.GET)
-	public String myPage(Locale locale, Model model) throws Exception {
-		UserVO userVO = new UserVO();
-		userVO.setId("root");
+	public String myPage(HttpServletRequest request) throws Exception {
 		
-		UserVO tempVO = new UserVO();
-		//tempVO = userService.selectUserInfo(userVO);
-		//tempVO.getId();
-		//tempVO.getName();
-		//tempVO.getPwd();
-		//System.out.println(tempVO.toString());
-		//model.addAttribute("사용할 변수이름", userService.selectUserInfo(userVO));
+		UserVO user = (UserVO)request.getSession().getAttribute("loginInfo");
+		if (user.getAcc().equals("customer")) return  "/user/individual-myPage";
+		else if(user.getAcc().equals("sales")) return "/user/sales-myPage";
 		
-		//return "/user/individual-myPage";
-		//위는 이용자 아래는 판매자 나중에 if 문으로 갈려서 보낼수있도록함
-		return "/user/sales-myPage";
+		return "/home/main";
+		
 	}
 }
