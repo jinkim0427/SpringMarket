@@ -30,7 +30,6 @@ public class FindMarketController {
 	@RequestMapping(value = "/findMarket.do", method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request) throws Exception {
 		UserVO userVO = (UserVO)request.getSession().getAttribute("loginInfo");
-		String id = userVO.getId();
 		
 		String mk_name = "";
 		Integer mk_number = findMarketService.selectUserChoiceMarket(userVO); 

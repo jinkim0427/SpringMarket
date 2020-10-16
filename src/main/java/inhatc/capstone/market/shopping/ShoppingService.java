@@ -1,5 +1,12 @@
 package inhatc.capstone.market.shopping;
 
-public interface ShoppingService {
+import java.util.List;
+import java.util.Map;
 
+import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.user.UserVO;
+
+public interface ShoppingService {
+	FindMarketVO selectUserDefaultShop(UserVO vo);
+	List<ShoppingVO> selectShopProductList(Map<String, Object> map)throws Exception;
 }
