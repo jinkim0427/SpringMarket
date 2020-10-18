@@ -18,11 +18,18 @@
 	<!-- css / contentHover -->
 	<link href="${pageContext.request.contextPath}/resources/market/css/contentHover.css" rel="stylesheet">
 	
+	<!-- sendForm -->
+	
 </head>
 <body>
+	<form id="shoppingForm" name="shoppingForm" method="post">
+		<input type="hidden" name="selectedCategory">
+		<form:input path="name"/>
+	</form>
+		
 	<div class="bg-dark">	
 		<div>
-			<h3 class="font-white text-center">OO마트 ##점</h3>
+			<h3 class="font-white text-center">${mk_info.mk_name}</h3>
 		</div>
 		<div class="d-flex justify-content-center h-100 pb-3">
    			<div class="search"> 
@@ -37,7 +44,7 @@
 			  
 			  <div class="card border-danger">
 			  	<div class="content"> 
-	             	<a href="shopping-detail.html">
+	             	<a href="javascript:fn_shoppingDetail(1);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/snack.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -52,7 +59,7 @@
 			  
 			  <div class="card border-warning">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(2);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/frozen_food.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -67,7 +74,7 @@
 			  
 			  <div class="card border-success">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(3);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/ramen.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -82,7 +89,7 @@
 
 			  <div class="card border-info">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(4);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/lunch_box.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -105,7 +112,7 @@
 			  
 			  <div class="card border-danger">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(5);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/vegetable.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -120,7 +127,7 @@
 			  
 			  <div class="card border-warning">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(6);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/fruit.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -135,7 +142,7 @@
 			  
 			  <div class="card border-success">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(7);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/fisheries.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -150,7 +157,7 @@
 
 			  <div class="card border-info">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(8);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/livestock.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -175,7 +182,7 @@
 			  
 			  <div class="card border-danger">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(9);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/canned_food.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -190,7 +197,7 @@
 			  
 			  <div class="card border-warning">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(10);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/bread.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -205,7 +212,7 @@
 			  
 			  <div class="card border-success">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(11);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/household_goods.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -220,7 +227,7 @@
 
 			  <div class="card border-info">
 			  	<div class="content"> 
-	             	<a href="#">
+	             	<a href="javascript:fn_shoppingDetail(12);">
 	                     <div class="content-overlay"></div> 
 	                     <img class="content-image card-img-top" src="resources/market/image/shopping/beverage.jpg" height="200">
 	                     <div class="content-details fadeIn-bottom">
@@ -238,6 +245,15 @@
 	  
 		</div>
 		<!-- -->
+	<script type="text/javascript">
+		
+		function fn_shoppingDetail(category){
+			//alert(category);
+			document.shoppingForm.selectedCategory.value = category;
+			document.shoppingForm.action = "<c:url value='/shoppingDetail.do'/>";
+			document.shoppingForm.submit();
+		}
+	</script>
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

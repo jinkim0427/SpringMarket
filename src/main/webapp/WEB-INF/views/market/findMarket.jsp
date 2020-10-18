@@ -23,7 +23,7 @@
 		
 		<div class="bg-dark">
 			<div class="market-name">
-				<h3 class="font-white text-center mk-name">현재 등록된 마트 : ${mk_name}</h3>
+				<h3 class="font-white text-center mk-name">현재 선택된 기본 마트 : ${mk_name}</h3>
 			</div>
 			<div class="d-flex justify-content-center h-100 pb-3">
 	   			<div class="search"> 
@@ -123,7 +123,7 @@ function searchMarket() {
 						"<td>" +
 						"<a class='btn btn-success pt-0 pb-0' onclick='choiceMarket(" + data[i].mk_number + ")'>" +
 						"<input type='hidden' id='mk_number' value=" + data[i].mk_number + ">" +
-						"단골상점등록" + 
+						"기본 마트 지정" + 
 						"</a>" +
 						"</td>" +
 						"</tr>");
