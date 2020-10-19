@@ -23,7 +23,7 @@
 		
 		<div class="bg-dark">
 			<div class="market-name">
-				<h3 class="font-white text-center mk-name">현재 등록된 마트 : ${mk_name}</h3>
+				<h3 class="font-white text-center mk-name">현재 선택된 기본 마트 : ${mk_name}</h3>
 			</div>
 			<div class="d-flex justify-content-center h-100 pb-3">
 	   			<div class="search"> 
@@ -123,7 +123,7 @@ function searchMarket() {
 						"<td>" +
 						"<a class='btn btn-success pt-0 pb-0' onclick='choiceMarket(" + data[i].mk_number + ")'>" +
 						"<input type='hidden' id='mk_number' value=" + data[i].mk_number + ">" +
-						"단골상점등록" + 
+						"기본 마트 지정" + 
 						"</a>" +
 						"</td>" +
 						"</tr>");
@@ -171,7 +171,8 @@ function detailMarket(mk_number){
 			$(".table-modal-body").remove();
 			$newTbody = $("<tbody class='table-modal-body'></tbody>")
 			$(".table-modal").append($newTbody);
-			
+			var state = (data.mk_state>0) ? '오픈':'오픈준비중';
+			var delivery = (data.mk_delivery>0) ? '배달가능':'배달불가능';
 			var $cellsOfRow = $(
 					"<tr>" +
 					"<td><strong>마트명 : </strong></td>" +
@@ -186,12 +187,12 @@ function detailMarket(mk_number){
 					"<td>" + data.mk_tel + "</td>" +
 					"</tr>" +
 					"<tr>" +
-					"<td><strong>영업시간 : </strong></td>" +
-					"<td>" + data.mk_open_time + " ~ "+ data.mk_close_time + "</td>" +
+					"<td><strong>영업 : </strong></td>" +
+					"<td>" + state + "</td>" +
 					"</tr>" +
 					"<tr>" +
-					"<td><strong>쉬는 날 : </strong></td>" +
-					"<td>" + data.mk_closed + "</td>" +
+					"<td><strong>배달 : </strong></td>" +
+					"<td>" + delivery + "</td>" +
 					"</tr>" +
 					"<tr>" +
 					"<td><strong>마트 소개 : </strong></td>" +

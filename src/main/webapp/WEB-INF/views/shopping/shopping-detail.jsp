@@ -24,7 +24,7 @@
 
 			
 			<div>
-				<h3 class="font-white text-center">OO마트 ##점</h3>
+				<h3 class="font-white text-center">${mk_info.mk_name}</h3>
 			</div>
 			<div class="d-flex justify-content-center h-100 pb-3">
     			<div class="search"> 
@@ -33,94 +33,37 @@
 			</div>
 		</div>
 
-		<!-- modal생성하는곳-->
-		<!-- Login Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">Spring Market</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		      	<h3 class="text-center">로그인</h3>
-		      	<p class="text-center">Log in</p>
-		        <strong>아이디</strong>
-		        <input type="text" class="form-control" placeholder="ID">
-		        <strong>비밀번호</strong>
-		        <input type="password" class="form-control" placeholder="password">
-		        
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-primary">로그인</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+	<div class="container">
+		<h3 class="pt-4">카테고리 > ${ko_category}</h3>
 
-		<!-- nav 끝-->
-
-		<div class="container">
-			<h3 class="pt-4">카테고리 > 과자</h3>
-
+		<c:choose>
+		
+			<c:when test="${fn:length(productList) > 0 }">
 			<div class="row row-cols-1 row-cols-md-4 text-center pt-2">
-				<div class="col mb-3">
-					<div class="card h-100 border-secondary">
-						<img src="resources/market/image/snack/새우깡.jpg" class="card-img-top poster" alt="..." height="200"><div class="card-body">
-					      <h5 class="card-title">새우깡 90g</h5>
-					      <a href="#"><p class="card-text">1500원<i class="fa fa-shopping-cart"></i></p></a>
-				    	</div>	
-					</div>	
-				</div>
-				<div class="col mb-3">
-					<div class="card h-100 border-secondary">
-						<img src="resources/market/image/snack/감자깡.jpg" class="card-img-top poster" alt="..." height="200"><div class="card-body">
-					      <h5 class="card-title">감자깡 90g</h5>
-					      <a href="#"><p class="card-text">1200원<i class="fa fa-shopping-cart"></i></p></a>
-				    	</div>	
-					</div>	
-				</div>
-				<div class="col mb-3">
-					<div class="card h-100 border-secondary">
-						<img src="resources/market/image/snack/고구마깡.jpg" class="card-img-top poster" alt="..." height="200"><div class="card-body">
-					      <h5 class="card-title">고구마깡 90g</h5>
-					      <a href="#"><p class="card-text">1400원<i class="fa fa-shopping-cart"></i></p></a>
-				    	</div>	
-					</div>	
-				</div>
-				<div class="col mb-3">
-					<div class="card h-100 border-secondary">
-						<img src="resources/market/image/snack/포카칩.jpg" class="card-img-top poster" alt="..." height="200"><div class="card-body">
-					      <h5 class="card-title">포카칩 90g</h5>
-					      <a href="#"><p class="card-text">1300원<i class="fa fa-shopping-cart"></i></p></a>
-				    	</div>	
-					</div>	
-				</div>
-				<div class="col mb-3">
-					<div class="card h-100 border-secondary">
-						<img src="resources/market/image/snack/포테토칩.jpg" class="card-img-top poster" alt="..." height="200"><div class="card-body">
-					      <h5 class="card-title">포테토칩 90g</h5>
-					      <a href="#"><p class="card-text">1400원<i class="fa fa-shopping-cart"></i></p></a>
-				    	</div>	
-					</div>	
-				</div>
-				<div class="col mb-3">
-					<div class="card h-100 border-secondary">
-						<img src="resources/market/image/snack/허니버터칩.jpg" class="card-img-top poster" alt="..." height="200"><div class="card-body">
-					      <h5 class="card-title">허니버터칩 90g</h5>
-					      <a href="#"><p class="card-text">1600원<i class="fa fa-shopping-cart"></i></p></a>
-				    	</div>	
-					</div>	
-				</div>
-			</div>
+				<c:forEach items="${productList}" var="row">
+						
+					<div class="col mb-3">
+						<div class="card h-100 border-secondary">
+							<img src="${row.pd_img}" class="card-img-top poster" alt="..." height="200">
+							<div class="card-body">
+								<h5 class="card-title">${row.pd_name} ${row.pd_weight}g</h5>
+								<a href="#"><p class="card-text">${row.pd_price}원<i class="fa fa-shopping-cart"></i></p></a>
+								<p>남은 개수 : ${row.pd_amount}</p>
+					    	</div>	
+						</div>	
+					</div>
+						
+				</c:forEach>
+			</div><!-- class row -->
+			</c:when>
+			<c:otherwise>
+				<h4>등록된 물품이 없습니다.</h4>
+			</c:otherwise>
 			
-			
-		</div>
+		</c:choose>
 
-			<!-- -->	
+	</div><!-- container -->
+
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
