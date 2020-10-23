@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import inhatc.capstone.market.common.SearchVO;
 import inhatc.capstone.market.common.impl.AbstractDAO;
 import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.shopping.OrderVO;
 import inhatc.capstone.market.shopping.ShoppingCartVO;
 import inhatc.capstone.market.shopping.ShoppingVO;
 import inhatc.capstone.market.user.UserVO;
@@ -53,6 +54,36 @@ public class ShoppingDAO extends AbstractDAO{
 	public void updateShoppingCart(ShoppingCartVO scv) {
 		// TODO Auto-generated method stub
 		update("shoppingDAO.updateShoppingCart",scv);
+	}
+
+	public List<Map<String, Object>> selectShoppingCartList(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return selectList("shoppingDAO.selectShoppingCartList", userVO);
+	}
+
+	public void deleteShoppingCartProduct(ShoppingCartVO scv) {
+		// TODO Auto-generated method stub
+		delete("shoppingDAO.deleteShoppingCartProduct",scv);
+	}
+
+	public void deleteAllShoppingCartProduct(UserVO userVO) {
+		// TODO Auto-generated method stub
+		delete("shoppingDAO.deleteAllShoppingCartProduct",userVO);
+	}
+
+	public void insertOrders(OrderVO odVO) {
+		// TODO Auto-generated method stub
+		insert("shoppingDAO.insertOrders",odVO);
+	}
+
+	public int selectShoppingCartCount(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return (int) selectOne("shoppingDAO.selectShoppingCartCount",userVO);
+	}
+
+	public void insertOrderProduct(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		insert("shoppingDAO.insertOrderProduct",map);
 	}
 
 }

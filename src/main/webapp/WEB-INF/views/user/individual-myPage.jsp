@@ -35,7 +35,12 @@
 	}
 </style>
 <body>
-
+	<form id="orderForm" name="orderForm" method="post">
+		<input type="hidden" name="selectedPickUp">
+		<input type="hidden" name="selectedPayment">
+		<input type="hidden" name="orderAddress">
+	</form>
+	
 	<div class="container">
 
 		<div class="row">
@@ -70,7 +75,7 @@
 		            <div class="rounded">
 		                <div class="table-responsive table-borderless">
 		                <form>
-		                    <table class="table text-center">
+		                    <table class="table text-center table-shoppingCart">
 		                        <thead>
 		                            <tr>
 		                                <th>물품</th>
@@ -78,79 +83,45 @@
 		                                <th>개수</th>
 		                                <th>합계</th>
 		                                <th>...</th>
-		                                
 		                            </tr>
 		                        </thead>
-		                        
-		                        <tbody class="table-body">
-		                        
-		                            <tr class="cell-1">
-		                                
-		                                <td>(농심)새우깡 90g</td>
-		                                <td>1200원</td>
-		                                <td>
-		                                	<a href="#" ><i class="fa fa-minus"></i></a>
-		                                 	<input type="number" min="0" max="100" value="3">
-		                                 	<!-- 나중에 이부분 이용해서 max치 불러와서 적용하고 js에서 주문하기전에 넘겻는지 확인 -->
-		                                 	<a href="#"><i class="fa fa-plus"></i></a>
-		                             	</td>
-		                             	
-		                                <td>3600원</td>
-		                                <td><i class="fa fa-trash"></i></td>
-
-		                            </tr>
-		                            <tr class="cell-1">
-		                                
-		                                <td>(농심)신라면 120g</td>
-		                                <td>1000원</td>
-		                                <td>
-		                                	<a href="#" ><i class="fa fa-minus"></i></a>
-		                                 	<input type="number" min="0" max="100" value="2">
-		                                 	<a href="#"><i class="fa fa-plus"></i></a>
-		                                </td>
-		                                
-		                                <td>2000원</td>
-		                                <td><i class="fa fa-trash"></i></td>
-		                               
-		                            </tr>
-		                            <tr class="cell-1">
-		                                
-		                                <td>(롯데)칠성사이다 190ml x 30캔</td>
-		                                <td>13000원</td>
-		                                <td>
-		                                	<a href="#" ><i class="fa fa-minus"></i></a>
-		                                 	<input type="number" min="0" max="100" value="1">
-		                                 	<a href="#"><i class="fa fa-plus"></i></a>
-		                                </td>
-		                                
-		                                <td>13000원</td>
-		                                <td><i class="fa fa-trash"></i></td>
-		                                
-		                            </tr>
-		                            <tr class="cell-1">
-		                                
-		                                <td>(미닛 메이드)오렌지 쥬스 1.5L x 4</td>
-		                                <td>12000원</td>
-		                                <td>
-		                                	<a href="#" ><i class="fa fa-minus"></i></a>
-		                                 	<input type="number" min="0" max="100" value="2">
-		                                 	<a href="#"><i class="fa fa-plus"></i></a>
-		                                </td>
-		                                
-		                                <td>24000원</td>
-		                                <td><i class="fa fa-trash"></i></td>
-		                               
-		                            </tr>
-		                            
+		                        <tbody class="table-shoppingCart-body">
 		                        </tbody>
-		                       
+
 		                    </table>
 		                    </form>
 		                </div>
 		        </div><!-- round 끝-->
-		        <h4 class="text-right">상품 총 합계: 50000원</h4>
+		        <h4 id="totalPrice" class="text-right">상품 총 합계: 원</h4>
 		    </div><!-- col 10-->
-
+		    
+			<!-- Modal -->
+			<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="detailModalLabel">Spring Market</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			        <h3 class="text-center">장바구니 상품 삭제</h3>
+			        <p class="text-center">drop Product from Cart</p>
+			        
+					<table class="table table-modal text-lfet">
+						<tbody class="table-modal-body">
+						</tbody>
+					</table>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" onclick="deleteProduct()" data-dismiss="modal" class="btn btn-primary">확인</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
 		    <div class="col-md-6">
 		    	<p>제품 받는 방법</p>
 		    	<div class="rounded">
@@ -160,7 +131,11 @@
 				                <tr class="cell-1">           
 				                    <td>
 	                                	<div class="custom-control custom-radio">
-	    									<input type="radio" name="jb-radio" id="jb-radio-1" class="custom-control-input" checked>
+	    									
+	    									
+	    									
+	    									<input type="radio" name="pickUp-radio" id="jb-radio-1" value="배달" class="custom-control-input" checked>
+	    									
 	    									<label class="custom-control-label" for="jb-radio-1">집으로 배달</label>
 	    								</div>
 	    							</td>
@@ -168,7 +143,9 @@
 	                            <tr class="cell-1">       
 	                                <td>
 	                                	<div class="custom-control custom-radio">
-	    									<input type="radio" name="jb-radio" id="jb-radio-2" class="custom-control-input">
+	    									
+	    									
+	    									<input type="radio" name="pickUp-radio" id="jb-radio-2" value="포장" class="custom-control-input">
 	    									<label class="custom-control-label" for="jb-radio-2">마트 방문</label>
 	    								</div>
 	    							</td>
@@ -187,7 +164,7 @@
 				                <tr class="cell-1">           
 				                    <td>
 	                                	<div class="custom-control custom-radio">
-	    									<input type="radio" name="pay-radio" id="pay-radio-1" class="custom-control-input" checked>
+	    									<input type="radio" name="payment-radio" id="pay-radio-1" value="현금" class="custom-control-input" checked>
 	    									<label class="custom-control-label" for="pay-radio-1">현금 결제</label>
 	    								</div>
 	    							</td>
@@ -195,7 +172,7 @@
 	                            <tr class="cell-1">       
 	                                <td>
 	                                	<div class="custom-control custom-radio">
-	    									<input type="radio" name="pay-radio" id="pay-radio-2" class="custom-control-input">
+	    									<input type="radio" name="payment-radio" id="pay-radio-2" value="카드" class="custom-control-input">
 	    									<label class="custom-control-label" for="pay-radio-2">카드 결제</label>
 	    								</div>
 	    							</td>
@@ -211,21 +188,11 @@
 				    <div class="table-responsive table-borderless">
 				        <table class="table text-left">
 				            <tbody class="table-body">
-				                <tr class="cell-1">           
-				                    <td>받는분</td>
-				                    <td>:</td>
-	    							<td><input type="text" class="form-control" id="name" placeholder="예: 홍길동"></td>
-	                            </tr>
 	                            <tr class="cell-1">       
 	                                <td>주소</td>
 	                                <td>:</td>
-	    							<td><input type="text" class="form-control" id="addr" placeholder="예: 인천관역시 미추홀구 인하로 100" maxlength="14"></td>
-	                            </tr> 
-	                            <tr class="cell-1">
-	                            	<td>연락처</td>
-	                            	<td>:</td>
-	    							<td><input type="text" class="form-control"  id="phone" placeholder="예: 010-1234-5678"></td>
-	                            </tr>       
+	    							<td><input type="text" class="form-control" id="address" placeholder="예: 인천관역시 미추홀구 인하로 100" maxlength="14"></td>
+	                            </tr>
 	                        </tbody>
 	                    </table>
 	                </div>
@@ -246,7 +213,7 @@
 			    </div>
 		    </div>
 		    <div class="col-md-12 text-center">
-		    	<button type="button" class="btn btn-success pd-3">주문하기</button>
+		    	<button type="button" id="orderBtn" onclick="fn_orderProduct()" class="btn btn-success pd-3">주문하기</button>
 		    </div> 
 		    </div><!-- <div class="d-flex row"> -->
 		    </div><!-- menu1 끝-->
@@ -424,6 +391,168 @@
 		</div>
 		</div>
 		
+<script type="text/javascript">
+	window.onload = function(){
+		//alert("t");
+		$.ajax({
+			
+			url : "${pageContext.request.contextPath}/getShoppingCartList.do",		
+			success : function(data) {
+				//alert(data);
+				$(".table-shoppingCart-body").remove();
+				$newTbody = $("<tbody class='table-shoppingCart-body'></tbody>")
+				$(".table-shoppingCart").append($newTbody);
+				var totalPrice = 0;
+				for (var i in data){
+					//alert(data[i].pd_name);
+					
+					var sumPrice = parseInt(data[i].pd_price) * parseInt(data[i].sc_amount); 
+					totalPrice = parseInt(totalPrice) + parseInt(sumPrice);
+					var $cellsOfRow = $(
+							"<tr class='cell-1' id=tr"+data[i].pd_number+">" +
+							"<td id='pd_name" + data[i].pd_number + "'>" + data[i].pd_name + "</td>" +
+							"<td id='price" + data[i].pd_number + "'>" + data[i].pd_price + "</td>" +
+							"<td>" +
+							"<a href='#' onclick='minusProductAmount(" + data[i].pd_number + ")'><i class='fa fa-minus'></i></a>" +
+							"<input id='product" + data[i].pd_number + "' type='number' min='0' max='100' value=" + data[i].sc_amount + ">" +
+							"<a href='#' onclick='plusProductAmount(" + data[i].pd_number + ")'><i class='fa fa-plus'></i></a>" +
+							"</td>" +
+							"<td id='subPrice" + data[i].pd_number + "'>" + sumPrice + "원</td>" +
+							"<td><a href='#' data-toggle='modal' data-target='#detailModal' onclick='deleteModalForm(" + data[i].pd_number + ")'><i class='fa fa-trash'></i></a></td>" +
+							"</tr>"
+							);
+					$(".table-shoppingCart-body").append($cellsOfRow);		
+
+					
+				}
+				document.getElementById("totalPrice").innerHTML = "상품 총 합계 : " + totalPrice + " 원";
+				
+			},
+			error : function(error){
+				alert("오류");
+			}
+		});
+	};
+	
+	function minusProductAmount(pd_number){
+		$.ajax({
+			data : {
+				pd_number : pd_number
+			},
+			url : "${pageContext.request.contextPath}/updateMinusProductAmount.do",		
+			success : function(data) {
+				//alert(data);
+				if(data == 0){
+					alert("품절입니다.");
+				}else if(data==1){
+					var pd_amount = document.getElementById("product"+pd_number).value;
+					var result = parseInt(pd_amount)-parseInt('1')
+					document.getElementById("product"+pd_number).value = result;
+					var price = document.getElementById("price"+pd_number).innerHTML;
+					var subPrice = parseInt(result) * parseInt(price);
+					document.getElementById("subPrice"+pd_number).innerHTML = subPrice+"원";
+
+					var totalPrice = document.getElementById("totalPrice").innerHTML;
+					totalPrice = totalPrice.replace(/[^0-9]/g,"");
+					totalPrice = parseInt(totalPrice) - parseInt(price);
+					document.getElementById("totalPrice").innerHTML = "상품 총 합계 : " + totalPrice + " 원";
+				}else if(data==2){
+					alert("더 이상 줄일 수 없습니다.");
+				}
+			},
+			error : function(error){
+				alert("오류");
+			}
+		});
+	}
+
+	function plusProductAmount(pd_number){
+		$.ajax({
+			data : {
+				pd_number : pd_number
+			},
+			url : "${pageContext.request.contextPath}/updatePlusProductAmount.do",		
+			success : function(data) {
+				//alert(data);
+				if(data == 0){
+					alert("해당 상품의 재고가 더 이상 없습니다.");
+				}else if(data==1){
+					var pd_amount = document.getElementById("product"+pd_number).value;
+					var result = parseInt(pd_amount)+parseInt('1')
+					document.getElementById("product"+pd_number).value = result;
+					var price = document.getElementById("price"+pd_number).innerHTML;
+					var subPrice = parseInt(result) * parseInt(price);
+					document.getElementById("subPrice"+pd_number).innerHTML = subPrice+"원";
+
+					var totalPrice = document.getElementById("totalPrice").innerHTML;
+					totalPrice = totalPrice.replace(/[^0-9]/g,"");
+					totalPrice = parseInt(totalPrice) + parseInt(price);
+					document.getElementById("totalPrice").innerHTML = "상품 총 합계 : " + totalPrice + " 원";
+				}
+			},
+			error : function(error){
+				alert("오류");
+			}
+		});
+	}
+
+	function deleteModalForm(pd_number){
+		//alert(pd_number);
+		//fn_popupForDelete();
+		$(".table-modal-body").remove();
+		$newTbody = $("<tbody class='table-modal-body'></tbody>")
+		$(".table-modal").append($newTbody);
+
+		var pd_name = document.getElementById("pd_name"+pd_number).innerHTML;
+		var $cellsOfRow = $(
+				"<tr>" +
+				"<td><strong>[상품명 : " + pd_name + "]</strong> 선택하신 상품을 삭제하시겠습니까?</td>" +
+				"<input type='hidden' id='deletePD' value="+ pd_number +">"+
+				"</tr>"
+				);
+		$(".table-modal-body").append($cellsOfRow);
+	}
+
+	function deleteProduct(){
+		
+		var pd_number = document.getElementById("deletePD").value;
+		var totalPrice = document.getElementById("totalPrice").innerHTML;
+		totalPrice = totalPrice.replace(/[^0-9]/g,"");
+		var subPrice = document.getElementById("subPrice"+pd_number).innerHTML;
+		subPrice = subPrice.replace(/[^0-9]/g,"");
+		totalPrice = parseInt(totalPrice) - parseInt(subPrice);
+		document.getElementById("totalPrice").innerHTML = "상품 총 합계 : " + totalPrice + " 원";
+		$("#tr"+pd_number+"").remove();
+
+		deleteProductDB(pd_number);
+		//총 합계 금액 만들어주고 삭제되기
+		//db에서도  삭제하기
+	}
+
+	function deleteProductDB(pd_number){
+		$.ajax({
+			data : {
+				pd_number : pd_number
+			},
+			url : "${pageContext.request.contextPath}/deleteShoppingCartProduct.do",		
+			error : function(error){
+				alert("오류");
+			}
+		});
+	}
+
+	function fn_orderProduct(){
+		//alert($('input[name=jb-radio]').val());
+		var pickUp = document.querySelector('input[name="pickUp-radio"]:checked').value;
+		var payment = document.querySelector('input[name="payment-radio"]:checked').value;
+		var address = document.getElementById("address").value;
+		document.orderForm.selectedPickUp.value = pickUp;
+		document.orderForm.selectedPayment.value = payment;
+		document.orderForm.orderAddress.value = address;
+		document.orderForm.action = "<c:url value='/orderProduct.do'/>";
+		document.orderForm.submit();
+	}
+</script>
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

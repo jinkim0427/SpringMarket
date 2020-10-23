@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import inhatc.capstone.market.common.SearchVO;
 import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.shopping.OrderVO;
 import inhatc.capstone.market.shopping.ShoppingCartVO;
 import inhatc.capstone.market.shopping.ShoppingService;
 import inhatc.capstone.market.shopping.ShoppingVO;
@@ -58,6 +59,36 @@ public class ShoppingServiceImpl implements ShoppingService{
 	public void updateShoppingCart(ShoppingCartVO scv) {
 		// TODO Auto-generated method stub
 		shoppingDAO.updateShoppingCart(scv);
+	}
+	@Override
+	public List<Map<String, Object>> selectShoppingCartList(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectShoppingCartList(userVO);
+	}
+	@Override
+	public void deleteShoppingCartProduct(ShoppingCartVO scv) {
+		// TODO Auto-generated method stub
+		shoppingDAO.deleteShoppingCartProduct(scv);
+	}
+	@Override
+	public void deleteAllShoppingCartProduct(UserVO userVO) {
+		// TODO Auto-generated method stub
+		shoppingDAO.deleteAllShoppingCartProduct(userVO);
+	}
+	@Override
+	public void insertOrders(OrderVO odVO) {
+		// TODO Auto-generated method stub
+		shoppingDAO.insertOrders(odVO);
+	}
+	@Override
+	public int selectShoppingCartCount(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectShoppingCartCount(userVO);
+	}
+	@Override
+	public void insertOrderProduct(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		shoppingDAO.insertOrderProduct(map);
 	}
 
 }

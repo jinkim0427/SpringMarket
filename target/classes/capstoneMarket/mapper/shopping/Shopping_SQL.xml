@@ -87,4 +87,54 @@
 		WHERE
 			ID=#{id} AND PD_NUMBER=#{pd_number}
 	</update>
+	
+	<select id="selectShoppingCartList" resultType="hashmap">
+		SELECT
+			PD.PD_NUMBER as pd_number, PD.PD_NAME as pd_name, PD.PD_PRICE as pd_price, SC.SC_AMOUNT as sc_amount
+		FROM
+			PRODUCT AS PD, SHOPPING_CART AS SC
+		WHERE
+			PD.PD_NUMBER = SC.PD_NUMBER AND SC.ID = #{id}
+	</select>
+	
+	<delete id="deleteShoppingCartProduct">
+		DELETE
+			FROM SHOPPING_CART
+		WHERE
+			ID = #{id} AND PD_NUMBER = #{pd_number}
+	</delete>
+	
+	<delete id="deleteAllShoppingCartProduct">
+		DELETE
+			FROM SHOPPING_CART
+		WHERE
+			ID = #{id}
+	</delete>
+	
+	<insert id="insertOrders">
+		INSERT
+			INTO ORDERS (ID, MK_NUMBER, OD_PICKUP, OD_STATUS)
+		VALUES
+			(#{id},#{mk_number},#{od_pickup},'준비중')
+	</insert>
+	
+	<select id="selectShoppingCartCount" resultType="int">
+		SELECT
+			COUNT(PD_NUMBER)
+		FROM
+			SHOPPING_CART
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<insert id="insertOrderProduct">
+		<selectKey resultType="int" keyProperty="od_number" order="BEFORE">
+			SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID = #{id}
+		</selectKey>
+		INSERT
+			INTO ORDER_PRODUCT (OD_NUMBER, PD_NUMBER, OP_AMOUNT)
+		VALUES
+			(#{od_number}, #{pd_number}, #{op_amount})
+		
+	</insert>
 </mapper>

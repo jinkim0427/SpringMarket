@@ -94,7 +94,7 @@
 		                           </tr>
 		                           <tr>
 		                     			<td>구매 개수 :</td>
-		                     			<td><input id="amount" type="number" min="0" max="100" value="1"></td>
+		                     			<td><input id="amount" type="number" min="0" max="100" value="0"></td>
 		                           </tr>
 		                           
 		                        </tbody>
@@ -141,7 +141,7 @@
 						"</tr>"+
 						"<tr>" +
 						"<td><strong>구매개수 : </strong></td>" +
-						"<td><input id='amount' type='number' min='0' max='100' value='1'></td>" +
+						"<td><input id='amount' type='number' min='0' max='100' value='0'></td>" +
 						"<input type='hidden' id='pd_number' value="+ data.pd_number +">"+
 						"</tr>"
 						
@@ -188,7 +188,9 @@
 					//가능
 				}else if(check == 2){
 					//불가능
+					
 					alert("이 이상 개수를 구매하실 수 없습니다.")
+					document.getElementById("amount").value = minusAmount - 1;
 				}
 			},
 			error : function(error){
@@ -201,7 +203,13 @@
 		//물품 장바구니에 등록
 		var minusAmount = document.getElementById("amount").value;
 		var pd_number = document.getElementById("pd_number").value;
-
+		if(minusAmount <= 0){
+			alert("개수를 선택해 주세요.");
+		}else {
+			fn_addCartDB(minusAmount, pd_number);	
+		}
+	}
+	function fn_addCartDB(minusAmount, pd_number){
 		$.ajax({
 			data : {
 				minusAmount : minusAmount,
@@ -229,8 +237,6 @@
 				alert("오류");
 			}
 		});
-		
-		
 	}
 </script>
 </body>
