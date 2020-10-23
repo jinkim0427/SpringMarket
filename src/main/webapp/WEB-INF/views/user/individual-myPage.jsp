@@ -59,7 +59,7 @@
 				</li> -->
 			</ul>
 		</div>
-
+		
 		<div class="tab-content col-md-9">
 			<div id="menu1" class="tab-pane active"><br>
 				<h3>장바구니</h3>
@@ -69,50 +69,60 @@
 		        <div class="col-md-12">
 		            <div class="rounded">
 		                <div class="table-responsive table-borderless">
+		                <form>
 		                    <table class="table text-center">
 		                        <thead>
 		                            <tr>
 		                                <th>물품</th>
+		                                <th>가격</th>
 		                                <th>개수</th>
 		                                <th>합계</th>
 		                                <th>...</th>
 		                                
 		                            </tr>
 		                        </thead>
+		                        
 		                        <tbody class="table-body">
+		                        
 		                            <tr class="cell-1">
 		                                
 		                                <td>(농심)새우깡 90g</td>
+		                                <td>1200원</td>
 		                                <td>
 		                                	<a href="#" ><i class="fa fa-minus"></i></a>
 		                                 	<input type="number" min="0" max="100" value="3">
 		                                 	<!-- 나중에 이부분 이용해서 max치 불러와서 적용하고 js에서 주문하기전에 넘겻는지 확인 -->
 		                                 	<a href="#"><i class="fa fa-plus"></i></a>
 		                             	</td>
-		                                <td>3900원</td>
+		                             	
+		                                <td>3600원</td>
 		                                <td><i class="fa fa-trash"></i></td>
 
 		                            </tr>
 		                            <tr class="cell-1">
 		                                
 		                                <td>(농심)신라면 120g</td>
+		                                <td>1000원</td>
 		                                <td>
 		                                	<a href="#" ><i class="fa fa-minus"></i></a>
 		                                 	<input type="number" min="0" max="100" value="2">
 		                                 	<a href="#"><i class="fa fa-plus"></i></a>
 		                                </td>
-		                                <td>1100원</td>
+		                                
+		                                <td>2000원</td>
 		                                <td><i class="fa fa-trash"></i></td>
 		                               
 		                            </tr>
 		                            <tr class="cell-1">
 		                                
 		                                <td>(롯데)칠성사이다 190ml x 30캔</td>
+		                                <td>13000원</td>
 		                                <td>
 		                                	<a href="#" ><i class="fa fa-minus"></i></a>
 		                                 	<input type="number" min="0" max="100" value="1">
 		                                 	<a href="#"><i class="fa fa-plus"></i></a>
 		                                </td>
+		                                
 		                                <td>13000원</td>
 		                                <td><i class="fa fa-trash"></i></td>
 		                                
@@ -120,20 +130,25 @@
 		                            <tr class="cell-1">
 		                                
 		                                <td>(미닛 메이드)오렌지 쥬스 1.5L x 4</td>
+		                                <td>12000원</td>
 		                                <td>
 		                                	<a href="#" ><i class="fa fa-minus"></i></a>
 		                                 	<input type="number" min="0" max="100" value="2">
 		                                 	<a href="#"><i class="fa fa-plus"></i></a>
 		                                </td>
-		                                <td>12000원</td>
+		                                
+		                                <td>24000원</td>
 		                                <td><i class="fa fa-trash"></i></td>
 		                               
 		                            </tr>
+		                            
 		                        </tbody>
+		                       
 		                    </table>
+		                    </form>
 		                </div>
 		        </div><!-- round 끝-->
-		        <h4 class="text-right">상품 총 합계: 30000원</h4>
+		        <h4 class="text-right">상품 총 합계: 50000원</h4>
 		    </div><!-- col 10-->
 
 		    <div class="col-md-6">
@@ -408,6 +423,7 @@
 		</div>
 		</div>
 		</div>
+		
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

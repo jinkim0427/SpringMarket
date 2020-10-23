@@ -5,7 +5,6 @@ public class ShoppingVO {
 	private int mk_number;
 	private int pd_category;
 	private String pd_name;
-	private int pd_weight;
 	private int pd_amount;
 	private int pd_price;
 	private String pd_img;
@@ -33,12 +32,6 @@ public class ShoppingVO {
 	}
 	public void setPd_name(String pd_name) {
 		this.pd_name = pd_name;
-	}
-	public int getPd_weight() {
-		return pd_weight;
-	}
-	public void setPd_weight(int pd_weight) {
-		this.pd_weight = pd_weight;
 	}
 	public int getPd_amount() {
 		return pd_amount;

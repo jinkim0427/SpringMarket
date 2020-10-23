@@ -13,7 +13,6 @@
 		<result property="mk_number" column="mk_number"/>
 		<result property="pd_category" column="pd_category"/>
 		<result property="pd_name" column="pd_name"/>
-		<result property="pd_weight" column="pd_weight"/>
 		<result property="pd_amount" column="pd_amount"/>
 		<result property="pd_price" column="pd_price"/>
 		<result property="pd_img" column="pd_img"/>
@@ -35,7 +34,57 @@
 			PRODUCT
 		WHERE
 			MK_NUMBER = #{mk_number} AND PD_CATEGORY = #{pd_category}
-	
 	</select>
 	
+	<select id="selectProductForm" resultMap="shopping">
+		SELECT
+			PD_NUMBER, MK_NUMBER, PD_NAME, PD_AMOUNT, PD_PRICE
+		FROM
+			PRODUCT
+		WHERE
+			PD_NUMBER = #{searchKey}
+	</select>
+	
+	<select id="selectProductAmount" resultType="int">
+		SELECT
+			PD_AMOUNT
+		FROM
+			PRODUCT
+		WHERE
+			PD_NUMBER = #{searchKey}
+	</select>
+	
+	<update id="updateProductAmount">
+		UPDATE
+			PRODUCT
+		SET
+			PD_AMOUNT = #{pd_amount}
+		WHERE
+			PD_NUMBER = #{pd_number}
+	</update>
+	
+	<select id="selectShoppingCartAmount" resultType="Integer">
+		SELECT
+			SC_AMOUNT
+		FROM
+			SHOPPING_CART
+		WHERE
+			ID = #{id} AND PD_NUMBER = #{pd_number}
+	</select>
+	
+	<insert id="insertShoppingCart">
+		INSERT 
+			INTO SHOPPING_CART (ID, PD_NUMBER, SC_AMOUNT)
+		VALUES
+			(#{id} , #{pd_number}, #{sc_amount})
+	</insert>
+	
+	<update id="updateShoppingCart">
+		UPDATE
+			SHOPPING_CART
+		SET
+			SC_AMOUNT=#{sc_amount}
+		WHERE
+			ID=#{id} AND PD_NUMBER=#{pd_number}
+	</update>
 </mapper>

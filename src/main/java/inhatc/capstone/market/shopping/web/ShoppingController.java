@@ -12,9 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import inhatc.capstone.market.common.SearchVO;
 import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.shopping.ShoppingCartVO;
 import inhatc.capstone.market.shopping.ShoppingService;
 import inhatc.capstone.market.shopping.ShoppingVO;
 import inhatc.capstone.market.user.UserVO;
@@ -64,5 +67,76 @@ public class ShoppingController {
 		return mv;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/createAddCartForm.do", method=RequestMethod.GET)
+	public ShoppingVO createAddCartForm(@RequestParam(value="searchKey") int searchKey, HttpServletRequest request) throws Exception{
+		SearchVO searchVO = new SearchVO();
+		searchVO.setSearchKey(searchKey);
+		ShoppingVO svo = shoppingService.selectProductForm(searchVO);
+		return svo;
+	}
 	
+	@ResponseBody
+	@RequestMapping(value="/checkProductAmount.do", method=RequestMethod.GET)
+	public int checkProductAmount(@RequestParam(value="searchKey") int searchKey,
+			@RequestParam(value="minusAmount") int minusAmount, HttpServletRequest request) throws Exception{
+		//체크해서 되면 1 안되면 0
+		//System.out.println(searchKey + " " + minusAmount);
+		SearchVO searchVO = new SearchVO();
+		searchVO.setSearchKey(searchKey);
+		int productAmount = shoppingService.selectProductAmount(searchVO);
+		int result = 1; //0:매진 1:가능 2:불가능
+		if(productAmount == 0) {
+			result = 0;
+		}else if(productAmount > 0){
+			int check = productAmount - minusAmount;
+			if(check < 0) {
+				result = 2;
+			}else {
+				result = 1;
+			}
+		}
+		//System.out.println(productAmount);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/addCart.do", method=RequestMethod.GET)
+	public int addCart(@RequestParam(value="minusAmount") int amount,
+			@RequestParam(value="pd_number") int pd_number, HttpServletRequest request) throws Exception{
+		UserVO userVO = (UserVO)request.getSession().getAttribute("loginInfo");
+		SearchVO searchVO = new SearchVO();
+		searchVO.setSearchKey(pd_number);
+		int productAmount = shoppingService.selectProductAmount(searchVO);
+		int result = 1;
+		if(productAmount == 0) {
+			result = 0;
+		}else if(productAmount > 0){
+			int pd_amount = productAmount - amount;
+			if(pd_amount < 0) {
+				result = 2;
+			}else {
+				result = 1;
+				//update쿼리
+				ShoppingVO vo = new ShoppingVO();
+				vo.setPd_amount(pd_amount);
+				vo.setPd_number(pd_number);
+				shoppingService.updateProductAmount(vo);
+				ShoppingCartVO scv = new ShoppingCartVO();
+				scv.setId(userVO.getId());
+				scv.setPd_number(pd_number);
+				Integer sc_amount = shoppingService.selectShoppingCartAmount(scv);
+				
+				 
+				if(null == sc_amount) {
+					scv.setSc_amount(amount);
+					shoppingService.insertShoppingCart(scv);
+				}else {
+					scv.setSc_amount(sc_amount+amount);
+					shoppingService.updateShoppingCart(scv);
+				}
+			}
+		}		
+		return result;
+	}
 }
