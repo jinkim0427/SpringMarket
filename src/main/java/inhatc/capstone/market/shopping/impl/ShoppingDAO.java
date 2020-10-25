@@ -86,4 +86,14 @@ public class ShoppingDAO extends AbstractDAO{
 		insert("shoppingDAO.insertOrderProduct",map);
 	}
 
+	public void insertOrderDelivery(Map<String, Object> addressMap) {
+		// TODO Auto-generated method stub
+		insert("shoppingDAO.insertOrderDelivery",addressMap);
+	}
+
+	public OrderVO selectNewOrderInfo(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return (OrderVO) selectOne("shoppingDAO.selectNewOrderInfo",userVO);
+	}
+
 }

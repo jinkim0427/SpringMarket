@@ -30,7 +30,7 @@
 
 			
 			<div>
-				<h3 class="font-white text-center">${mk_info.mk_name}</h3>
+				<h3 class="font-white text-center">${mk_name}</h3>
 			</div>
 			<div class="d-flex justify-content-center h-100 pb-3">
     			<div class="search"> 
@@ -48,24 +48,30 @@
 					    <div class="table-responsive table-borderless">
 					        <table class="table text-left">
 					            <tbody class="table-body">
-					                <tr class="cell-1">           
-					                    <td>결제 금액 : </td>
-		    							<td>150000원</td>
+					            	<tr class="cell-1">
+		                            	<td>마트 이름 : </td>
+		    							<td>${mk_name}</td>
 		                            </tr>
 		                            <tr class="cell-1">       
 		                                <td>결제 방식 : </td>
-		    							<td>현금</td>
+		    							<td>${od_payment}</td>
 		                            </tr> 
-		                            <tr class="cell-1">
-		                            	<td>마트 이름 : </td>
-		    							<td>행복 마트</td>
+		                            <tr class="cell-1">       
+		                                <td>수령 방식 : </td>
+		    							<td>${od_pickUp}</td>
+		                            </tr> 
+					                <tr class="cell-1">           
+					                    <td>결제 금액 : </td>
+		    							<td>${od_totalPay}원</td>
 		                            </tr>
+		                            
+		                            
 		                            
 		                        </tbody>
 		                    </table>
 		                </div>
 				    </div>
-				    <p><a class="btn btn-warning" href="#" role="button">확인</a></p>
+				    <p><a class="btn btn-warning" href="#" role="button" onclick="fn_pageMove(home)">확인</a></p>
 			</div>
 			
 		    

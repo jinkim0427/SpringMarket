@@ -543,6 +543,7 @@
 
 	function fn_orderProduct(){
 		//alert($('input[name=jb-radio]').val());
+		//유저가 모든 form을 채웟다는 전제 조건 1.주문 하시겠습니까? 2. 물품이 장바구니에 있는지 Check 는 나중에 개발할 것
 		var pickUp = document.querySelector('input[name="pickUp-radio"]:checked').value;
 		var payment = document.querySelector('input[name="payment-radio"]:checked').value;
 		var address = document.getElementById("address").value;

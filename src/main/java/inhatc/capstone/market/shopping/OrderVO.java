@@ -7,6 +7,9 @@ public class OrderVO {
 	private String od_time;
 	private String od_pickup;
 	private String od_status;
+	private String od_payment;
+	private int od_totalpay;
+	
 	public int getOd_number() {
 		return od_number;
 	}
@@ -42,5 +45,17 @@ public class OrderVO {
 	}
 	public void setOd_status(String od_status) {
 		this.od_status = od_status;
+	}
+	public String getOd_payment() {
+		return od_payment;
+	}
+	public void setOd_payment(String od_payment) {
+		this.od_payment = od_payment;
+	}
+	public int getOd_totalpay() {
+		return od_totalpay;
+	}
+	public void setOd_totalpay(int od_totalpay) {
+		this.od_totalpay = od_totalpay;
 	}
 }

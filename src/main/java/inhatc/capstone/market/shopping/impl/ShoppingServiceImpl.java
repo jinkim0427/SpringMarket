@@ -90,5 +90,15 @@ public class ShoppingServiceImpl implements ShoppingService{
 		// TODO Auto-generated method stub
 		shoppingDAO.insertOrderProduct(map);
 	}
+	@Override
+	public void insertOrderDelivery(Map<String, Object> addressMap) {
+		// TODO Auto-generated method stub
+		shoppingDAO.insertOrderDelivery(addressMap);
+	}
+	@Override
+	public OrderVO selectNewOrderInfo(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectNewOrderInfo(userVO);
+	}
 
 }

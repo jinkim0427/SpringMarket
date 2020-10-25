@@ -18,6 +18,13 @@
 		<result property="pd_img" column="pd_img"/>
 	</resultMap>
 	
+	<resultMap id="orders" type="inhatc.capstone.market.shopping.OrderVO">
+		<result property="mk_number" column="mk_number"/>
+		<result property="od_pickup" column="od_pickup"/>
+		<result property="od_payment" column="od_payment"/>
+		<result property="od_totalpay" column="od_totalpay"/>
+	</resultMap>
+	
 	<select id="selectUserDefaultShop" resultMap="findMarket">
 		SELECT
 			MK_NUMBER, MK_NAME
@@ -113,9 +120,9 @@
 	
 	<insert id="insertOrders">
 		INSERT
-			INTO ORDERS (ID, MK_NUMBER, OD_PICKUP, OD_STATUS)
+			INTO ORDERS (ID, MK_NUMBER, OD_PICKUP, OD_STATUS, OD_PAYMENT, OD_TOTALPAY)
 		VALUES
-			(#{id},#{mk_number},#{od_pickup},'준비중')
+			(#{id},#{mk_number},#{od_pickup},'준비중', #{od_payment}, #{od_totalpay})
 	</insert>
 	
 	<select id="selectShoppingCartCount" resultType="int">
@@ -135,6 +142,24 @@
 			INTO ORDER_PRODUCT (OD_NUMBER, PD_NUMBER, OP_AMOUNT)
 		VALUES
 			(#{od_number}, #{pd_number}, #{op_amount})
-		
 	</insert>
+	
+	<insert id="insertOrderDelivery">
+		<selectKey resultType="int" keyProperty="od_number" order="BEFORE">
+			SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID = #{id}
+		</selectKey>
+		INSERT
+			INTO ORDER_DELIVERY (OD_NUMBER, OD_ADDRESS)
+		VALUES
+			(#{od_number}, #{od_address})
+	</insert>
+	
+	<select id="selectNewOrderInfo" resultMap="orders">
+		SELECT
+			MK_NUMBER, OD_PICKUP, OD_PAYMENT, OD_TOTALPAY 
+		FROM
+			ORDERS
+		WHERE
+			OD_NUMBER = (SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID=#{id})
+	</select>
 </mapper>

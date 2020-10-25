@@ -43,14 +43,11 @@ public class ShoppingController {
 		FindMarketVO fmv =shoppingService.selectUserDefaultShop(userVO);
 		
 		
-		ModelAndView mv = new ModelAndView("/shopping/order-completed");
+		//ModelAndView mv = new ModelAndView("/shopping/order-completed");
+		ModelAndView mv = new ModelAndView("/shopping/shopping");
 		mv.addObject("mk_info", fmv);
-		//잠시 잠금
-		/*
-		 * ModelAndView mv = new ModelAndView("/shopping/shopping");
+
 		 
-		 */
-		//return "/shopping/shopping-detail";
 		return mv;
 	}
 
@@ -273,29 +270,58 @@ public class ShoppingController {
 		int cnt = shoppingService.selectShoppingCartCount(userVO);
 		shoppingService.deleteAllShoppingCartProduct(userVO);
 		
+		//총 결제 금액 db에서 다시 계산해서 값 만들기
+		int price;
+		int amount;
+		int od_totalpay = 0;
+		for (Map<String, Object> map : userShoppingCartList) {
+			price = (int)map.get("pd_price");
+			amount = (int)map.get("sc_amount");
+			od_totalpay = od_totalpay + price * amount;
+		}
+		
 		//orders테이블 생성
 		int mk_number = findMarketService.selectUserChoiceMarket(userVO);
 		OrderVO odVO = new OrderVO();
 		odVO.setId(userVO.getId());
 		odVO.setMk_number(mk_number);
 		odVO.setOd_pickup(pickUp);
-		
+		odVO.setOd_payment(payment);
+		odVO.setOd_totalpay(od_totalpay);
 		shoppingService.insertOrders(odVO);
-		//orders-product 만들기
+
+		//orders-delivery 
+		if(pickUp.equals("배달")) {
+			Map<String,Object> addressMap = new HashMap<String,Object>();
+			addressMap.put("od_address", od_address);
+			addressMap.put("id", userVO.getId());
+			shoppingService.insertOrderDelivery(addressMap);
 		
-		
+		}
+			
+		//orders-product 
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (int i = 0; i < cnt ; i++) {
 			map.clear();
-			//System.out.println(userShoppingCartList.get(i).get("pd_number"));
 			map.put("pd_number", userShoppingCartList.get(i).get("pd_number"));
-			//System.out.println(userShoppingCartList.get(i).get("sc_amount"));
 			map.put("op_amount", userShoppingCartList.get(i).get("sc_amount"));
 			map.put("id", userVO.getId());
 			shoppingService.insertOrderProduct(map);
 		}
-		ModelAndView mv = new ModelAndView("/user/individual-myPage");
+		
+		//정보 만들것
+		OrderVO orderVO = shoppingService.selectNewOrderInfo(userVO);
+		SearchVO vo = new SearchVO();
+		vo.setSearchKey(orderVO.getMk_number());
+		String mk_name = findMarketService.selectUserChoiceMarketName(vo);
+		ModelAndView mv = new ModelAndView("/shopping/order-completed");
+		//mv.addObject("mk_number",orderVO.getMk_number());
+		mv.addObject("od_pickUp",orderVO.getOd_pickup());
+		mv.addObject("od_payment",orderVO.getOd_payment());
+		mv.addObject("od_totalPay",orderVO.getOd_totalpay());
+		mv.addObject("mk_name",mk_name);
 		return mv;
+		//여기서 다시 새로고침하면 결제가 반복되는 문제 발생 [나중에 처리할 것]
 	}
 	
 }
