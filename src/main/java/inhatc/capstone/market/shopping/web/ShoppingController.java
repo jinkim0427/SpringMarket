@@ -42,8 +42,14 @@ public class ShoppingController {
 		
 		FindMarketVO fmv =shoppingService.selectUserDefaultShop(userVO);
 		
-		ModelAndView mv = new ModelAndView("/shopping/shopping");
+		
+		ModelAndView mv = new ModelAndView("/shopping/order-completed");
 		mv.addObject("mk_info", fmv);
+		//잠시 잠금
+		/*
+		 * ModelAndView mv = new ModelAndView("/shopping/shopping");
+		 
+		 */
 		//return "/shopping/shopping-detail";
 		return mv;
 	}
@@ -277,7 +283,7 @@ public class ShoppingController {
 		shoppingService.insertOrders(odVO);
 		//orders-product 만들기
 		
-		System.out.println("cnt"+cnt);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (int i = 0; i < cnt ; i++) {
 			map.clear();
