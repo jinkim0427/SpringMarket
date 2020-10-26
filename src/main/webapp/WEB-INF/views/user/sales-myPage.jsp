@@ -46,16 +46,19 @@
 
 			<ul class="nav nav-pills flex-column" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link active" data-toggle="tab" href="#menu1">판매 주문 내역</a>
+					<a class="nav-link active" data-toggle="tab" href="#menu1">고객 주문 현황</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#menu2">물품 판매 등록</a>
+					<a class="nav-link" data-toggle="tab" href="#menu2">상품 등록</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#menu3">물품 재고 관리</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#menu4">나의 설정</a>
+					<a class="nav-link" data-toggle="tab" href="#menu4">마트 정보</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#menu5">내 정보</a>
 				</li>
 			</ul>
 		</div>
@@ -168,7 +171,7 @@
 
 
 			<div id="menu2" class="tab-pane"><br>
-				<h3>물품 판매 등록</h3>
+				<h3>상품 등록</h3>
 				<p>판매하실 물품들을 등록하세요.</p>
 				<!--justify-content-center 테이블 센터 속성 -->
 				<div class="d-flex row">
@@ -242,9 +245,64 @@
 				<h3>물품 재고 관리</h3>
 				<p>개발중 입니다.</p>
 			</div>
+			
 			<div id="menu4" class="tab-pane"><br>
-				<h3>나의 설정</h3>
+				<h3>마트 정보</h3>
 				<p>개발중 입니다.</p>
+			</div>
+			
+			<div id="menu5" class="tab-pane"><br>
+				<h3>내 정보</h3><br>
+				<p>기본정보</p>
+				<form id="frm" name="frm" method="POST">
+					<!--justify-content-center 테이블 센터 속성 -->
+					<div class="d-flex row">
+					<div class="col-md-12">
+					<div class="rounded">
+					    <div class="table-responsive table-borderless">
+					        <table class="table text-left">
+					            <tbody class="table-body">
+					                <tr class="cell-1">           
+					                    <td>ID</td>
+					                    <td>:</td>
+		    							<td>${loginInfo.id }</td>
+		                            </tr>
+		                            <tr class="cell-1">       
+		                                <td>새 비밀번호</td>
+		                                <td>:</td>
+		    							<td><input type="password" class="form-control" id="signPwd" name="signPwd" placeholder="···"></td>
+		                            </tr> 
+		                            <tr class="cell-1">
+		                            	<td>새 비밀번호 확인</td>
+		                            	<td>:</td>
+		    							<td><input type="password" class="form-control"  id="signPwdCheck" placeholder="···"></td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>이름</td>
+		                            	<td>:</td>
+		    							<td>${loginInfo.name }</td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>전화번호</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="signPhone" name="signPhone" value="${loginInfo.tel }"></td>
+		                            </tr> 
+		                            <tr class="cell-1">
+		                            	<td>이메일</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="signEmail" name="signEmail" value="${loginInfo.email }"></td>
+		                            </tr> 
+		                        </tbody>
+		                    </table>
+		                </div>
+				    </div>
+					</div>
+				    
+				    <div class="col-md-12 text-center">
+				    	<button type="button" class="btn btn-success pd-3">수정하기</button>
+				    </div> 
+		    		</div><!-- <div class="d-flex row"> -->
+		    </form>
 			</div>
 		</div>
 		</div>
