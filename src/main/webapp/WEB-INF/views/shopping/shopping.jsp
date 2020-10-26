@@ -24,7 +24,6 @@
 <body>
 	<form id="shoppingForm" name="shoppingForm" method="post">
 		<input type="hidden" name="selectedCategory">
-		<form:input path="name"/>
 	</form>
 		
 	<div class="bg-dark">	
