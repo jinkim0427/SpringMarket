@@ -286,15 +286,16 @@ public class ShoppingController {
 		odVO.setId(userVO.getId());
 		odVO.setMk_number(mk_number);
 		odVO.setOd_pickup(pickUp);
-		odVO.setOd_payment(payment);
+		//odVO.setOd_payment(payment);
 		odVO.setOd_totalpay(od_totalpay);
 		shoppingService.insertOrders(odVO);
 
 		//orders-delivery 
 		if(pickUp.equals("배달")) {
 			Map<String,Object> addressMap = new HashMap<String,Object>();
-			addressMap.put("od_address", od_address);
 			addressMap.put("id", userVO.getId());
+			addressMap.put("od_address", od_address);
+			addressMap.put("od_payment", payment);
 			shoppingService.insertOrderDelivery(addressMap);
 		
 		}
@@ -317,7 +318,7 @@ public class ShoppingController {
 		ModelAndView mv = new ModelAndView("/shopping/order-completed");
 		//mv.addObject("mk_number",orderVO.getMk_number());
 		mv.addObject("od_pickUp",orderVO.getOd_pickup());
-		mv.addObject("od_payment",orderVO.getOd_payment());
+		//mv.addObject("od_payment",orderVO.getOd_payment());
 		mv.addObject("od_totalPay",orderVO.getOd_totalpay());
 		mv.addObject("mk_name",mk_name);
 		return mv;

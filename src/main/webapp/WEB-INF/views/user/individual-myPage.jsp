@@ -23,15 +23,18 @@
 	input::-webkit-inner-spin-button {
 	  	-webkit-appearance: none;
 	  	margin: 0;
+	  	pointer-events: none;
 	}
 
 	/* Firefox */
 	input[type=number] {
 	  	-moz-appearance: textfield;
+	  	pointer-events: none;
 	}
 	input[type=number]{
 		text-align:center;
 		width:25px;
+		pointer-events: none;
 	}
 </style>
 <body>
@@ -414,7 +417,7 @@
 							"<td id='price" + data[i].pd_number + "'>" + data[i].pd_price + "</td>" +
 							"<td>" +
 							"<a href='#' onclick='minusProductAmount(" + data[i].pd_number + ")'><i class='fa fa-minus'></i></a>" +
-							"<input id='product" + data[i].pd_number + "' type='number' min='0' max='100' value=" + data[i].sc_amount + ">" +
+							"<input id='product" + data[i].pd_number + "' oncontextmenu='return false' ondragstart='return false' onselectstart='return false' type='number' min='0' max='100' value=" + data[i].sc_amount + ">" +
 							"<a href='#' onclick='plusProductAmount(" + data[i].pd_number + ")'><i class='fa fa-plus'></i></a>" +
 							"</td>" +
 							"<td id='subPrice" + data[i].pd_number + "'>" + sumPrice + "원</td>" +
@@ -553,6 +556,10 @@
 		document.orderForm.action = "<c:url value='/orderProduct.do'/>";
 		document.orderForm.submit();
 	}
+
+	$('.products').focus(function(e){
+		e.preventDefault();
+	});
 </script>
 </body>
 </html>
