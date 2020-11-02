@@ -11,6 +11,17 @@
 		<result property="tel" column="tel"/>
 		<result property="acc" column="acc"/>
 	</resultMap>
+	
+	<resultMap id="customerVO" type="inhatc.capstone.market.user.CustomerVO">
+		<result property="id" column="id"/>
+		<result property="mk_number" column="mk_number"/>
+		<result property="address" column="address"/>
+	</resultMap>
+	
+	<resultMap id="sellerVO" type="inhatc.capstone.market.user.SellerVO">
+		<result property="seller_number" column="seller_number"/>
+		<result property="id" column="id"/>
+	</resultMap>
 
 	<select id="selectUserID" resultType="int">
 		SELECT
@@ -32,20 +43,10 @@
 	
 	<insert id="insertUserData" >
 		INSERT INTO USER_INFO (
-	   		ID,
-	   		PASSWORD, 
-	   	 	NAME, 
-	   	 	EMAIL,
-	    	TEL,
-	    	ACC
+	   		ID, PASSWORD, NAME, EMAIL, TEL, ACC
 	    ) 
 	    VALUES (
-	   		#{id}, 
-	    	#{password},
-	    	#{name}, 
-	    	#{email},
-	    	#{tel},
-	    	#{acc}
+	   		#{id}, #{password}, #{name}, #{email}, #{tel}, #{acc}
 	    )
 	</insert>
 	
@@ -57,6 +58,43 @@
 	   		#{id}
 	    )
 	</insert>
+	
+	<select id="selectCustomerInfo" resultMap="customerVO">
+		SELECT
+			*
+		FROM
+			CUSTOMER
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<insert id="insertCustomerAddress" >
+		INSERT INTO CUSTOMER (
+			ID, ADDRESS
+	    ) 
+	    VALUES (
+	    	#{id}, #{address}
+	    )
+	</insert>
+	
+	<update id="updateCustomerAddress" >
+		UPDATE 
+			CUSTOMER
+		SET 
+			ADDRESS = #{address}
+		WHERE
+			ID = #{id} 
+			
+	</update>
+	
+	<select id="selectSellerInfo" resultMap="sellerVO">
+		SELECT
+			*
+		FROM
+			SELLER
+		WHERE
+			ID = #{id}
+	</select>
 	
 </mapper>
 				

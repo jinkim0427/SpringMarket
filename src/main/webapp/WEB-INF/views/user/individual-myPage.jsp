@@ -131,9 +131,7 @@
 				                <tr class="cell-1">           
 				                    <td>
 	                                	<div class="custom-control custom-radio">
-	    									
-	    									
-	    									
+   									
 	    									<input type="radio" name="pickUp-radio" id="jb-radio-1" value="배달" class="custom-control-input" checked>
 	    									
 	    									<label class="custom-control-label" for="jb-radio-1">집으로 배달</label>
@@ -369,16 +367,15 @@
 			                            <tr class="cell-1">       
 			                                <td>주소</td>
 			                                <td>:</td>
-			    							<td><input type="text" class="form-control" id="addr" placeholder="예: 인천관역시 미추홀구 인하로 100" maxlength="14"></td>
+			                                <td><input type="text" class="form-control" id="myAddr" name="myAddr" placeholder="예: 인천광역시 미추홀구 인하로 100" value="${customerInfo.address }" maxlength="14"></td>   							
 			                            </tr> 
-			                                 
 			                        </tbody>
 			                    </table>
 			                </div>
 					    </div>
 				    </div>
 				    <div class="col-md-12 text-center">
-				    	<button type="button" class="btn btn-success pd-3">수정하기</button>
+				    	<button type="button" class="btn btn-success pd-3" id="myInfoUpdate">수정하기</button>
 				    </div> 
 		    		</div><!-- <div class="d-flex row"> -->
 		    </form>
@@ -431,6 +428,14 @@
 			error : function(error){
 				alert("오류");
 			}
+		});
+		
+		$("#myInfoUpdate").unbind("click").click(function(e){
+			e.preventDefault();
+			if($("#myAddr").val().length > 0) {
+				fn_updateMyInfo($("#myAddr").val());
+			}
+			
 		});
 	};
 	
@@ -553,6 +558,22 @@
 		document.orderForm.action = "<c:url value='/orderProduct.do'/>";
 		document.orderForm.submit();
 	}
+	
+	function fn_updateMyInfo(address){
+		$.ajax({
+			data : {
+				address : address
+			},
+			url : "${pageContext.request.contextPath}/updateMyInfo.do",		
+			success : function(data) {
+				alert("수정하였습니다.");
+			},
+			error : function(error){
+				alert("오류");
+			}
+		});
+	}
+	
 </script>
 </body>
 </html>

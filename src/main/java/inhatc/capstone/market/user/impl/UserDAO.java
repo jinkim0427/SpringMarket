@@ -3,7 +3,10 @@ package inhatc.capstone.market.user.impl;
 import org.springframework.stereotype.Repository;
 
 import inhatc.capstone.market.common.impl.AbstractDAO;
+import inhatc.capstone.market.findMarket.FindMarketVO;
 import inhatc.capstone.market.user.UserVO;
+import inhatc.capstone.market.user.CustomerVO;
+import inhatc.capstone.market.user.SellerVO;
 
 @Repository("userDAO")
 public class UserDAO extends AbstractDAO{
@@ -26,4 +29,31 @@ public class UserDAO extends AbstractDAO{
 		insert("user.insertSallerData", vo);
 	}
 	
+	public CustomerVO selectCustomerInfo(UserVO vo) {
+		return (CustomerVO) selectOne("user.selectCustomerInfo", vo);
+	}
+	
+	public void insertCustomerAddress(CustomerVO vo) {
+		insert("user.insertCustomerAddress", vo);
+	}
+	
+	public void updateCustomerAddress(CustomerVO vo) {
+		insert("user.updateCustomerAddress", vo);
+	}
+	
+	public SellerVO selectSellerInfo(UserVO vo) {
+		return (SellerVO) selectOne("user.selectSellerInfo", vo);
+	}
+	
+	public FindMarketVO selectMarketInfo(UserVO vo) {
+		return (FindMarketVO) selectOne("findMarketDAO.selectSellerMarketInfo", vo);
+	}
+	
+	public void insertMarketInfo(FindMarketVO vo) {
+		insert("findMarketDAO.insertMarketInfo", vo);
+	}
+	
+	public void updateMarketInfo(FindMarketVO vo) {
+		insert("findMarketDAO.updateMarketInfo", vo);
+	}
 }

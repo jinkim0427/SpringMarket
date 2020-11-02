@@ -4,6 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.user.CustomerVO;
+import inhatc.capstone.market.user.SellerVO;
 import inhatc.capstone.market.user.UserService;
 import inhatc.capstone.market.user.UserVO;
 
@@ -34,6 +37,41 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void insertSallerData(UserVO vo) throws Exception {
 		userDAO.insertSallerData(vo);
+	}
+
+	@Override
+	public CustomerVO selectCustomerInfo(UserVO vo) throws Exception {
+		return userDAO.selectCustomerInfo(vo);
+	}
+
+	@Override
+	public void insertCustomerAddress(CustomerVO vo) throws Exception {
+		userDAO.insertCustomerAddress(vo);
+	}
+
+	@Override
+	public void updateCustomerAddress(CustomerVO vo) throws Exception {
+		userDAO.updateCustomerAddress(vo);
+	}
+
+	@Override
+	public SellerVO selectSellerInfo(UserVO vo) throws Exception {
+		return userDAO.selectSellerInfo(vo);
+	}
+
+	@Override
+	public FindMarketVO selectMarketInfo(UserVO vo) throws Exception {
+		return userDAO.selectMarketInfo(vo);
+	}
+
+	@Override
+	public void insertMarketInfo(FindMarketVO vo) throws Exception {
+		userDAO.insertMarketInfo(vo);
+	}
+
+	@Override
+	public void updateMarketInfo(FindMarketVO vo) throws Exception {
+		userDAO.updateMarketInfo(vo);
 	}
 
 	
