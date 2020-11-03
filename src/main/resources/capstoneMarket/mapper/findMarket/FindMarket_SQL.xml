@@ -88,7 +88,7 @@
 			SELLER_NUMBER, MK_NAME, MK_ADDRESS, MK_TEL, MK_STATE, MK_DELIVERY, MK_INTRO
 		)
 		VALUES
-			(#{seller_number}, #{mk_name}, #{mk_address}, #{mk_tel}, #{mk_state}, #{mk_delivery}, #{mk_intro});
+			(#{seller_number}, #{mk_name}, #{mk_address}, #{mk_tel}, #{mk_state}, #{mk_delivery}, #{mk_intro})
 	</insert>
 	
 	<update id="updateMarketInfo">
