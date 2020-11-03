@@ -188,8 +188,8 @@ public class UserController {
 	public void updateMarketInfo(HttpServletRequest request) throws Exception {
 		
 		FindMarketVO market = new FindMarketVO();
-		System.out.println(request.getParameter("mk_number"));
-		//market.setMk_number(Integer.parseInt(request.getParameter("mk_number")));
+		//System.out.println(request.getParameter("mk_number"));
+		market.setMk_number(Integer.parseInt(request.getParameter("mk_number")));
 		market.setSeller_number(Integer.parseInt(request.getParameter("seller_number")));
 		market.setMk_name(request.getParameter("mk_name"));
 		market.setMk_address(request.getParameter("mk_address"));
@@ -198,7 +198,7 @@ public class UserController {
 		market.setMk_delivery(Boolean.valueOf(request.getParameter("mk_delivery")));
 		market.setMk_intro(request.getParameter("mk_intro"));
 		
-		//if(market.getMk_number() > 0) userService.updateMarketInfo(market);
+		if(market.getMk_number() > 0) userService.updateMarketInfo(market);
 		//else userService.insertMarketInfo(market);
 		
 	}
