@@ -53,10 +53,6 @@
 		    							<td>${mk_name}</td>
 		                            </tr>
 		                            <tr class="cell-1">       
-		                                <td>결제 방식 : </td>
-		    							<td>${od_payment}</td>
-		                            </tr> 
-		                            <tr class="cell-1">       
 		                                <td>수령 방식 : </td>
 		    							<td>${od_pickUp}</td>
 		                            </tr> 
@@ -71,13 +67,17 @@
 		                    </table>
 		                </div>
 				    </div>
-				    <p><a class="btn btn-warning" href="#" role="button" onclick="fn_pageMove(home)">확인</a></p>
+				    <p><a class="btn btn-warning" id="goHome" href="#" role="button">확인</a></p>
 			</div>
 			
 		    
 		</div>
-	
-      
+	<script>
+	$("#goHome").unbind("click").click(function(e){
+		e.preventDefault();
+		fn_pageMove("home");
+	});
+	</script>
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
