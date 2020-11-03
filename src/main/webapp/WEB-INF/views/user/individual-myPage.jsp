@@ -561,7 +561,6 @@
 		document.orderForm.action = "<c:url value='/orderProduct.do'/>";
 		document.orderForm.submit();
 	}
-<<<<<<< HEAD
 	
 	function fn_updateMyInfo(address){
 		$.ajax({
@@ -577,13 +576,10 @@
 			}
 		});
 	}
-	
-=======
 
 	$('.products').focus(function(e){
 		e.preventDefault();
 	});
->>>>>>> branch 'master' of https://github.com/jinkim0427/SpringMarket.git
 </script>
 </body>
 </html>
