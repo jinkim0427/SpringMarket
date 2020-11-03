@@ -5,12 +5,11 @@
 
 	<resultMap id="findMarket" type="inhatc.capstone.market.findMarket.FindMarketVO">
 		<result property="mk_number" column="mk_number"/>
+		<result property="seller_number" column="seller_number"/>
 		<result property="mk_name" column="mk_name"/>
 		<result property="mk_address" column="mk_address"/>
 		<result property="mk_tel" column="mk_tel"/>
-		<result property="mk_open_time" column="mk_open_time"/>
-		<result property="mk_close_time" column="mk_close_time"/>
-		<result property="mk_closed" column="mk_closed"/>
+		<result property="mk_state" column="mk_state"/>
 		<result property="mk_delivery" column="mk_delivery"/>
 		<result property="mk_intro" column="mk_intro"/>
 	</resultMap>
@@ -68,5 +67,37 @@
 		WHERE
 			MK_NUMBER = #{searchKey}
 	</select>
+	
+	<select id="selectSellerMarketInfo" resultMap="findMarket">
+		SELECT
+			*
+		FROM
+			MARKET
+		WHERE
+			SELLER_NUMBER = (
+			SELECT 
+				SELLER_NUMBER
+			FROM 
+				SELLER
+			WHERE 
+				ID = #{id} )
+	</select>
+	
+	<insert id="insertMarketInfo">
+		INSERT INTO MARKET (
+			SELLER_NUMBER, MK_NAME, MK_ADDRESS, MK_TEL, MK_STATE, MK_DELIVERY, MK_INTRO
+		)
+		VALUES
+			(#{seller_number}, #{mk_name}, #{mk_address}, #{mk_tel}, #{mk_state}, #{mk_delivery}, #{mk_intro})
+	</insert>
+	
+	<update id="updateMarketInfo">
+		UPDATE
+			MARKET
+		SET
+			MK_NAME = #{mk_name}, MK_ADDRESS = #{mk_address}, MK_TEL = #{mk_tel}, MK_STATE = #{mk_state}, MK_DELIVERY = #{mk_delivery}, MK_INTRO = #{mk_intro}
+		WHERE
+			MK_NUMBER = #{mk_number}
+	</update>
 	
 </mapper>

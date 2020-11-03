@@ -61,7 +61,7 @@ public class ShoppingController {
 		map.put("mk_number", fmv.getMk_number());
 		map.put("pd_category", category);
 
-		List<ShoppingVO> productList = new ArrayList<>();
+		List<ShoppingVO> productList = new ArrayList<ShoppingVO>();
 		try {
 			productList = shoppingService.selectShopProductList(map);
 		} catch (Exception e) {
@@ -154,7 +154,7 @@ public class ShoppingController {
 		UserVO userVO = (UserVO)request.getSession().getAttribute("loginInfo");
 		//Map<String, Object> map = new HashMap<String,Object>();
 		
-		List<Map<String,Object>> shoppingCartList = new ArrayList<>();
+		List<Map<String,Object>> shoppingCartList = new ArrayList<Map<String, Object>>();
 		shoppingCartList = shoppingService.selectShoppingCartList(userVO);
 		//System.out.println(shoppingCartList.get(0).get("pd_number"));
 		return shoppingCartList;
@@ -275,8 +275,8 @@ public class ShoppingController {
 		int amount;
 		int od_totalpay = 0;
 		for (Map<String, Object> map : userShoppingCartList) {
-			price = (int)map.get("pd_price");
-			amount = (int)map.get("sc_amount");
+			price = Integer.valueOf(String.valueOf(map.get("pd_price")));
+			amount = Integer.valueOf(String.valueOf(map.get("sc_amount")));
 			od_totalpay = od_totalpay + price * amount;
 		}
 		

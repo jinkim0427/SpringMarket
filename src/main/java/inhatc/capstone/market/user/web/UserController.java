@@ -1,10 +1,6 @@
 package inhatc.capstone.market.user.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.user.CustomerVO;
+import inhatc.capstone.market.user.SellerVO;
 import inhatc.capstone.market.user.UserService;
 import inhatc.capstone.market.user.UserVO;
 
@@ -143,15 +142,65 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/myPage.do", method = RequestMethod.GET)
-	public String myPage(HttpServletRequest request) throws Exception {
+	public ModelAndView myPage(HttpServletRequest request) throws Exception {
 		
 		UserVO user = (UserVO)request.getSession().getAttribute("loginInfo");
-		if (user.getAcc().equals("customer")) return  "/user/individual-myPage";
-		else if(user.getAcc().equals("sales")) return "/user/sales-myPage";
+		ModelAndView mv = new ModelAndView();
 		
-		return "/home/main";
-		
+		if (user.getAcc().equals("customer")) {
+			mv.setViewName("user/individual-myPage");
+			CustomerVO customer = new CustomerVO();
+			customer = userService.selectCustomerInfo(user);
+			if(customer != null) {
+				mv.addObject("customerInfo", customer);
+			}
+		}
+		else if(user.getAcc().equals("sales")) {
+			mv.setViewName("user/sales-myPage");
+			SellerVO seller = new SellerVO();
+			FindMarketVO market = new FindMarketVO();
+			seller = userService.selectSellerInfo(user);
+			market = userService.selectMarketInfo(user);
+			mv.addObject("sellerInfo", seller);
+			if(market != null) {
+				mv.addObject("marketInfo", market);
+			}	
+		}	
+		return mv;
 	}
 	
+	@RequestMapping(value = "/updateMyInfo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void updateMyInfo(HttpServletRequest request) throws Exception {
+		
+		UserVO user = (UserVO)request.getSession().getAttribute("loginInfo");
+		CustomerVO customer = new CustomerVO();
+		CustomerVO result = new CustomerVO();
+		customer.setId(user.getId());
+		customer.setAddress(request.getParameter("address"));
+		result = userService.selectCustomerInfo(user);
+		if(result == null) userService.insertCustomerAddress(customer);
+		else userService.updateCustomerAddress(customer);			
+	}
+	
+	@RequestMapping(value = "/updateMarketInfo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void updateMarketInfo(HttpServletRequest request) throws Exception {
+		
+		FindMarketVO market = new FindMarketVO();
+		//System.out.println(request.getParameter("mk_number"));
+		market.setMk_number(Integer.parseInt(request.getParameter("mk_number")));
+		market.setSeller_number(Integer.parseInt(request.getParameter("seller_number")));
+		market.setMk_name(request.getParameter("mk_name"));
+		market.setMk_address(request.getParameter("mk_address"));
+		market.setMk_tel(request.getParameter("mk_tel"));
+		market.setMk_state(Boolean.valueOf(request.getParameter("mk_state")));
+		market.setMk_delivery(Boolean.valueOf(request.getParameter("mk_delivery")));
+		market.setMk_intro(request.getParameter("mk_intro"));
+		
+		if(market.getMk_number() > 0) userService.updateMarketInfo(market);
+		//else userService.insertMarketInfo(market);
+		
+	}
 	
 }

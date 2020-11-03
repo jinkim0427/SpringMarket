@@ -74,7 +74,7 @@
 		                    <table class="table text-center">
 		                        <thead>
 		                            <tr>
-		                                
+		                               
 		                                <th>날짜</th>
 		                                <th>구매자</th>
 		                                <th>전화번호</th>
@@ -169,7 +169,6 @@
 
 			</div><!--menu1 끝 -->
 
-
 			<div id="menu2" class="tab-pane"><br>
 				<h3>상품 등록</h3>
 				<p>판매하실 물품들을 등록하세요.</p>
@@ -248,11 +247,76 @@
 			
 			<div id="menu4" class="tab-pane"><br>
 				<h3>마트 정보</h3>
-				<p>개발중 입니다.</p>
+				<p>마트 기본 정보입니다.</p>
+				<form id="frmMarket" name="frmMarket" method="POST">
+					<!--justify-content-center 테이블 센터 속성 -->
+					<div class="d-flex row">
+					<div class="col-md-12">
+					<div class="rounded">
+					    <div class="table-responsive table-borderless">
+					        <table class="table text-left">
+					            <tbody class="table-body">
+					                <tr class="cell-1">           
+					                    <td>마트 이름</td>
+					                    <td>:</td>
+		    							<td><input type="text" class="form-control"  id="marketName" name="marketName" value="${marketInfo.mk_name }"></td>
+		                            </tr>
+		                            <tr class="cell-1">       
+		                                <td>마트 주소</td>
+		                                <td>:</td>
+		    							<td><input type="text" class="form-control"  id="marketAddress" name="marketAddress" value="${marketInfo.mk_address }"></td>
+		                            </tr> 
+		                            <tr class="cell-1">
+		                            	<td>마트 전화번호</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="marketTel" name="marketTel" value="${marketInfo.mk_tel }"></td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>마트 소개</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="marketIntro" name="marketIntro" value="${marketInfo.mk_intro }"></td>
+		                            </tr>
+		                            <tr class="cell-1">           
+					                    <td>
+		                                	<div class="custom-control custom-checkbox">
+		    									<input type="checkbox" name="marketState" id="marketState" class="custom-control-input" value="${marketInfo.mk_state }"> 
+		    									<label class="custom-control-label" for="marketState">영업 시작 </label>
+		    								</div>
+		    							</td>
+		    							<td></td>
+		    							<td>
+		                                	<div class="custom-control custom-checkbox">
+		    									<input type="checkbox" name="marketDelivery" id="marketDelivery" class="custom-control-input" value="${marketInfo.mk_delivery }">
+		    									<label class="custom-control-label" for="marketDelivery">배달 가능</label>
+		    								</div>
+		    							</td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+				    </div>
+					</div>
+				    
+				    <div class="col-md-12 text-center">
+				    	<button type="button" class="btn btn-success pd-3" id="marketInfoButton">
+						    <c:if test="${empty marketInfo}">
+						    	등록하기
+					      	</c:if>
+					      	<c:if test="${not empty marketInfo}">
+						    	수정하기
+					      	</c:if>
+				      	</button>
+				    </div> 
+				    
+				    <input type="hidden" id="marketNumber" name="marketNumber" value="${marketInfo.mk_number}">
+				    <input type="hidden" id="sellerNumber" name="sellerNumber" value="${sellerInfo.seller_number}">
+		    		</div><!-- <div class="d-flex row"> -->
+		    </form>
+				
 			</div>
 			
 			<div id="menu5" class="tab-pane"><br>
-				<h3>내 정보</h3><br>
+				<h3>내 정보</h3>
 				<p>기본정보</p>
 				<form id="frm" name="frm" method="POST">
 					<!--justify-content-center 테이블 센터 속성 -->
@@ -307,6 +371,49 @@
 		</div>
 		</div>
 		</div>
+		
+		<script type="text/javascript">
+		$(function() {
+			$("input:checkbox[id='marketState']").prop("checked", ${marketInfo.mk_state});
+			$("input:checkbox[id='marketDelivery']").prop("checked", ${marketInfo.mk_delivery});
+			
+			$("#marketInfoButton").unbind("click").click(function(e){
+				e.preventDefault();
+				if(fn_checkMarketInfo()) fn_updateMarketInfo();
+			});
+		});
+	
+		function fn_checkMarketInfo() {
+			if($("#marketName").val().length < 1) alert("이름을 입력해주세요.");
+			else if($("#marketAddress").val().length < 1) alert("주소를 입력해주세요.");
+			else if($("#marketTel").val().length < 1) alert("전화번호를 입력해주세요.");
+			else if($("#marketIntro").val().length < 1) alert("소개를 입력해주세요.");
+			else return true;
+			return false;
+		}
+		
+		function fn_updateMarketInfo(){
+			$.ajax({
+				data : {
+					mk_number : $("#frmMarket #marketNumber").val(),
+					seller_number : $("#frmMarket #sellerNumber").val(),
+					mk_name : $("#frmMarket #marketName").val(),
+					mk_address : $("#frmMarket #marketAddress").val(),
+					mk_tel : $("#frmMarket #marketTel").val(),
+					mk_intro : $("#frmMarket #marketIntro").val(),
+					mk_state : $("#frmMarket #marketState").prop("checked"),
+					mk_delivery : $("#frmMarket #marketDelivery").prop("checked")
+				},
+				url : "${pageContext.request.contextPath}/updateMarketInfo.do",		
+				success : function(data) {
+					alert("완료하였습니다.");
+				},
+				error : function(error){
+					alert("오류");
+				}
+			});
+		}
+		</script>
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

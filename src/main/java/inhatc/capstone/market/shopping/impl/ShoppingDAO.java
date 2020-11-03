@@ -33,7 +33,7 @@ public class ShoppingDAO extends AbstractDAO{
 
 	public int selectProductAmount(SearchVO searchVO) {
 		// TODO Auto-generated method stub
-		return (int) selectOne("shoppingDAO.selectProductAmount", searchVO);
+		return Integer.valueOf(String.valueOf(selectOne("shoppingDAO.selectProductAmount", searchVO)));
 	}
 
 	public void updateProductAmount(ShoppingVO vo) {
@@ -78,7 +78,7 @@ public class ShoppingDAO extends AbstractDAO{
 
 	public int selectShoppingCartCount(UserVO userVO) {
 		// TODO Auto-generated method stub
-		return (int) selectOne("shoppingDAO.selectShoppingCartCount",userVO);
+		return Integer.valueOf(String.valueOf(selectOne("shoppingDAO.selectShoppingCartCount",userVO)));
 	}
 
 	public void insertOrderProduct(Map<String, Object> map) {
