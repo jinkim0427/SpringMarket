@@ -100,5 +100,9 @@ public class ShoppingServiceImpl implements ShoppingService{
 		// TODO Auto-generated method stub
 		return shoppingDAO.selectNewOrderInfo(userVO);
 	}
+	@Override
+	public void insertProduct(ShoppingVO vo) {
+		shoppingDAO.insertProduct(vo);
+	}
 
 }

@@ -325,4 +325,18 @@ public class ShoppingController {
 		//여기서 다시 새로고침하면 결제가 반복되는 문제 발생 [나중에 처리할 것]
 	}
 	
+	@RequestMapping(value = "/insertProductInfo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void insertProductInfo(HttpServletRequest request) throws Exception {
+		
+		ShoppingVO product = new ShoppingVO();
+		product.setMk_number(Integer.parseInt(request.getParameter("mk_number")));
+		product.setPd_category(Integer.parseInt(request.getParameter("pd_category")));
+		product.setPd_name(request.getParameter("pd_name"));
+		product.setPd_amount(Integer.parseInt(request.getParameter("pd_amount")));
+		product.setPd_price(Integer.parseInt(request.getParameter("pd_price")));
+		product.setPd_img(request.getParameter("pd_img"));
+		shoppingService.insertProduct(product);
+	}
+	
 }

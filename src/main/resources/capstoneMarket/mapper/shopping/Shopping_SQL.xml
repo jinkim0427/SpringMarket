@@ -161,4 +161,11 @@
 		WHERE
 			OD_NUMBER = (SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID=#{id})
 	</select>
+	
+	<insert id="insertProduct">
+		INSERT
+			INTO PRODUCT (MK_NUMBER, PD_CATEGORY, PD_NAME, PD_AMOUNT, PD_PRICE, PD_IMG)
+		VALUES
+			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
+	</insert>
 </mapper>
