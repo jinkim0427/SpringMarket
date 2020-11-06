@@ -95,5 +95,9 @@ public class ShoppingDAO extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return (OrderVO) selectOne("shoppingDAO.selectNewOrderInfo",userVO);
 	}
+	
+	public void insertProduct(ShoppingVO vo) {
+		insert("shoppingDAO.insertProduct", vo);
+	}
 
 }

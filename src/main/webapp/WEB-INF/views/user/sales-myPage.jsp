@@ -172,72 +172,66 @@
 			<div id="menu2" class="tab-pane"><br>
 				<h3>상품 등록</h3>
 				<p>판매하실 물품들을 등록하세요.</p>
-				<!--justify-content-center 테이블 센터 속성 -->
-				<div class="d-flex row">
-		        <div class="col-md-12">
-		            <div class="rounded">
-				    <div class="table-responsive table-borderless">
-				        <table class="table text-left">
-				            <tbody class="table-body">
-				                <tr class="cell-1">           
-				                    <td>카테고리</td>
-				                    <td>:</td>
-	    							<td>
-	    								<select class="custom-select" id="inputGroupSelect01">
-										    <option selected>Choose...</option>
-										    <option value="1">과자</option>
-										    <option value="2">냉동식품</option>
-										    <option value="3">라면</option>
-										    <option value="4">도시락</option>
-										    <option value="5">채소</option>
-										    <option value="6">과일</option>
-										    <option value="7">수산</option>
-										    <option value="8">축산</option>
-										    <option value="9">통조림</option>
-										    <option value="10">빵</option>
-										    <option value="11">생활용품</option>
-										    <option value="12">음료</option>
-										</select>
-	    							</td>
-	                            </tr>
-	                            <tr class="cell-1">       
-	                                <td>물품명</td>
-	                                <td>:</td>
-	    							<td><input type="text" class="form-control" id="addr" placeholder="예: (농심)새우깡	∴(회사)제품명" maxlength="14"></td>
-	                            </tr> 
-	                            <tr class="cell-1">
-	                            	<td>무게</td>
-	                            	<td>:</td>
-	    							<td><input type="text" class="form-control"  id="phone" placeholder="예: 90			∴(g 생략)"></td>
-	                            </tr>
-	                            <tr class="cell-1">
-	                            	<td>판매금액</td>
-	                            	<td>:</td>
-	    							<td><input type="text" class="form-control"  id="phone" placeholder="예: 1500			∴(콤마,원 생략)"></td>
-	                            </tr>
-	                            <tr class="cell-1">
-	                            	<td>상품설명</td>
-	                            	<td>:</td>
-	    							<td><input type="text" class="form-control"  id="phone" placeholder="예:	 인기상품	∴(생략가능)"></td>
-	                            </tr>
-	                        </tbody>
-	                    </table>
-	                </div>
-			    </div><!-- round 끝-->
-
-		     
-		        
-
-
-		    </div><!-- col 10-->
-
-		    
-		    <div class="col-md-12 text-center">
-		    	<button type="button" class="btn btn-success pd-3">등록하기</button>
-		    </div>
-		    
-		    </div><!-- <div class="d-flex row"> -->
-
+				<form id="frmProduct" name="frmProduct" method="POST">
+					<!--justify-content-center 테이블 센터 속성 -->
+					<div class="d-flex row">
+			        <div class="col-md-12">
+			            <div class="rounded">
+					    <div class="table-responsive table-borderless">
+					        <table class="table text-left">
+					            <tbody class="table-body">
+					                <tr class="cell-1">           
+					                    <td>카테고리</td>
+					                    <td>:</td>
+		    							<td>
+		    								<select class="custom-select" id="productCategory">
+											    <option selected>Choose...</option>
+											    <option value="1">과자</option>
+											    <option value="2">냉동식품</option>
+											    <option value="3">라면</option>
+											    <option value="4">도시락</option>
+											    <option value="5">채소</option>
+											    <option value="6">과일</option>
+											    <option value="7">수산</option>
+											    <option value="8">축산</option>
+											    <option value="9">통조림</option>
+											    <option value="10">빵</option>
+											    <option value="11">생활용품</option>
+											    <option value="12">음료</option>
+											</select>
+		    							</td>
+		                            </tr>
+		                            <tr class="cell-1">       
+		                                <td>물품명</td>
+		                                <td>:</td>
+		    							<td><input type="text" class="form-control" id="productName" placeholder="예: (농심)새우깡	∴(회사)제품명" maxlength="14"></td>
+		                            </tr> 
+		                            <tr class="cell-1">
+		                            	<td>개수</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="productAmount" placeholder="예: 90			∴(단위 생략)"></td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>판매금액</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="productPrice" placeholder="예: 1500			∴(콤마,원 생략)"></td>
+		                            </tr>
+		                            <tr class="cell-1">
+		                            	<td>상품이미지</td>
+		                            	<td>:</td>
+		    							<td><input type="text" class="form-control"  id="productImg"></td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </div>
+				    </div><!-- round 끝-->
+			    	</div><!-- col 10-->
+				    <div class="col-md-12 text-center">
+				    	<button type="button" class="btn btn-success pd-3" id="productInfoButton">등록하기</button>
+				    </div>
+				    <input type="hidden" id="marketNumber" name="marketNumber" value="${marketInfo.mk_number}">
+	    			</div><!-- <div class="d-flex row"> -->
+		    	</form>
 			</div><!-- menu2 끝-->
 
 			<div id="menu3" class="tab-pane"><br>
@@ -307,7 +301,6 @@
 					      	</c:if>
 				      	</button>
 				    </div> 
-				    
 				    <input type="hidden" id="marketNumber" name="marketNumber" value="${marketInfo.mk_number}">
 				    <input type="hidden" id="sellerNumber" name="sellerNumber" value="${sellerInfo.seller_number}">
 		    		</div><!-- <div class="d-flex row"> -->
@@ -381,9 +374,44 @@
 				e.preventDefault();
 				if(fn_checkMarketInfo()) fn_updateMarketInfo();
 			});
+			
+			$("#productInfoButton").unbind("click").click(function(e){
+				e.preventDefault();
+				if(fn_checkProductInfo()) fn_insertProductInfo();
+			});
 		});
+		
+		function fn_checkProductInfo(){
+			if($("#marketNumber").val() == "") alert("마트정보를 입력해주세요.");
+			else if($("#productCategory").val() == "Choose...") alert("카테고리를 선택해주세요.");
+			else if($("#productName").val().length < 1) alert("이름을 입력해주세요.");
+			else if($("#productAmount").val().length < 1) alert("개수를 입력해주세요.");
+			else if($("#productPrice").val().length < 1) alert("가격을 입력해주세요.");
+			else return true;
+			return false;
+		}
+		
+		function fn_insertProductInfo(){
+			$.ajax({
+				data : {
+					mk_number : $("#frmProduct #marketNumber").val(),
+					pd_category: $("#frmProduct #productCategory").val(),
+					pd_name : $("#frmProduct #productName").val(),
+					pd_amount : $("#frmProduct #productAmount").val(),
+					pd_price : $("#frmProduct #productPrice").val(),
+					pd_img : $("#frmProduct #productImg").val()
+				},
+				url : "${pageContext.request.contextPath}/insertProductInfo.do",		
+				success : function(data) {
+					alert("등록되었습니다.");
+				},
+				error : function(error){
+					alert("오류");
+				}
+			});
+		}
 	
-		function fn_checkMarketInfo() {
+		function fn_checkMarketInfo(){
 			if($("#marketName").val().length < 1) alert("이름을 입력해주세요.");
 			else if($("#marketAddress").val().length < 1) alert("주소를 입력해주세요.");
 			else if($("#marketTel").val().length < 1) alert("전화번호를 입력해주세요.");

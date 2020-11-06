@@ -51,5 +51,12 @@ public class ShoppingVO {
 	public void setPd_img(String pd_img) {
 		this.pd_img = pd_img;
 	}
+	@Override
+	public String toString() {
+		return "ShoppingVO [pd_number=" + pd_number + ", mk_number=" + mk_number + ", pd_category=" + pd_category
+				+ ", pd_name=" + pd_name + ", pd_amount=" + pd_amount + ", pd_price=" + pd_price + ", pd_img=" + pd_img
+				+ "]";
+	}
+	
 	
 }
