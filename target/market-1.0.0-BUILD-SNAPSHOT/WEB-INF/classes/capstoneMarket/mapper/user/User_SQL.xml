@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+	<resultMap id="userVO" type="inhatc.capstone.market.user.UserVO">
+		<result property="id" column="id"/>
+		<result property="pwd" column="pwd"/>
+		<result property="name" column="name"/>
+		<result property="email" column="email"/>
+		<result property="tel" column="tel"/>
+		<result property="acc" column="acc"/>
+	</resultMap>
+	
+	<resultMap id="customerVO" type="inhatc.capstone.market.user.CustomerVO">
+		<result property="id" column="id"/>
+		<result property="mk_number" column="mk_number"/>
+		<result property="address" column="address"/>
+	</resultMap>
+	
+	<resultMap id="sellerVO" type="inhatc.capstone.market.user.SellerVO">
+		<result property="seller_number" column="seller_number"/>
+		<result property="id" column="id"/>
+	</resultMap>
+
+	<select id="selectUserID" resultType="int">
+		SELECT
+			COUNT(ID)
+		FROM
+			USER_INFO
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<select id="selectUserInfo" resultMap="userVO">
+		SELECT
+			*
+		FROM
+			USER_INFO
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<insert id="insertUserData" >
+		INSERT INTO USER_INFO (
+	   		ID, PASSWORD, NAME, EMAIL, TEL, ACC
+	    ) 
+	    VALUES (
+	   		#{id}, #{password}, #{name}, #{email}, #{tel}, #{acc}
+	    )
+	</insert>
+	
+	<insert id="insertSallerData" >
+		INSERT INTO SELLER (
+	   		ID
+	    ) 
+	    VALUES (
+	   		#{id}
+	    )
+	</insert>
+	
+	<select id="selectCustomerInfo" resultMap="customerVO">
+		SELECT
+			*
+		FROM
+			CUSTOMER
+		WHERE
+			ID = #{id}
+	</select>
+	
+	<insert id="insertCustomerAddress" >
+		INSERT INTO CUSTOMER (
+			ID, ADDRESS
+	    ) 
+	    VALUES (
+	    	#{id}, #{address}
+	    )
+	</insert>
+	
+	<update id="updateCustomerAddress" >
+		UPDATE 
+			CUSTOMER
+		SET 
+			ADDRESS = #{address}
+		WHERE
+			ID = #{id} 
+			
+	</update>
+	
+	<select id="selectSellerInfo" resultMap="sellerVO">
+		SELECT
+			*
+		FROM
+			SELLER
+		WHERE
+			ID = #{id}
+	</select>
+	
+</mapper>
+				
