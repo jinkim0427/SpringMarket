@@ -66,7 +66,7 @@
 			} else if (jsonData.messageType == "UsersMessageVO") {
 				var other = "";
 				for(var i=0; i<jsonData.users.length; i++) {
-					if ("${UserVO.name}"!=jsonData.users[i]) {
+					if ("${UserVO.id}"!=jsonData.users[i]) {
 						$('#users').append(jsonData.users[i]+"님과 대화중입니다.");
 						other = jsonData.users[i];
 						first = "false";
@@ -102,7 +102,7 @@
 		
 		function displaybubble(data) {
 			//message = jsonData.name + " : "+ jsonData.message + '\n';
-			if (data.name == "${UserVO.name}") {
+			if (data.name == "${UserVO.id}") {
 				$('#chat').append(data.name+"(me)<br/><div class='bubble right'><span class='tail'>&nbsp;</span>"+data.message +"</div>");
 		      	    
 			} else {

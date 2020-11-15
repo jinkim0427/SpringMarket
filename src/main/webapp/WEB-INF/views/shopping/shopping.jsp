@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import='java.util.Random' %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +30,12 @@
 	<div class="bg-dark">	
 		<div>
 			<h3 class="font-white text-center">${mk_info.mk_name}</h3>
+			
+			
+		</div>
+		<div class="text-center">
+			<button type="button" onclick="" class="btn btn-success pt-0 pb-0 mb-2 text-center" data-toggle="modal" data-target="#detailModal">판매자와 상담하기 <i class="fa fa-comment"></i></button>
+			
 		</div>
 		<div class="d-flex justify-content-center h-100 pb-3">
    			<div class="search"> 
@@ -36,7 +43,22 @@
    			</div>
 		</div>
 	</div>
-
+	
+	
+	<form name="usersForm">
+		<input type="hidden" id="roomId" name="roomId"/>
+		<input type="hidden" id="username" name="username"/>
+	<br/>
+	<div id="content">Web MESSENGER!!</div>
+	대화상대를 선택하세요. <br/>
+	<!-- List -->
+	<table id="users" name="users" cellspacing='0'><!-- cellspacing='0' is important, must stay -->
+    	<tr><th>Web Messenger Users</th></tr><!-- Table Header -->
+    	<tr><td>There is no one to chat</td></tr>
+    </table>
+	</form>
+	
+	
 	<div class="container">
 
 		<div class="card-deck text-center">
@@ -245,6 +267,118 @@
 		</div>
 		<!-- -->
 	<script type="text/javascript">
+		var webSocket = null;
+		$(document).ready(function() {
+			var url = 'ws://' + window.location.host + '${pageContext.request.contextPath}/usersServerEndpoint';
+			webSocket = connection(url);
+			var connectionType;
+			
+			webSocket.onopen = function(){ processOpen(); };
+			webSocket.onmessage = function(message) { processMessage(message); };
+			webSocket.onerror = function(message) { processError(message); };
+			
+		});
+		function connection(url) {
+			var webSocket = null;
+			if ('WebSocket' in window) {
+				webSocket = new WebSocket(url);
+			} else if ('MozWebSocket' in window) {
+				webSocket = new MozWebSocket(url);
+			} else {
+				Console.log('Error: WebSocket is not supported by this browser.');
+	            return null;
+			}
+			return webSocket;
+		}
+		
+		function processOpen() {
+			connectionType = "firstConnection";
+			username = "${UserVO.id}";
+			webSocket.send(JSON.stringify({ "connectionType" : connectionType, "username" : username }));
+		}
+			
+		//server에서 메시지가 넘어왔을때
+		function processMessage(message) {
+			var jsonData = JSON.parse(message.data);
+			
+			if (jsonData.allUsers != null) {
+				//다른 사용자 접속 시,
+				displayUsers(jsonData.allUsers);
+			} 
+			
+			if (jsonData.disconnectedUser != null) {
+				//다른 사용자가 접속을 끊을 때,
+				$("#"+jsonData.disconnectedUser).remove();
+			}
+			
+			//다른 사용자와 대화하고자 시도할 때, 채팅창을 팝업
+			if (jsonData.enterChatId != null) {
+				var roomId = jsonData.enterChatId;
+				$("#roomId").val(roomId);
+				$("#username").val(jsonData.username);
+				openPopup(roomId);
+			}
+		}
+		
+		function openPopup(roomId) {
+			var popOptions = "width= 360, height= 500, resizable=no, status= no, scrollbar= no"; 
+			var targetTitle = random(roomId); //두명의 사용자가 다른 팝업으로 뜨기 위해서 targetTitle을 랜덤으로 만들어준다.
+			popupPost("<c:url value='/msg/websocketMessengePopup.do'/>", targetTitle, popOptions);
+		}
+		
+		function popupPost(url, target, option) {
+			window.open("", target, option);
+			
+			var form = $("form[name=usersForm]");
+			form.attr("target", target);
+			form.attr("action", url);
+			form.attr("method", "post");
+			form.submit();
+		}
+
+		function displayUsers(userList) {
+			var username;
+			$("#users tr:not(:first)").remove();
+			for (var i=0; i<userList.length; i++) {
+				if("${UserVO.id}"==userList[i]) {
+					username = userList[i]+"(me!)";//or 안뜨게 변경하기
+				} else{
+					username = userList[i];
+				}
+				$.newTr = $("<tr id="+userList[i]+" onclick='trClick(this)'><td>"+username+"</td></tr>");
+				//append
+				$("#users").last().append($.newTr);
+				
+			}
+		}
+		
+		//다른 사용자 선택 시, 선택한 사용자 값을 서버에 전달
+		function trClick(selectedTr) {
+			if (selectedTr.id != null) {
+					connectionType = "chatConnection";
+					webSocket.send(JSON.stringify({ "connectionType" : connectionType, "connectingUser" : selectedTr.id }));
+					//selectedTr.id 이부분을 마켓 유저의 name으로 설정
+				}
+		}
+		
+		function random(roomId) {
+			<%
+				String rUid = "";
+			
+				for(int i=0; i<8; i++) {
+					rUid += (char)((new Random().nextDouble()*26)+97);
+				}
+			%>
+			return roomId+"."+"<%=rUid%>";
+		}
+		
+		function processError(message) {
+			messagesTextArea.value += "error...\n";
+		}
+	
+		window.onbeforeunload = function() {
+			webSocket.close();
+		};
 		
 		function fn_shoppingDetail(category){
 			//alert(category);
