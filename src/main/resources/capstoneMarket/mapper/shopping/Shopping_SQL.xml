@@ -21,7 +21,6 @@
 	<resultMap id="orders" type="inhatc.capstone.market.shopping.OrderVO">
 		<result property="mk_number" column="mk_number"/>
 		<result property="od_pickup" column="od_pickup"/>
-		<result property="od_payment" column="od_payment"/>
 		<result property="od_totalpay" column="od_totalpay"/>
 	</resultMap>
 	
@@ -120,9 +119,9 @@
 	
 	<insert id="insertOrders">
 		INSERT
-			INTO ORDERS (ID, MK_NUMBER, OD_PICKUP, OD_STATUS, OD_PAYMENT, OD_TOTALPAY)
+			INTO ORDERS (ID, MK_NUMBER, OD_PICKUP, OD_STATUS, OD_TOTALPAY)
 		VALUES
-			(#{id},#{mk_number},#{od_pickup},'준비중', #{od_payment}, #{od_totalpay})
+			(#{id},#{mk_number},#{od_pickup},'준비중', #{od_totalpay})
 	</insert>
 	
 	<select id="selectShoppingCartCount" resultType="int">
@@ -149,17 +148,24 @@
 			SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID = #{id}
 		</selectKey>
 		INSERT
-			INTO ORDER_DELIVERY (OD_NUMBER, OD_ADDRESS)
+			INTO ORDER_DELIVERY (OD_NUMBER, OD_ADDRESS, OD_PAYMENT)
 		VALUES
-			(#{od_number}, #{od_address})
+			(#{od_number}, #{od_address}, #{od_payment})
 	</insert>
 	
 	<select id="selectNewOrderInfo" resultMap="orders">
 		SELECT
-			MK_NUMBER, OD_PICKUP, OD_PAYMENT, OD_TOTALPAY 
+			MK_NUMBER, OD_PICKUP, OD_TOTALPAY 
 		FROM
 			ORDERS
 		WHERE
 			OD_NUMBER = (SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID=#{id})
 	</select>
+	
+	<insert id="insertProduct">
+		INSERT
+			INTO PRODUCT (MK_NUMBER, PD_CATEGORY, PD_NAME, PD_AMOUNT, PD_PRICE, PD_IMG)
+		VALUES
+			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
+	</insert>
 </mapper>

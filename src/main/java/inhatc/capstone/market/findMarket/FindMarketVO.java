@@ -6,8 +6,8 @@ public class FindMarketVO {
 	private String mk_name;
 	private String mk_address;
 	private String mk_tel;
-	private String mk_state;
-	private String mk_delivery;
+	private boolean mk_state;
+	private boolean mk_delivery;
 	private String mk_intro;
 	
 	public int getMk_number() {
@@ -40,16 +40,16 @@ public class FindMarketVO {
 	public void setMk_tel(String mk_tel) {
 		this.mk_tel = mk_tel;
 	}
-	public String getMk_state() {
+	public boolean getMk_state() {
 		return mk_state;
 	}
-	public void setMk_state(String mk_state) {
+	public void setMk_state(boolean mk_state) {
 		this.mk_state = mk_state;
 	}
-	public String getMk_delivery() {
+	public boolean getMk_delivery() {
 		return mk_delivery;
 	}
-	public void setMk_delivery(String mk_delivery) {
+	public void setMk_delivery(boolean mk_delivery) {
 		this.mk_delivery = mk_delivery;
 	}
 	public String getMk_intro() {

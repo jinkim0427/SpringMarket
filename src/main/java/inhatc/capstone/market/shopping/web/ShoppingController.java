@@ -61,7 +61,7 @@ public class ShoppingController {
 		map.put("mk_number", fmv.getMk_number());
 		map.put("pd_category", category);
 
-		List<ShoppingVO> productList = new ArrayList<>();
+		List<ShoppingVO> productList = new ArrayList<ShoppingVO>();
 		try {
 			productList = shoppingService.selectShopProductList(map);
 		} catch (Exception e) {
@@ -154,7 +154,7 @@ public class ShoppingController {
 		UserVO userVO = (UserVO)request.getSession().getAttribute("loginInfo");
 		//Map<String, Object> map = new HashMap<String,Object>();
 		
-		List<Map<String,Object>> shoppingCartList = new ArrayList<>();
+		List<Map<String,Object>> shoppingCartList = new ArrayList<Map<String, Object>>();
 		shoppingCartList = shoppingService.selectShoppingCartList(userVO);
 		//System.out.println(shoppingCartList.get(0).get("pd_number"));
 		return shoppingCartList;
@@ -275,8 +275,8 @@ public class ShoppingController {
 		int amount;
 		int od_totalpay = 0;
 		for (Map<String, Object> map : userShoppingCartList) {
-			price = (int)map.get("pd_price");
-			amount = (int)map.get("sc_amount");
+			price = Integer.valueOf(String.valueOf(map.get("pd_price")));
+			amount = Integer.valueOf(String.valueOf(map.get("sc_amount")));
 			od_totalpay = od_totalpay + price * amount;
 		}
 		
@@ -286,15 +286,16 @@ public class ShoppingController {
 		odVO.setId(userVO.getId());
 		odVO.setMk_number(mk_number);
 		odVO.setOd_pickup(pickUp);
-		odVO.setOd_payment(payment);
+		//odVO.setOd_payment(payment);
 		odVO.setOd_totalpay(od_totalpay);
 		shoppingService.insertOrders(odVO);
 
 		//orders-delivery 
 		if(pickUp.equals("배달")) {
 			Map<String,Object> addressMap = new HashMap<String,Object>();
-			addressMap.put("od_address", od_address);
 			addressMap.put("id", userVO.getId());
+			addressMap.put("od_address", od_address);
+			addressMap.put("od_payment", payment);
 			shoppingService.insertOrderDelivery(addressMap);
 		
 		}
@@ -317,11 +318,25 @@ public class ShoppingController {
 		ModelAndView mv = new ModelAndView("/shopping/order-completed");
 		//mv.addObject("mk_number",orderVO.getMk_number());
 		mv.addObject("od_pickUp",orderVO.getOd_pickup());
-		mv.addObject("od_payment",orderVO.getOd_payment());
+		//mv.addObject("od_payment",orderVO.getOd_payment());
 		mv.addObject("od_totalPay",orderVO.getOd_totalpay());
 		mv.addObject("mk_name",mk_name);
 		return mv;
 		//여기서 다시 새로고침하면 결제가 반복되는 문제 발생 [나중에 처리할 것]
+	}
+	
+	@RequestMapping(value = "/insertProductInfo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void insertProductInfo(HttpServletRequest request) throws Exception {
+		
+		ShoppingVO product = new ShoppingVO();
+		product.setMk_number(Integer.parseInt(request.getParameter("mk_number")));
+		product.setPd_category(Integer.parseInt(request.getParameter("pd_category")));
+		product.setPd_name(request.getParameter("pd_name"));
+		product.setPd_amount(Integer.parseInt(request.getParameter("pd_amount")));
+		product.setPd_price(Integer.parseInt(request.getParameter("pd_price")));
+		product.setPd_img(request.getParameter("pd_img"));
+		shoppingService.insertProduct(product);
 	}
 	
 }

@@ -24,4 +24,5 @@ public interface ShoppingService {
 	void insertOrderProduct(Map<String, Object> map);
 	void insertOrderDelivery(Map<String, Object> addressMap);
 	OrderVO selectNewOrderInfo(UserVO userVO);
+	void insertProduct(ShoppingVO vo);
 }

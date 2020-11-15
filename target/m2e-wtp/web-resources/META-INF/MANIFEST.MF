@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: jinki
+=======
+Built-By: routine
+>>>>>>> f5fef0546f0d8e663eecfb6cf99aaed33072a2ca
 Build-Jdk: 1.8.0_101
 Created-By: Maven Integration for Eclipse
 
