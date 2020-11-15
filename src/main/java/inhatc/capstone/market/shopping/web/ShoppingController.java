@@ -46,6 +46,7 @@ public class ShoppingController {
 		//ModelAndView mv = new ModelAndView("/shopping/order-completed");
 		ModelAndView mv = new ModelAndView("/shopping/shopping");
 		mv.addObject("mk_info", fmv);
+		mv.addObject("UserVO", userVO);
 
 		 
 		return mv;
