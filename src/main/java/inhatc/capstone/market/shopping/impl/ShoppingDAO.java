@@ -100,4 +100,14 @@ public class ShoppingDAO extends AbstractDAO{
 		insert("shoppingDAO.insertProduct", vo);
 	}
 
+	public String selectSalesInfo(FindMarketVO fmv) {
+		// TODO Auto-generated method stub
+		return (String) selectOne("shoppingDAO.selectSalesInfo", fmv);
+	}
+
+	public Integer selectSalesCheck(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return (Integer) selectOne("shoppingDAO.selectSalesCheck", userVO);
+	}
+
 }

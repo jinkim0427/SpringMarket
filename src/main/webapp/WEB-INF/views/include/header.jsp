@@ -31,9 +31,6 @@
 	    	<li class="nav-item">
 	        	<a class="nav-link" href="#" id="shopping">장보기</a>
 	      	</li>
-	      	<li class="nav-item">
-	        	<a class="nav-link" href="#" id="msgChat">채팅(test)</a>
-	      	</li>
 	    </ul>
 	
 	    <ul class="navbar-nav ml-auto">
@@ -107,6 +104,7 @@
 				e.preventDefault();
 				fn_pageMove("shopping");
 			});
+			// 이부분 지워야뎀
 			$("#msgChat").unbind("click").click(function(e){
 				e.preventDefault();
 				fn_pageMove("msg/websocketMessengerView");
