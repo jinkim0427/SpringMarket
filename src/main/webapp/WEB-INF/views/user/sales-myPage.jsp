@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import='java.util.Random' %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,7 @@
 	
 	<!-- css / table -->
 	<link href="${pageContext.request.contextPath}/resources/market/css/table.css" rel="stylesheet">
+	
 	
 </head>
 <style type="text/css">
@@ -59,6 +61,9 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#menu5">내 정보</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#menu6">상담하기<i class="fa fa-comment"></i></a>
 				</li>
 			</ul>
 		</div>
@@ -361,9 +366,163 @@
 		    		</div><!-- <div class="d-flex row"> -->
 		    </form>
 			</div>
+			
+			
+			<div id="menu6" class="tab-pane"><br>
+				<h3>상담 하기</h3>
+				<p>현재 마트를 이용하고 있는 고객들의 목록입니다.</p>
+				<form name="usersForm">
+					<div class="d-flex row">
+				        <div class="col-md-12">
+				        	<div class="rounded">
+				                <div class="table-responsive table-borderless">
+				                    
+										
+											<input type="hidden" id="roomId" name="roomId"/>
+											<input type="hidden" id="username" name="username"/>
+										<br/>
+										<!-- List -->
+										<table class="table text-center" id="users" name="users" cellspacing='0'><!-- cellspacing='0' is important, must stay -->
+									    	<tr><th>사용중인 회원</th></tr><!-- Table Header -->
+									    	<tr><td>이용하고 있는 고객이 없습니다.</td></tr>
+									    </table>
+										
+									
+				                </div>
+				            </div>
+						</div>
+			    	</div>	
+		    	</form>
+				
+			            
+			        
+			</div>
+			
+		</div><!-- <div class="tab-content col-md-9"> -->
 		</div>
 		</div>
-		</div>
+		
+		
+		<script>
+		//chat 팝업창을 여러개 띄우기 위함	
+		var webSocket = null;
+		$(document).ready(function() {
+			var url = 'ws://' + window.location.host + '${pageContext.request.contextPath}/usersServerEndpoint';
+			webSocket = connection(url);
+			var connectionType;
+			
+			webSocket.onopen = function(){ processOpen(); };
+			webSocket.onmessage = function(message) { processMessage(message); };
+			webSocket.onerror = function(message) { processError(message); };
+			
+		});
+		//var webSocket = new WebSocket('ws://' + window.location.host + '/egov-messenger/usersServerEndpoint');
+		
+		
+		function connection(url) {
+			var webSocket = null;
+			if ('WebSocket' in window) {
+				webSocket = new WebSocket(url);
+			} else if ('MozWebSocket' in window) {
+				webSocket = new MozWebSocket(url);
+			} else {
+				Console.log('Error: WebSocket is not supported by this browser.');
+	            return null;
+			}
+			return webSocket;
+		}
+		
+		function processOpen() {
+			connectionType = "firstConnection";
+			username = "${UserVO.id}";
+			webSocket.send(JSON.stringify({ "connectionType" : connectionType, "username" : username }));
+		}
+			
+		//server에서 메시지가 넘어왔을때
+		function processMessage(message) {
+			var jsonData = JSON.parse(message.data);
+			
+			if (jsonData.allUsers != null) {
+				//다른 사용자 접속 시,
+				displayUsers(jsonData.allUsers);
+			} 
+			
+			if (jsonData.disconnectedUser != null) {
+				//다른 사용자가 접속을 끊을 때,
+				$("#"+jsonData.disconnectedUser).remove();
+			}
+			
+			//다른 사용자와 대화하고자 시도할 때, 채팅창을 팝업
+			if (jsonData.enterChatId != null) {
+				var roomId = jsonData.enterChatId;
+				$("#roomId").val(roomId);
+				$("#username").val(jsonData.username);
+				openPopup(roomId);
+			}
+		}
+		
+		function openPopup(roomId) {
+			var popOptions = "width= 360, height= 500, resizable=no, status= no, scrollbar= no"; 
+			var targetTitle = random(roomId); //두명의 사용자가 다른 팝업으로 뜨기 위해서 targetTitle을 랜덤으로 만들어준다.
+			popupPost("<c:url value='/msg/websocketMessengePopup.do'/>", targetTitle, popOptions);
+		}
+		
+		function popupPost(url, target, option) {
+			window.open("", target, option);
+			
+			var form = $("form[name=usersForm]");
+			form.attr("target", target);
+			form.attr("action", url);
+			form.attr("method", "post");
+			form.submit();
+		}
+		
+		
+		function displayUsers(userList) {
+			var username;
+			$("#users tr:not(:first)").remove();
+			for (var i=0; i<userList.length; i++) {
+				if("${UserVO.id}"!=userList[i]) {
+					username = userList[i];
+					
+					$.newTr = $("<tr class='cell-1' id="+userList[i]+" onclick='trClick(this)'><td>"+username+"</td></tr>");
+					$("#users").last().append($.newTr);
+				} else{
+					//username = userList[i];
+				}
+				
+				//append
+				
+			}
+		}
+		
+		//다른 사용자 선택 시, 선택한 사용자 값을 서버에 전달
+		function trClick(selectedTr) {
+			if (selectedTr.id != null) {
+					connectionType = "chatConnection";
+					webSocket.send(JSON.stringify({ "connectionType" : connectionType, "connectingUser" : selectedTr.id }));
+				}
+		}
+		
+		function random(roomId) {
+			<%
+				String rUid = "";
+			
+				for(int i=0; i<8; i++) {
+					rUid += (char)((new Random().nextDouble()*26)+97);
+				}
+			%>
+			return roomId+"."+"<%=rUid%>";
+		}
+		
+		function processError(message) {
+			messagesTextArea.value += "error...\n";
+		}
+	
+		window.onbeforeunload = function() {
+			webSocket.close();
+		};
+	</script>
 		
 		<script type="text/javascript">
 		$(function() {

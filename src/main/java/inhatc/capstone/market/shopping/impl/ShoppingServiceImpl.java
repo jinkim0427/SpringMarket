@@ -104,5 +104,15 @@ public class ShoppingServiceImpl implements ShoppingService{
 	public void insertProduct(ShoppingVO vo) {
 		shoppingDAO.insertProduct(vo);
 	}
+	@Override
+	public String selectSalesInfo(FindMarketVO fmv) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectSalesInfo(fmv);
+	}
+	@Override
+	public Integer selectSalesCheck(UserVO userVO) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectSalesCheck(userVO);
+	}
 
 }

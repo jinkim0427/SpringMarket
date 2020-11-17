@@ -168,4 +168,22 @@
 		VALUES
 			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
 	</insert>
+	
+	<select id="selectSalesInfo" resultType="string">
+		SELECT
+			ID
+		FROM
+			SELLER
+		WHERE
+			SELLER_NUMBER = (SELECT SELLER_NUMBER FROM MARKET WHERE MK_NUMBER = #{mk_number})
+	</select>
+	
+	<select id="selectSalesCheck" resultType="Integer">
+		SELECT
+			SELLER_NUMBER
+		FROM
+			SELLER
+		WHERE
+			ID = (SELECT ID FROM USER_INFO WHERE ID = #{id})
+	</select>
 </mapper>

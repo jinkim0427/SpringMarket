@@ -33,9 +33,13 @@
 			
 			
 		</div>
-		<div class="text-center">
-			<button type="button" onclick="" class="btn btn-success pt-0 pb-0 mb-2 text-center" data-toggle="modal" data-target="#detailModal">판매자와 상담하기 <i class="fa fa-comment"></i></button>
-			
+		<div id="chatDiv" class="text-center">
+			<form name="usersForm">
+				<input type="hidden" id="roomId" name="roomId"/>
+				<input type="hidden" id="username" name="username"/>
+			</form>
+			<div id="users">
+			</div>
 		</div>
 		<div class="d-flex justify-content-center h-100 pb-3">
    			<div class="search"> 
@@ -45,18 +49,7 @@
 	</div>
 	
 	
-	<form name="usersForm">
-		<input type="hidden" id="roomId" name="roomId"/>
-		<input type="hidden" id="username" name="username"/>
-	<br/>
-	<div id="content">Web MESSENGER!!</div>
-	대화상대를 선택하세요. <br/>
-	<!-- List -->
-	<table id="users" name="users" cellspacing='0'><!-- cellspacing='0' is important, must stay -->
-    	<tr><th>Web Messenger Users</th></tr><!-- Table Header -->
-    	<tr><td>There is no one to chat</td></tr>
-    </table>
-	</form>
+	
 	
 	
 	<div class="container">
@@ -338,18 +331,25 @@
 
 		function displayUsers(userList) {
 			var username;
-			$("#users tr:not(:first)").remove();
+			
+			$("#users").remove();
+			
+			
+			
 			for (var i=0; i<userList.length; i++) {
-				if("${UserVO.id}"==userList[i]) {
-					username = userList[i]+"(me!)";//or 안뜨게 변경하기
+				if("${salesId}"==userList[i]) {
+					//username = userList[i];//or 안뜨게 변경하기
+					$newDiv = $(`<button type="button" onclick="chatStart()" class="btn btn-success pt-0 pb-0 mb-2 text-center" data-toggle='modal' data-target='#detailModal'>판매자와 상담하기 <i class='fa fa-comment'></i></button>`);
+					$("#chatDiv").append($newDiv);
 				} else{
-					username = userList[i];
+					//username = userList[i];
 				}
-				$.newTr = $("<tr id="+userList[i]+" onclick='trClick(this)'><td>"+username+"</td></tr>");
-				//append
-				$("#users").last().append($.newTr);
-				
+				//$.newTr = $("<tr id="+userList[i]+" onclick='trClick(this)'><td>"+username+"</td></tr>");
 			}
+			
+			//append
+			//$("#users").last().append($.newTr);
+			
 		}
 		
 		//다른 사용자 선택 시, 선택한 사용자 값을 서버에 전달
@@ -359,6 +359,13 @@
 					webSocket.send(JSON.stringify({ "connectionType" : connectionType, "connectingUser" : selectedTr.id }));
 					//selectedTr.id 이부분을 마켓 유저의 name으로 설정
 				}
+		}
+
+		function chatStart() {
+			connectionType = "chatConnection";
+			connId = "${salesId}";
+			webSocket.send(JSON.stringify({ "connectionType" : connectionType, "connectingUser" : connId }));
+			
 		}
 		
 		function random(roomId) {

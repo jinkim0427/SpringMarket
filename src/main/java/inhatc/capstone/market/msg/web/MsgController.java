@@ -45,7 +45,7 @@ public class MsgController {
 										 HttpServletRequest request) {
 		UserVO userVO = (UserVO)request.getSession().getAttribute("loginInfo");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("test/chatPopup");
+		mav.setViewName("msg/chatPopup");
 		mav.addObject("UserVO", userVO);
 		mav.addObject("roomId", roomId);
 		mav.addObject("username", username); //본인이 아닌 선택한 상대방
