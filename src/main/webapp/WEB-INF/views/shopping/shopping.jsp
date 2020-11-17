@@ -333,14 +333,15 @@
 			var username;
 			
 			$("#users").remove();
-			
+			$newUsers = $(`<div id="users"></div>`)
+			$("#chatDiv").append($newUsers);
 			
 			
 			for (var i=0; i<userList.length; i++) {
 				if("${salesId}"==userList[i]) {
 					//username = userList[i];//or 안뜨게 변경하기
 					$newDiv = $(`<button type="button" onclick="chatStart()" class="btn btn-success pt-0 pb-0 mb-2 text-center" data-toggle='modal' data-target='#detailModal'>판매자와 상담하기 <i class='fa fa-comment'></i></button>`);
-					$("#chatDiv").append($newDiv);
+					$("#users").append($newDiv);
 				} else{
 					//username = userList[i];
 				}
