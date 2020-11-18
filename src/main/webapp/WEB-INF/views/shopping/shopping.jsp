@@ -39,6 +39,7 @@
 				<input type="hidden" id="username" name="username"/>
 			</form>
 			<div id="users">
+				<!-- 이곳에 판매자의 대화 가능여부에 따라 채팅 버튼이 생김 -->
 			</div>
 		</div>
 		<div class="d-flex justify-content-center h-100 pb-3">
@@ -262,12 +263,18 @@
 	<script type="text/javascript">
 		var webSocket = null;
 		$(document).ready(function() {
-			var url = 'ws://' + window.location.host + '${pageContext.request.contextPath}/usersServerEndpoint';
+			var url = 'ws://' + window.location.host + '${pageContext.request.contextPath}/usersServerEndpoint/'+'${salesId}';
 			webSocket = connection(url);
 			var connectionType;
 			
-			webSocket.onopen = function(){ processOpen(); };
+			webSocket.onopen = function(){ processOpen(); }; //websocket.opopen 이 실행됨과 동시에 함수가 실행되는건가?
+			// websocket.onopen 이 실행이 되고 난후에 function processOpen()함수가 실행되는게 아니라
+			// 지금 webSocket.onopen onmessage onerror 모든 것을 거치고 난후에 실행됨
+			// function() 매개변수가 없기 때문에 바로 실행
 			webSocket.onmessage = function(message) { processMessage(message); };
+			// onmessage 함수가 실행되려면 function()안에 매개변수가 있어야 한다는 것을 명시함
+			
+			//alert('JSP 실행 webSocket.onopen');
 			webSocket.onerror = function(message) { processError(message); };
 			
 		});
@@ -285,29 +292,37 @@
 		}
 		
 		function processOpen() {
-			connectionType = "firstConnection";
+			//alert('JSP 실행 processOpen');
+			//connectionType 과 username 의 값을 JSON 형식으로 연결된 소켓을 통해 서버에 전달하게 된다.
+			connectionType = "firstConnection"; 
 			username = "${UserVO.id}";
 			webSocket.send(JSON.stringify({ "connectionType" : connectionType, "username" : username }));
+			//연결된 웹 소켓의 send()함수로 전달되면 서버에서는 
+			//@OnMessage 로 되어있는 어노테이션의 함수를 실행시킨다.
+			
 		}
 			
-		//server에서 메시지가 넘어왔을때
+		//server에서 메시지가 넘어왔을때 session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
+		//여기서 message는 채팅에 활용되는 유저들이 작성한 메시지가 아닌 
+		//서버에서 클라이언트로 보내는 유저들의 정보를 메시지라고 함
 		function processMessage(message) {
 			var jsonData = JSON.parse(message.data);
 			
 			if (jsonData.allUsers != null) {
-				//다른 사용자 접속 시,
+				//다른 사용자 접속 시
+				//이부분도 수정 해야함 해당 마켓의 주인이 있는지 없는지만 알 수 있도록
 				displayUsers(jsonData.allUsers);
 			} 
 			
 			if (jsonData.disconnectedUser != null) {
 				//다른 사용자가 접속을 끊을 때,
-				$("#"+jsonData.disconnectedUser).remove();
+				$("#"+jsonData.disconnectedUser).remove(); //해당 ID의 태그를 지운다.
 			}
 			
 			//다른 사용자와 대화하고자 시도할 때, 채팅창을 팝업
 			if (jsonData.enterChatId != null) {
 				var roomId = jsonData.enterChatId;
-				$("#roomId").val(roomId);
+				$("#roomId").val(roomId); //서버에서 랜덤값을 생성해서 보내줌
 				$("#username").val(jsonData.username);
 				openPopup(roomId);
 			}
@@ -322,11 +337,11 @@
 		function popupPost(url, target, option) {
 			window.open("", target, option);
 			
-			var form = $("form[name=usersForm]");
+			var form = $("form[name=usersForm]"); //form 생성
 			form.attr("target", target);
 			form.attr("action", url);
 			form.attr("method", "post");
-			form.submit();
+			form.submit(); //action 값으로 컨트롤러에 보냄
 		}
 
 		function displayUsers(userList) {
@@ -354,6 +369,7 @@
 		}
 		
 		//다른 사용자 선택 시, 선택한 사용자 값을 서버에 전달
+		// (현재 사용안함)
 		function trClick(selectedTr) {
 			if (selectedTr.id != null) {
 					connectionType = "chatConnection";
@@ -362,6 +378,7 @@
 				}
 		}
 
+		//임시로 사용중 trClick 대신
 		function chatStart() {
 			connectionType = "chatConnection";
 			connId = "${salesId}";

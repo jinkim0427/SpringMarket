@@ -407,7 +407,7 @@
 		//chat 팝업창을 여러개 띄우기 위함	
 		var webSocket = null;
 		$(document).ready(function() {
-			var url = 'ws://' + window.location.host + '${pageContext.request.contextPath}/usersServerEndpoint';
+			var url = 'ws://' + window.location.host + '${pageContext.request.contextPath}/usersServerEndpoint/'+'${UserVO.id}';
 			webSocket = connection(url);
 			var connectionType;
 			

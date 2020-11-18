@@ -3,6 +3,7 @@ package inhatc.capstone.market.msg.server;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.websocket.EncodeException;
@@ -23,10 +24,10 @@ import inhatc.capstone.market.msg.server.model.Message;
 import inhatc.capstone.market.msg.server.model.UsersMessageVO;
 import inhatc.capstone.market.msg.server.model.decoder.MessageDecoder;
 import inhatc.capstone.market.msg.server.model.encoder.MessageEncoder;
+import inhatc.capstone.market.user.UserVO;
 
 @ServerEndpoint(value = "/chat/{room}", encoders={MessageEncoder.class}, decoders={MessageDecoder.class}, configurator=ChatServerAppConfig.class)
 public class ChatServerEndPoint {
-	//encoder decoder 해제
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChatServerEndPoint.class);
 	private Set<Session> chatroomUsers = Collections.synchronizedSet(new HashSet<Session>());
 
@@ -37,7 +38,9 @@ public class ChatServerEndPoint {
 	@OnOpen
 	public void handleOpen(Session userSession, @PathParam("room") final String room) throws IOException, EncodeException {
 		userSession.getUserProperties().put("room", room);
+		
 		chatroomUsers.add(userSession);
+		//System.out.println("chatroom 갯수: "+chatroomUsers.size());
 	}
 
 	/**
@@ -50,11 +53,13 @@ public class ChatServerEndPoint {
 	 */
 	@OnMessage
 	public void handleMessage(Message incomingMessage, Session userSession, @PathParam("room") final String room) throws IOException, EncodeException {
-
+		
 		ChatMessageVO incomingChatMessage = (ChatMessageVO)incomingMessage;
 		ChatMessageVO outgoingChatMessage = new ChatMessageVO();
 
 		String username = (String) userSession.getUserProperties().get("username");
+		
+		System.out.println("방 ID : ["+ room +"]에서 유저["+username+"]가 메시지를 보냇습니다.");
 		if (username == null) {
 
 			username = incomingChatMessage.getMessage();
