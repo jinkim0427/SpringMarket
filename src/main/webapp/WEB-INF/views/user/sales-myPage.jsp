@@ -52,7 +52,7 @@
 					<a class="nav-link" data-toggle="tab" href="#menu2">상품 등록</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#menu3">물품 재고 관리</a>
+					<a class="nav-link" data-toggle="tab" href="#menu3">상품 재고 관리</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#menu4">마트 정보</a>
@@ -165,13 +165,11 @@
 			  </div>
 			</div>
 		    
-
-
 			</div><!--menu1 끝 -->
 
 			<div id="menu2" class="tab-pane"><br>
 				<h3>상품 등록</h3>
-				<p>판매하실 물품들을 등록하세요.</p>
+				<p>판매하실 상품들을 등록하세요.</p>
 				<form id="frmProduct" name="frmProduct" method="POST">
 					<!--justify-content-center 테이블 센터 속성 -->
 					<div class="d-flex row">
@@ -202,7 +200,7 @@
 		    							</td>
 		                            </tr>
 		                            <tr class="cell-1">       
-		                                <td>물품명</td>
+		                                <td>상품명</td>
 		                                <td>:</td>
 		    							<td><input type="text" class="form-control" id="productName" placeholder="예: (농심)새우깡	∴(회사)제품명" maxlength="14"></td>
 		                            </tr> 
@@ -235,8 +233,49 @@
 			</div><!-- menu2 끝-->
 
 			<div id="menu3" class="tab-pane"><br>
-				<h3>물품 재고 관리</h3>
+				<h3>상품 재고 관리</h3>
 				<p>개발중 입니다.</p>
+				<div class="d-flex row">
+				<div class="col-md-3 text-right">
+					<select class="custom-select" id="listCategory">
+					    <option selected>Choose...</option>
+					    <option value="1">과자</option>
+					    <option value="2">냉동식품</option>
+					    <option value="3">라면</option>
+					    <option value="4">도시락</option>
+					    <option value="5">채소</option>
+					    <option value="6">과일</option>
+					    <option value="7">수산</option>
+					    <option value="8">축산</option>
+					    <option value="9">통조림</option>
+					    <option value="10">빵</option>
+					    <option value="11">생활용품</option>
+					    <option value="12">음료</option>
+					</select>
+				</div>
+				<div class="col-md-9 text-right">
+				    <button type="button" class="btn btn-success pd-3" id="listButton">수정하기</button>
+				</div>
+				<br></br>
+		        <div class="col-md-12">
+		            <div class="rounded">
+		                <div class="table-responsive table-borderless">
+		                    <table class="table table-product text-center">
+		                        <thead>
+		                            <tr>
+		                                <th style="width: 50%;">상품 명</th>
+		                                <th>가격</th>
+		                                <th>재고 수량</th>
+		                                <th>삭제</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody class="table-product-body">               
+		                        </tbody>
+		                    </table>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
 			</div>
 			
 			<div id="menu4" class="tab-pane"><br>
@@ -369,7 +408,8 @@
 		$(function() {
 			$("input:checkbox[id='marketState']").prop("checked", ${marketInfo.mk_state});
 			$("input:checkbox[id='marketDelivery']").prop("checked", ${marketInfo.mk_delivery});
-			
+			var category = 0;
+
 			$("#marketInfoButton").unbind("click").click(function(e){
 				e.preventDefault();
 				if(fn_checkMarketInfo()) fn_updateMarketInfo();
@@ -379,6 +419,22 @@
 				e.preventDefault();
 				if(fn_checkProductInfo()) fn_insertProductInfo();
 			});
+			
+			$("#listCategory").change(function(){
+				category = $(this).val();
+				fn_selectProductList(category);
+			});
+			
+			$(document).on("click","a[name='deleteProduct']",function(){ 
+				var pd_number = $(this).parent().find("#prodectNumber").val();
+			    fn_deleteProduct(pd_number);
+			    fn_selectProductList(category);  
+			});
+			
+			$("#listButton").unbind("click").click(function(e){
+				fn_updateProduct();
+			});
+			
 		});
 		
 		function fn_checkProductInfo(){
@@ -437,6 +493,79 @@
 					alert("완료하였습니다.");
 				},
 				error : function(error){
+					alert("오류");
+				}
+			});
+		}
+		
+		function fn_selectProductList(category){
+			$.ajax({
+				data : {
+					mk_number : $("#frmMarket #marketNumber").val(),
+					pd_category : category
+				},
+				url : "${pageContext.request.contextPath}/selectProductList.do",		
+				success : function(data) {
+					$(".table-product-body").remove();
+					$newTbody = $('<tbody class="table-product-body"></tbody>')
+					$(".table-product").append($newTbody);
+					for(var i in data){
+						var $cellsOfRow = $("<tr class='cell-1'>" +
+								"<td>" + data[i].pd_name + "</td>" +
+								"<td>" + data[i].pd_price + "</td>" +
+								"<td><input type='number' name='productAmount' style='width:50px;' min='0' max='100' value=" + data[i].pd_amount + "></td>" +
+								"<td><a href='#' name='deleteProduct'><i class='fa fa-trash'></i></a>" +
+								"<input type='hidden' name='productNumber' value='" + data[i].pd_number + "'></td>" +
+								"</tr>");
+						$(".table-product-body").append($cellsOfRow);
+					}
+				},
+				error : function(error){
+					alert("카테고리를 선택해주세요.");
+				}
+			});
+		}
+		
+		function fn_deleteProduct(obj){
+			$.ajax({
+				data : {
+					pd_number : obj
+				},
+				url : "${pageContext.request.contextPath}/deleteProduct.do",
+				async : false,
+				success : function(data) {
+					alert("삭제되었습니다.");
+				},
+				error : function(error){
+					alert("오류");
+				}
+			});
+		}
+		
+		function fn_updateProduct() {
+			var pd_amount = []
+			var pd_number = []
+			
+			$("input[name='productAmount']").each(function(){
+				pd_amount.push($(this).val());
+            });
+			$("input[name='productNumber']").each(function(){
+				pd_number.push($(this).val());
+            });
+			
+			$.ajax({
+				type : "POST",
+				dataType : "json",
+				data : {
+					pd_amount : pd_amount, 
+					pd_number : pd_number
+				},
+				url : "${pageContext.request.contextPath}/updateProduct.do",
+				success : function(data) {
+					if(data) alert("수정하였습니다.");
+					else alert("상품이 없습니다.");
+				},
+				error : function(error) {
 					alert("오류");
 				}
 			});

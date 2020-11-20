@@ -168,4 +168,22 @@
 		VALUES
 			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
 	</insert>
+	
+	<delete id="deleteProduct">
+		DELETE
+			FROM PRODUCT
+		WHERE
+			PD_NUMBER = #{pd_number}
+	</delete>
+	
+	<update id="updateProducts">
+	<foreach item="item" collection="list" separator=";">
+		UPDATE
+			PRODUCT
+		SET
+			PD_AMOUNT = #{item.pd_amount}
+		WHERE
+			PD_NUMBER = #{item.pd_number}
+	</foreach>
+	</update>
 </mapper>

@@ -1,9 +1,12 @@
 package inhatc.capstone.market.user.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import inhatc.capstone.market.common.impl.AbstractDAO;
 import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.shopping.ShoppingVO;
 import inhatc.capstone.market.user.UserVO;
 import inhatc.capstone.market.user.CustomerVO;
 import inhatc.capstone.market.user.SellerVO;
@@ -55,5 +58,18 @@ public class UserDAO extends AbstractDAO{
 	
 	public void updateMarketInfo(FindMarketVO vo) {
 		insert("findMarketDAO.updateMarketInfo", vo);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ShoppingVO> selectProductList(ShoppingVO vo) {
+		return selectList("shoppingDAO.selectShopProductList", vo);
+	}
+	
+	public void deleteProduct(ShoppingVO vo) {
+		delete("shoppingDAO.deleteProduct", vo);
+	}
+	
+	public void updateProduct(List<ShoppingVO> list) {
+		update("shoppingDAO.updateProducts", list);
 	}
 }
