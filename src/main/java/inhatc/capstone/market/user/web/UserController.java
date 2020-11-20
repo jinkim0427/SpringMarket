@@ -167,6 +167,7 @@ public class UserController {
 			mv.addObject("sellerInfo", seller);
 			if(market != null) {
 				mv.addObject("marketInfo", market);
+				mv.addObject("UserVO", user);
 			}	
 		}	
 		return mv;

@@ -40,15 +40,34 @@ public class ShoppingController {
 	public ModelAndView shopping(HttpServletRequest request) {
 		UserVO userVO = (UserVO)request.getSession().getAttribute("loginInfo");
 		
+		//사용자가 판매자인지 확인
+		Integer salesCheck = shoppingService.selectSalesCheck(userVO);
+		ModelAndView mv = new ModelAndView("");
+		
+		if(salesCheck != null) {
+			mv.setViewName("home/popup");
+			mv.addObject("msg", "판매자 계정은 이용하실 수 없습니다.");
+			mv.addObject("loc","/home.do");
+			return mv;
+		}
+		
 		FindMarketVO fmv =shoppingService.selectUserDefaultShop(userVO);
+		String salesId = shoppingService.selectSalesInfo(fmv);
 		
-		
-		//ModelAndView mv = new ModelAndView("/shopping/order-completed");
-		ModelAndView mv = new ModelAndView("/shopping/shopping");
-		mv.addObject("mk_info", fmv);
+		if(fmv == null) {
+			mv.setViewName("home/popup");
+			mv.addObject("msg", "기본마켓 설정이 필요합니다.");
+			mv.addObject("loc","/findMarket.do");
 
-		 
+		} else {
+			mv.setViewName("/shopping/shopping");
+			mv.addObject("mk_info", fmv);
+			mv.addObject("UserVO", userVO);
+			mv.addObject("salesId", salesId);
+		}
+		
 		return mv;
+		
 	}
 
 	@RequestMapping(value = "/shoppingDetail.do", method = RequestMethod.POST)
