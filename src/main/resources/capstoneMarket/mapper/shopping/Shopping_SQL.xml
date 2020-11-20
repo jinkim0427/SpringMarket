@@ -169,7 +169,6 @@
 			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
 	</insert>
 	
-<<<<<<< HEAD
 	<delete id="deleteProduct">
 		DELETE
 			FROM PRODUCT
@@ -187,7 +186,7 @@
 			PD_NUMBER = #{item.pd_number}
 	</foreach>
 	</update>
-=======
+
 	<select id="selectSalesInfo" resultType="string">
 		SELECT
 			ID
@@ -205,5 +204,5 @@
 		WHERE
 			ID = (SELECT ID FROM USER_INFO WHERE ID = #{id})
 	</select>
->>>>>>> refs/remotes/origin/master
+
 </mapper>
