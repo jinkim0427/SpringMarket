@@ -18,4 +18,6 @@ public interface FindMarketService {
 	void updateUserChoiceMarket(Map<String, Object> map);
 	
 	FindMarketVO selectMarketInfo(SearchVO vo);
+
+	FindMarketVO selectSellerMarketInfo(UserVO user);
 }

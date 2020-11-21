@@ -71,4 +71,9 @@ public class FindMarketServiceImpl implements FindMarketService{
 	/**
 	 *  상점에 대한 detail 자료를 불러온다.
 	 */
+	@Override
+	public FindMarketVO selectSellerMarketInfo(UserVO user) {
+		// TODO Auto-generated method stub
+		return findMarketDAO.selectSellerMarketInfo(user);
+	}
 }
