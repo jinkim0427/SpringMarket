@@ -104,10 +104,10 @@
 				e.preventDefault();
 				fn_pageMove("shopping");
 			});
-			// 이부분 지워야뎀
-			$("#msgChat").unbind("click").click(function(e){
+			// TestKaKao
+			$("#testKaKao").unbind("click").click(function(e){
 				e.preventDefault();
-				fn_pageMove("msg/websocketMessengerView");
+				fn_pageMove("testKaKao");
 			});
 			$("#signUp").unbind("click").click(function(e){
 				e.preventDefault();

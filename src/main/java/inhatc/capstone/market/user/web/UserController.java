@@ -17,6 +17,8 @@ import inhatc.capstone.market.findMarket.FindMarketService;
 import inhatc.capstone.market.findMarket.FindMarketVO;
 import inhatc.capstone.market.map.MapService;
 import inhatc.capstone.market.map.MapVO;
+
+import inhatc.capstone.market.shopping.ShoppingVO;
 import inhatc.capstone.market.user.CustomerVO;
 import inhatc.capstone.market.user.SellerVO;
 import inhatc.capstone.market.user.UserService;
@@ -178,11 +180,7 @@ public class UserController {
 				if(mapService.selectMapInfo(mapInfo) != null) {
 					mapInfo = mapService.selectMapInfo(mapInfo) ;
 				}
-			}
-			
-			
-			
-			
+			}	
 			mv.addObject("sellerInfo", seller);
 			mv.addObject("UserVO", user);
 			if(market != null) {
@@ -225,7 +223,6 @@ public class UserController {
 		market.setMk_state(Boolean.valueOf(request.getParameter("mk_state")));
 		market.setMk_delivery(Boolean.valueOf(request.getParameter("mk_delivery")));
 		market.setMk_intro(request.getParameter("mk_intro"));
-		
 		MapVO mapVO = new MapVO();
 		mapVO.setMp_address(request.getParameter("mp_address"));
 		mapVO.setMp_lat(Double.parseDouble(request.getParameter("mp_lat")));
@@ -251,10 +248,5 @@ public class UserController {
 			mapService.insertMapInfo(mapVO);
 			
 		}
-		
-		
-		
-		
 	}
-	
 }

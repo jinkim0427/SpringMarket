@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapDAO">
+	<resultMap id="map" type="inhatc.capstone.market.map.MapVO">
+		<result property="mp_number" column="mp_number"/>
+		<result property="mk_number" column="mk_number"/>
+		<result property="mp_address" column="mp_address"/>
+		<result property="mp_lat" column="mp_lat"/>
+		<result property="mp_lon" column="mp_lon"/>
+	</resultMap>
+	<select id="selectMapInfo" resultMap="map">
+		SELECT
+			*
+		FROM
+			MAP
+		WHERE
+			MK_NUMBER = (SELECT MK_NUMBER FROM MARKET WHERE MK_NUMBER = #{mk_number})
+	</select>
+	
+	<update id="updateMapInfo">
+		UPDATE
+			MAP
+		SET
+			MP_ADDRESS = #{mp_address}, MP_LAT = #{mp_lat}, MP_LON = #{mp_lon}
+		WHERE
+			MK_NUMBER = #{mk_number}
+	</update>
+	
+	<insert id="insertMapInfo">
+		INSERT
+		INTO
+			MAP(MK_NUMBER, MP_ADDRESS, MP_LAT, MP_LON)
+		VALUES
+			(#{mk_number}, #{mp_address}, #{mp_lat}, #{mp_lon})
+	</insert>
+</mapper>

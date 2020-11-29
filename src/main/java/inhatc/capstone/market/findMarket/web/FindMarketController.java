@@ -41,9 +41,11 @@ public class FindMarketController {
 			mk_name = findMarketService.selectUserChoiceMarketName(searchVO);
 		}
 		
+		String appkey = "7a4d4e173226350a5760087585340115"; //원래라면 property나 appkey같은 내용을 한곳에서 관리하게끔 해야함
 		
 		ModelAndView mv = new ModelAndView("/market/findMarket");
 		mv.addObject("mk_name",mk_name);
+		mv.addObject("appkey",appkey);
 		
 		return mv;
 	}

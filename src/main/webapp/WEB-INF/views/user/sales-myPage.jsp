@@ -627,6 +627,40 @@
 				}
 			});
 		}
+	
+		function fn_checkMarketInfo(){
+			if($("#marketName").val().length < 1) alert("이름을 입력해주세요.");
+			else if($("#marketAddress").val().length < 1) alert("주소를 입력해주세요.");
+			else if($("#marketTel").val().length < 1) alert("전화번호를 입력해주세요.");
+			else if($("#marketIntro").val().length < 1) alert("소개를 입력해주세요.");
+			else return true;
+			return false;
+		}
+		
+		function fn_updateMarketInfo(){
+			$.ajax({
+				data : {
+					mk_number : $("#frmMarket #marketNumber").val(),
+					seller_number : $("#frmMarket #sellerNumber").val(),
+					mk_name : $("#frmMarket #marketName").val(),
+					mk_address : $("#frmMarket #marketAddress").val(),
+					mk_tel : $("#frmMarket #marketTel").val(),
+					mk_intro : $("#frmMarket #marketIntro").val(),
+					mk_state : $("#frmMarket #marketState").prop("checked"),
+					mk_delivery : $("#frmMarket #marketDelivery").prop("checked"),
+					mp_address : $('#marketAddress').val(),
+					mp_lat : $('#mp_lat').val(),
+					mp_lon : $('#mp_lon').val()
+				},
+				url : "${pageContext.request.contextPath}/updateMarketInfo.do",		
+				success : function(data) {
+					alert("완료하였습니다.");
+				},
+				error : function(error){
+					alert("오류");
+				}
+			});
+		}
 		
 		function fn_selectProductList(category){
 			$.ajax({
@@ -906,8 +940,11 @@
 			
 		}
 		</script>
+<<<<<<< HEAD
 		
 		<script src="<c:url value='/resources/market/js/selectOrderInfo.js'/>"></script>
+=======
+>>>>>>> branch 'master' of https://github.com/jinkim0427/SpringMarket.git
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

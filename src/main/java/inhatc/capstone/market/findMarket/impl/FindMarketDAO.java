@@ -40,4 +40,9 @@ public class FindMarketDAO extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return (FindMarketVO) selectOne("findMarketDAO.selectMarketInfo", vo);
 	}
+
+	public FindMarketVO selectSellerMarketInfo(UserVO user) {
+		// TODO Auto-generated method stub
+		return (FindMarketVO) selectOne("findMarketDAO.selectSellerMarketInfo", user);
+	}
 }
