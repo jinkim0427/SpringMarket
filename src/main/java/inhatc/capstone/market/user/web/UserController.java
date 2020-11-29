@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import inhatc.capstone.market.findMarket.FindMarketService;
 import inhatc.capstone.market.findMarket.FindMarketVO;
+import inhatc.capstone.market.map.MapService;
+import inhatc.capstone.market.map.MapVO;
 import inhatc.capstone.market.user.CustomerVO;
 import inhatc.capstone.market.user.SellerVO;
 import inhatc.capstone.market.user.UserService;
@@ -24,6 +27,12 @@ public class UserController {
 	
 	@Resource(name="userService")
 	private UserService userService;
+	
+	@Resource(name="mapService")
+	private MapService mapService;
+	
+	@Resource(name="findMarketService")
+	private FindMarketService findMarketService;
 	
 	@RequestMapping(value = "/signUp.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -159,13 +168,30 @@ public class UserController {
 			mv.setViewName("user/sales-myPage");
 			SellerVO seller = new SellerVO();
 			FindMarketVO market = new FindMarketVO();
+			MapVO mapInfo = new MapVO();
+			
 			seller = userService.selectSellerInfo(user);
 			market = userService.selectMarketInfo(user);
+			if(market != null) {
+				mapInfo.setMk_number(market.getMk_number());
+				
+				if(mapService.selectMapInfo(mapInfo) != null) {
+					mapInfo = mapService.selectMapInfo(mapInfo) ;
+				}
+			}
+			
+			
+			
+			
 			mv.addObject("sellerInfo", seller);
+			mv.addObject("UserVO", user);
 			if(market != null) {
 				mv.addObject("marketInfo", market);
-				mv.addObject("UserVO", user);
-			}	
+				
+			}
+			String appkey = "7a4d4e173226350a5760087585340115"; 
+			mv.addObject("appkey",appkey);
+			mv.addObject("mapInfo", mapInfo);
 		}	
 		return mv;
 	}
@@ -187,6 +213,7 @@ public class UserController {
 	@RequestMapping(value = "/updateMarketInfo.do", method = RequestMethod.GET)
 	@ResponseBody
 	public void updateMarketInfo(HttpServletRequest request) throws Exception {
+		UserVO user = (UserVO)request.getSession().getAttribute("loginInfo");
 		
 		FindMarketVO market = new FindMarketVO();
 		if(request.getParameter("mk_number").equals("")) market.setMk_number(-1); 
@@ -198,8 +225,36 @@ public class UserController {
 		market.setMk_state(Boolean.valueOf(request.getParameter("mk_state")));
 		market.setMk_delivery(Boolean.valueOf(request.getParameter("mk_delivery")));
 		market.setMk_intro(request.getParameter("mk_intro"));
-		if(market.getMk_number() > 0) userService.updateMarketInfo(market);
-		else userService.insertMarketInfo(market);
+		
+		MapVO mapVO = new MapVO();
+		mapVO.setMp_address(request.getParameter("mp_address"));
+		mapVO.setMp_lat(Double.parseDouble(request.getParameter("mp_lat")));
+		mapVO.setMp_lon(Double.parseDouble(request.getParameter("mp_lon")));
+		// 경우
+		// 1처음 등록하는 경우 2수정하는경우 3마켓정보는 있는데 지도를 처음하는 경우
+		if(market.getMk_number() > 0) {
+			userService.updateMarketInfo(market);
+			mapVO.setMk_number(market.getMk_number());
+			if(mapService.selectMapInfo(mapVO) != null && mapVO.getMp_address() != null) {
+				//마켓정보도 있고 지도정보도 있는 경우 (지도변경)
+				mapService.updateMapInfo(mapVO);
+			}else {
+				//마켓정보는 있지만 지도정보는 처음 넣는 경우
+				mapService.insertMapInfo(mapVO);
+			}
+		}else {
+			//마켓정보도 신규 지도도 등록
+			userService.insertMarketInfo(market);
+			FindMarketVO fmv = new FindMarketVO();
+			fmv = findMarketService.selectSellerMarketInfo(user);
+			mapVO.setMk_number(fmv.getMk_number());
+			mapService.insertMapInfo(mapVO);
+			
+		}
+		
+		
+		
+		
 	}
 	
 }

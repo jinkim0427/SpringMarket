@@ -55,7 +55,7 @@
 					<a class="nav-link" data-toggle="tab" href="#menu3">상품 재고 관리</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#menu4">마트 정보</a>
+					<a class="nav-link" data-toggle="tab" href="#menu4" onclick="fn_getMapInfo()">마트 정보</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" data-toggle="tab" href="#menu5">내 정보</a>
@@ -228,7 +228,21 @@
 		                            <tr class="cell-1">       
 		                                <td>마트 주소</td>
 		                                <td>:</td>
-		    							<td><input type="text" class="form-control"  id="marketAddress" name="marketAddress" value="${marketInfo.mk_address }"></td>
+		    							<td>
+		    							
+		    							<div class="input-group">
+											<input type="text" class="form-control" id="marketAddress" oninput="fn_searchMap()" name="marketAddress" value="${mapInfo.mp_address}" aria-label="Search" aria-describedby="basic-addon1" width="50">
+											<div class="input-group-prepend">
+												<span class="input-group-text" style="border:none;background-color:#ffc107;"id="basic-addon1">
+													<i class="fa fa-search font-white"></i>
+												</span>
+											</div>
+										</div>
+										<input type="hidden" id="mp_lat" name="mp_lat" value="${marketInfo.mk_number}">
+										<input type="hidden" id="mp_lon" name="mp_lon" value="${marketInfo.mk_number}">
+		    							</td>
+		    							
+		    							
 		                            </tr> 
 		                            <tr class="cell-1">
 		                            	<td>마트 전화번호</td>
@@ -258,10 +272,14 @@
 		                        </tbody>
 		                    </table>
 		                </div>
+		                
 				    </div>
-					</div>
 				    
-				    <div class="col-md-12 text-center">
+				    <p>약도 정보 - kakaoMap</p>
+		            <div id="map" style="width:100%;height:350px;"></div>    
+					</div>
+					
+				    <div class="col-md-12 mt-2 pt-2 text-center">
 				    	<button type="button" class="btn btn-success pd-3" id="marketInfoButton">
 						    <c:if test="${empty marketInfo}">
 						    	등록하기
@@ -275,6 +293,9 @@
 				    <input type="hidden" id="sellerNumber" name="sellerNumber" value="${sellerInfo.seller_number}">
 		    		</div><!-- <div class="d-flex row"> -->
 		    </form>
+		    
+		    
+
 				
 			</div>
 			
@@ -711,6 +732,181 @@
 			});
 		}
 		</script>
+		
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${appkey}&libraries=services"></script>
+		
+		<script>
+		//지도를 보여주는 로직
+		var map ;
+		
+		var coords;
+		
+		var markers = [];
+		var infowindows =[];
+		function fn_getMapInfo(){
+			var mk_num = $("#frmMarket #marketNumber").val()
+			var mp_address = $("#marketAddress").val()
+			var map_lat;
+			var map_lon;
+			
+			if(mk_num == '' || mp_address == ''){
+				alert('마트 정보를 입력해 주세요.');
+				map_lat = 37.566826004661;
+				map_lon = 126.978652258309;
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				
+			    mapOption = {
+			        center: new kakao.maps.LatLng(map_lat, map_lon), // 지도의 중심좌표
+			        level: 3 // 지도의 확대 레벨
+			    };
+				
+			    
+			    //지도 생성
+				map = new kakao.maps.Map(mapContainer, mapOption);
+
+				coords = new kakao.maps.LatLng(map_lat, map_lon);
+				var marker = new kakao.maps.Marker({
+					map: map,
+					position: coords
+				});
+				markers.push(marker);
+				
+				var infowindow = new kakao.maps.InfoWindow({
+		            content: '<div style="width:150px;height:15px;text-align:center;">'+$("#frmMarket #marketName").val()+'</div>'
+		        });
+		        infowindows.push(infowindow);
+		        infowindow.open(map, marker);
+		        fn_relayout();
+			}else{
+				$.ajax({
+					data : {
+						mk_number : mk_num
+					},
+					url : "${pageContext.request.contextPath}/map/selectMapInfo.do",		
+					success : function(data) {
+						//alert('');
+						//alert(data.mp_lat);
+						//$("#mp_lat").val = data.mp_lat;
+						
+						//$("#mp_lon").val = data.mp_lon;
+						
+						//alert(data.mp_lon);
+						document.getElementById("mp_lat").value = data.mp_lat;
+						document.getElementById("mp_lon").value = data.mp_lon;
+						map_lat = data.mp_lat;
+						map_lon = data.mp_lon;
+						
+						//초기화 
+						
+						
+						var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+						
+					    mapOption = {
+					        center: new kakao.maps.LatLng(map_lat, map_lon), // 지도의 중심좌표
+					        level: 3 // 지도의 확대 레벨
+					    };
+						
+					    
+					    //지도 생성
+						map = new kakao.maps.Map(mapContainer, mapOption);
+
+						coords = new kakao.maps.LatLng(data.mp_lat, data.mp_lon);
+						var marker = new kakao.maps.Marker({
+							map: map,
+							position: coords
+						});
+						markers.push(marker);
+						
+						var infowindow = new kakao.maps.InfoWindow({
+				            content: '<div style="width:150px;height:15px;text-align:center;">'+$("#frmMarket #marketName").val()+'</div>'
+				        });
+				        infowindows.push(infowindow);
+				        infowindow.open(map, marker);
+					},
+					error : function(error){
+						alert("오류");
+					}
+				});
+			}
+			
+		}
+		
+			
+		
+		function fn_relayout(){
+			//map.relayout();
+			setTimeout(function(){ map.relayout(); }, 0);
+			setTimeout(function(){ map.setCenter(coords); }, 0);
+			//map.setCenter(coords);
+		}
+		
+
+		//약도 검색
+		function fn_searchMap(){
+			//marker.setMap(null);
+			//infowindow.setMap(null);
+			var search_address = $('#marketAddress').val();
+
+			// 주소-좌표 변환 객체를 생성합니다
+			var geocoder = new kakao.maps.services.Geocoder();
+			// 중심으로 이동시키기위해 사용 / fn resize 에 활용
+			
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch(search_address, function(result, status) {
+			
+			    // 정상적으로 검색이 완료됐으면 
+			     if (status === kakao.maps.services.Status.OK) {
+			
+			        coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			
+					//$('#lat').value = result[0].y;
+					document.getElementById("mp_lat").value = result[0].y;
+					document.getElementById("mp_lon").value = result[0].x;
+					 
+					//alert(result[0].y);
+					//alert(result[0].x);
+			        // 결과값으로 받은 위치를 마커로 표시합니다
+			        
+
+			        var marker = new kakao.maps.Marker({
+			            //map: map,
+			            position: coords
+			        });
+
+					markers.push(marker);
+								        
+			        // 인포윈도우로 장소에 대한 설명을 표시합니다
+			        
+			        var infowindow = new kakao.maps.InfoWindow({
+			        	content: '<div style="width:150px;height:15px;text-align:center;">'+$("#frmMarket #marketName").val()+'</div>'
+			        });
+			        infowindows.push(infowindow);
+
+			        
+			        
+			        infowindow.open(map, marker);
+
+			        for (var i=0; i < markers.length ; i++){
+						//alert("var"+i);
+						let check = markers.length - 1;
+						//alert("check:"+ check); 
+						if(i != check){
+							markers[i].setMap(null);
+							infowindows[i].setMap(null);
+						}else{
+							markers[i].setMap(map);
+							infowindows[i].setMap(map);
+						}
+						
+					}
+			        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+			        map.setCenter(coords);
+			    } 
+			});
+			
+		}
+		</script>
+		
 		<script src="<c:url value='/resources/market/js/selectOrderInfo.js'/>"></script>
 </body>
 </html>
