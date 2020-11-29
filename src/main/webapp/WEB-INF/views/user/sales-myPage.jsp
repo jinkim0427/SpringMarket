@@ -39,9 +39,7 @@
 <body>
 
 	<div class="container">
-
 		<div class="row">
-
 		<div class="col-md-3">	
 			<h2>My Page</h2>
 			<p>마이 페이지입니다.</p>
@@ -76,10 +74,9 @@
 		        <div class="col-md-12">
 		            <div class="rounded">
 		                <div class="table-responsive table-borderless">
-		                    <table class="table text-center">
+		                    <table class="table table-order text-center">
 		                        <thead>
 		                            <tr>
-		                               
 		                                <th>날짜</th>
 		                                <th>구매자</th>
 		                                <th>전화번호</th>
@@ -88,59 +85,7 @@
 		                                <th>거래여부</th>
 		                            </tr>
 		                        </thead>
-		                        <tbody class="table-body">
-		                            <tr class="cell-1">
-		                                
-		                                <td>20/09/18</td>
-		                                <td>홍OO</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td>배달</td>
-		                                <td>미완료</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                
-		                                <td>20/09/17</td>
-		                                <td>김OO</td>
-		                                <td>010-1111-2233</td>
-		                                <td>
-		                                	<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-		                                </td>
-		                                <td>방문</td>
-		                                <td>완료</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                
-		                                <td>20/09/17</td>
-		                                <td>설OO</td>
-		                                <td>010-4567-8910</td>
-		                                <td>
-		                                	<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-		                                </td>
-		                                <td>배달</td>
-		                                <td>완료</td>
-		                            </tr>
-		                            <tr class="cell-1">
-		                                
-		                                <td>20/09/16</td>
-		                                <td>이OO</td>
-		                                <td>010-2234-5678</td>
-		                                <td>
-		                                	<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-		                                </td>
-		                                <td>배달</td>
-		                                <td>완료</td>
-		                            </tr>
+		                        <tbody class="table-order-body">
 		                        </tbody>
 		                    </table>
 		                </div>
@@ -149,28 +94,9 @@
 		    </div>
 
 		    <!-- modal생성하는곳-->
-			<!-- Modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        ...
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">Save changes</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		    
+		    <%@ include file="order-info-modal.jsp" %>
 			</div><!--menu1 끝 -->
+
 
 			<div id="menu2" class="tab-pane"><br>
 				<h3>상품 등록</h3>
@@ -239,7 +165,7 @@
 
 			<div id="menu3" class="tab-pane"><br>
 				<h3>상품 재고 관리</h3>
-				<p>개발중 입니다.</p>
+				<p>상품 재고를 관리합니다.</p>
 				<div class="d-flex row">
 				<div class="col-md-3 text-right">
 					<select class="custom-select" id="listCategory">
@@ -426,8 +352,7 @@
 		    		</div><!-- <div class="d-flex row"> -->
 		    </form>
 			</div>
-			
-			
+						
 			<div id="menu6" class="tab-pane"><br>
 				<h3>상담 하기</h3>
 				<p>현재 마트를 이용하고 있는 고객들의 목록입니다.</p>
@@ -584,17 +509,13 @@
 		};
 	</script>
 		
-		<script type="text/javascript">
+	<script type="text/javascript">
 		$(function() {
 			$("input:checkbox[id='marketState']").prop("checked", ${marketInfo.mk_state});
 			$("input:checkbox[id='marketDelivery']").prop("checked", ${marketInfo.mk_delivery});
 			var category = 0;
+			fn_selectMarketOrder();
 
-			$("#marketInfoButton").unbind("click").click(function(e){
-				e.preventDefault();
-				if(fn_checkMarketInfo()) fn_updateMarketInfo();
-			});
-			
 			$("#productInfoButton").unbind("click").click(function(e){
 				e.preventDefault();
 				if(fn_checkProductInfo()) fn_insertProductInfo();
@@ -606,7 +527,7 @@
 			});
 			
 			$(document).on("click","a[name='deleteProduct']",function(){ 
-				var pd_number = $(this).parent().find("#prodectNumber").val();
+				var pd_number = $(this).parent().find("input[name='productNumber']").val();
 			    fn_deleteProduct(pd_number);
 			    fn_selectProductList(category);  
 			});
@@ -615,8 +536,67 @@
 				fn_updateProduct();
 			});
 			
+			$("#marketInfoButton").unbind("click").click(function(e){
+				e.preventDefault();
+				if(fn_checkMarketInfo()) fn_updateMarketInfo();
+			});
+			
 		});
 		
+		function fn_selectMarketOrder(){
+			$.ajax({
+				data : {
+					mk_number : $("#frmMarket #marketNumber").val()
+				},
+				url : "${pageContext.request.contextPath}/selectMarketOrder.do",		
+				success : function(data) {
+					$(".table-order-body").remove();
+					$newTbody = $('<tbody class="table-order-body"></tbody>')
+					$(".table-order").append($newTbody);
+					for(var i in data){
+						var od_status = fn_returnStatus(data[i].OD_STATUS, data[i].OD_NUMBER);
+						var $cellsOfRow = $("<tr class='cell-1'>" +
+								"<td>" + data[i].OD_TIME + "</td>" +
+								"<td>" + data[i].NAME + "</td>" +
+								"<td>" + data[i].TEL + "</td>" +
+								"<td><button type='button' class='btn btn-info pt-0 pb-0' onClick='fn_selectOrderInfo(" + 
+										data[i].OD_NUMBER + ")' data-toggle='modal' data-target='#orderInfoModal'>상세보기</button></td>" +
+								"<td>" + data[i].OD_PICKUP + "</td>" +
+								od_status +
+								"</tr>");
+						$(".table-order-body").append($cellsOfRow);
+					}
+				},
+				error : function(error){
+					alert("정보를 불러오는데 실패하였습니다.");
+				}
+			});
+		}
+		
+		function fn_returnStatus(od_status, od_number){
+			var str = "";
+			if(od_status == "준비중") str = "<td><button type='button' class='btn btn-warning pt-0 pb-0' onClick='fn_updateOrderStatus(" + od_number + ",\"" + od_status + "\")'> " + od_status + "</button></td>";
+			else if(od_status == "포장완료") str = "<td><button type='button' class='btn btn-success pt-0 pb-0'onClick='fn_updateOrderStatus(" + od_number + ",\"" + od_status + "\")'> " + od_status + "</button></td>";
+			else if(od_status == "거래완료") str = "<td>" + od_status + "</td>" ;
+			return str;
+		}
+		
+		function fn_updateOrderStatus(od_number, od_status){
+			$.ajax({
+				data : {
+					od_number : od_number,
+					od_status : od_status
+				},
+				url : "${pageContext.request.contextPath}/updateOrderStatus.do",		
+				success : function(data) {
+					fn_selectMarketOrder();
+				},
+				error : function(error){
+					alert("정보를 불러오는데 실패하였습니다.");
+				}
+			});
+		}
+
 		function fn_checkProductInfo(){
 			if($("#marketNumber").val() == "") alert("마트정보를 입력해주세요.");
 			else if($("#productCategory").val() == "Choose...") alert("카테고리를 선택해주세요.");
@@ -637,6 +617,7 @@
 					pd_price : $("#frmProduct #productPrice").val(),
 					pd_img : $("#frmProduct #productImg").val()
 				},
+				type : "POST",
 				url : "${pageContext.request.contextPath}/insertProductInfo.do",		
 				success : function(data) {
 					alert("등록되었습니다.");
@@ -749,6 +730,37 @@
 					else alert("상품이 없습니다.");
 				},
 				error : function(error) {
+					alert("오류");
+				}
+			});
+		}
+		
+		function fn_checkMarketInfo(){
+			if($("#marketName").val().length < 1) alert("이름을 입력해주세요.");
+			else if($("#marketAddress").val().length < 1) alert("주소를 입력해주세요.");
+			else if($("#marketTel").val().length < 1) alert("전화번호를 입력해주세요.");
+			else if($("#marketIntro").val().length < 1) alert("소개를 입력해주세요.");
+			else return true;
+			return false;
+		}
+		
+		function fn_updateMarketInfo(){
+			$.ajax({
+				data : {
+					mk_number : $("#frmMarket #marketNumber").val(),
+					seller_number : $("#frmMarket #sellerNumber").val(),
+					mk_name : $("#frmMarket #marketName").val(),
+					mk_address : $("#frmMarket #marketAddress").val(),
+					mk_tel : $("#frmMarket #marketTel").val(),
+					mk_intro : $("#frmMarket #marketIntro").val(),
+					mk_state : $("#frmMarket #marketState").prop("checked"),
+					mk_delivery : $("#frmMarket #marketDelivery").prop("checked")
+				},
+				url : "${pageContext.request.contextPath}/updateMarketInfo.do",		
+				success : function(data) {
+					alert("완료하였습니다.");
+				},
+				error : function(error){
 					alert("오류");
 				}
 			});
@@ -928,6 +940,11 @@
 			
 		}
 		</script>
+<<<<<<< HEAD
+		
+		<script src="<c:url value='/resources/market/js/selectOrderInfo.js'/>"></script>
+=======
+>>>>>>> branch 'master' of https://github.com/jinkim0427/SpringMarket.git
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

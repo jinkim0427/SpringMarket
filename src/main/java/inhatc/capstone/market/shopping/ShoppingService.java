@@ -24,7 +24,15 @@ public interface ShoppingService {
 	void insertOrderProduct(Map<String, Object> map);
 	void insertOrderDelivery(Map<String, Object> addressMap);
 	OrderVO selectNewOrderInfo(UserVO userVO);
-	void insertProduct(ShoppingVO vo);
 	String selectSalesInfo(FindMarketVO fmv);
 	Integer selectSalesCheck(UserVO userVO);
+	
+	List<Map<String,Object>> selectUserOrder(OrderVO vo);
+	List<Map<String,Object>> selectMarketOrder(OrderVO vo);
+	List<Map<String,Object>> selectOrderInfo(OrderVO vo);
+	void updateOrderStatus(OrderVO vo);
+	List<ShoppingVO> selectProductList(ShoppingVO vo);
+	void deleteProduct(ShoppingVO vo);
+	void updateProduct(List<ShoppingVO> list);
+	void insertProduct(ShoppingVO vo);
 }

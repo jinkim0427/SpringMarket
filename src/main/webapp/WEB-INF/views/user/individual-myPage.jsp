@@ -226,66 +226,18 @@
 		        <div class="col-md-12">
 		            <div class="rounded">
 		                <div class="table-responsive table-borderless">
-		                    <table class="table text-center">
+		                    <table class="table table-order text-center">
 		                        <thead>
 		                            <tr>
 		                                <th>날짜</th>
-		                                <th>판매자</th>
+		                                <th>마트</th>
 		                                <th>전화번호</th>
 		                                <th>상품/정보</th>
 		                                <th>전달/종류</th>
 		                                <th>거래여부</th>
 		                            </tr>
 		                        </thead>
-		                        <tbody class="table-body">
-		                            <tr class="cell-1">           
-		                                <td>20/09/18</td>
-		                                <td>홍OO</td>
-		                                <td>010-1234-1234</td>
-		                                <td><!-- Button trigger modal -->
-											<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-										</td>
-		                                <td>배달</td>
-		                                <td>미완료</td>
-		                            </tr>
-		                            <tr class="cell-1">          
-		                                <td>20/09/17</td>
-		                                <td>김OO</td>
-		                                <td>010-1111-2233</td>
-		                                <td>
-		                                	<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-		                                </td>
-		                                <td>방문</td>
-		                                <td>완료</td>
-		                            </tr>
-		                            <tr class="cell-1">                        
-		                                <td>20/09/17</td>
-		                                <td>설OO</td>
-		                                <td>010-4567-8910</td>
-		                                <td>
-		                                	<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-		                                </td>
-		                                <td>배달</td>
-		                                <td>완료</td>
-		                            </tr>
-		                            <tr class="cell-1">                   
-		                                <td>20/09/16</td>
-		                                <td>이OO</td>
-		                                <td>010-2234-5678</td>
-		                                <td>
-		                                	<button type="button" class="btn btn-success pt-0 pb-0" data-toggle="modal" data-target="#exampleModal">
-											  상세보기
-											</button>
-		                                </td>
-		                                <td>배달</td>
-		                                <td>완료</td>
-		                            </tr>
+		                        <tbody class="table-order-body">
 		                        </tbody>
 		                    </table>
 		                </div>
@@ -293,26 +245,7 @@
 		        </div>
 		    </div>
 		    <!-- modal생성하는곳-->
-			<!-- Modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body">
-			        ...
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">Save changes</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+		    <%@ include file="order-info-modal.jsp" %>
 			</div><!--menu2 끝 -->
 
 			<div id="menu3" class="tab-pane"><br>
@@ -329,7 +262,7 @@
 					                <tr class="cell-1">           
 					                    <td>ID</td>
 					                    <td>:</td>
-		    							<td>${loginInfo.id }</td>
+		    							<td>${loginInfo.id }<input type="hidden" id="userID" name="userID" value="${loginInfo.id }"></td>
 		                            </tr>
 		                            <tr class="cell-1">       
 		                                <td>새 비밀번호</td>
@@ -392,7 +325,9 @@
 		</div>
 		
 <script type="text/javascript">
+	
 	window.onload = function(){
+		fn_selectUserOrder();
 		//alert("t");
 		$.ajax({
 			
@@ -580,7 +515,37 @@
 	$('.products').focus(function(e){
 		e.preventDefault();
 	});
+	
+	function fn_selectUserOrder(){
+		$.ajax({
+			data : {
+				id : $("#userID").val()
+			},
+			url : "${pageContext.request.contextPath}/selectUserOrder.do",		
+			success : function(data) {
+				$(".table-order-body").remove();
+				$newTbody = $('<tbody class="table-order-body"></tbody>')
+				$(".table-order").append($newTbody);
+				for(var i in data){
+					var $cellsOfRow = $("<tr class='cell-1'>" +
+							"<td>" + data[i].OD_TIME + "</td>" +
+							"<td>" + data[i].MK_NAME + "</td>" +
+							"<td>" + data[i].MK_TEL + "</td>" +
+							"<td><button type='button' class='btn btn-info pt-0 pb-0' onClick='fn_selectOrderInfo(" + 
+									data[i].OD_NUMBER + ")' data-toggle='modal' data-target='#orderInfoModal'>상세보기</button></td>" +
+							"<td>" + data[i].OD_PICKUP + "</td>" +
+							"<td>" + data[i].OD_STATUS + "</td>" +
+							"</tr>");
+					$(".table-order-body").append($cellsOfRow);
+				}
+			},
+			error : function(error){
+				alert("정보를 불러오는데 실패하였습니다.");
+			}
+		});
+	}
 </script>
+<script src="<c:url value='/resources/market/js/selectOrderInfo.js'/>"></script>
 </body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

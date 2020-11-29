@@ -31,9 +31,6 @@
 	    	<li class="nav-item">
 	        	<a class="nav-link" href="#" id="shopping">장보기</a>
 	      	</li>
-	      	<li class="nav-item">
-	        	<a class="nav-link" href="#" id="testKaKao">Test(kakaoMap)</a>
-	      	</li>
 	    </ul>
 	
 	    <ul class="navbar-nav ml-auto">

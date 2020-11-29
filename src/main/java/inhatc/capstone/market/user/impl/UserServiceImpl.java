@@ -76,20 +76,4 @@ public class UserServiceImpl implements UserService{
 	public void updateMarketInfo(FindMarketVO vo) throws Exception {
 		userDAO.updateMarketInfo(vo);
 	}
-
-	@Override
-	public List<ShoppingVO> selectProductList(ShoppingVO vo) throws Exception {
-		return userDAO.selectProductList(vo);
-	}
-
-	@Override
-	public void deleteProduct(ShoppingVO vo) throws Exception {
-		userDAO.deleteProduct(vo);
-		
-	}
-
-	@Override
-	public void updateProduct(List<ShoppingVO> list) throws Exception {
-		userDAO.updateProduct(list);
-	}
 }

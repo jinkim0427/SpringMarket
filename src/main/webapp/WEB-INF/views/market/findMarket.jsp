@@ -46,8 +46,8 @@
 		                                
 		                                <th>점포명</th>
 		                                <th>주소</th>
-		                                <th>전화번호</th>
 		                                <th>상세보기</th>
+		                                <th>약도확인</th>
 		                                <th>...</th>
 		                                
 		                            </tr>
@@ -89,12 +89,38 @@
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-primary">지도 보기</button>
+			        <!-- <button type="button" class="btn btn-primary">지도 보기</button> -->
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			
+		<!-- modal 2생성하는곳-->
+			<!-- Modal -->
+			<div class="modal fade" id="detailModal2" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" style="width : 100 %; max-width : 850px;" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="detailModalLabel">Spring Market</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-map-body">
+			        <h3 class="text-center">상세 약도 정보</h3>
+			        <p class="text-center">detail map info</p>
+			        <div id="map" style="width:100%;height:350px;"></div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button onclick="fn_relayout()" type="button" class="btn btn-primary">지도 보기</button>
 			      </div>
 			    </div>
 			  </div>
 			</div>
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${appkey}&libraries=services"></script>
+		
 <script type="text/javascript">
 function searchMarket() {
 	var mk_address = $('#searchAddress').val();
@@ -114,14 +140,18 @@ function searchMarket() {
 				var $cellsOfRow = $("<tr class='cell-1'>" +
 						"<td>" + data[i].mk_name + "</td>" +
 						"<td>" + data[i].mk_address + "</td>" +
-						"<td>" + data[i].mk_tel + "</td>" +
-						"<td>" +
+						"<td>" + 
 						"<button type='button' onclick='detailMarket(" + data[i].mk_number + ")' class='btn btn-warning pt-0 pb-0' data-toggle='modal' data-target='#detailModal'>" +
 						"상세보기" +
+						"</button>" + 
+						"</td>" +
+						"<td>" +
+						"<button type='button' onclick='mapInfoMarket(" + data[i].mk_number + ")' class='btn btn-success pt-0 pb-0' data-toggle='modal' data-target='#detailModal2'>" +
+						"약도보기" +
 						"</button>" +
 						"</td>" +
 						"<td>" +
-						"<a class='btn btn-success pt-0 pb-0' onclick='choiceMarket(" + data[i].mk_number + ")'>" +
+						"<a class='btn btn-primary pt-0 pb-0' onclick='choiceMarket(" + data[i].mk_number + ")'>" +
 						"<input type='hidden' id='mk_number' value=" + data[i].mk_number + ">" +
 						"기본 마트 지정" + 
 						"</a>" +
@@ -208,7 +238,101 @@ function detailMarket(mk_number){
 	});
 }
 </script>
+<script>
+var map;
 
+function mapInfoMarket(mk_number){
+	//alert(mk_number);
+	var map_lat;
+	var map_lon;
+	$.ajax({
+		data : {
+			mk_number : mk_number
+		},
+		url : "${pageContext.request.contextPath}/map/selectMapInfo.do",		
+
+		success : function(data) {
+			$("#map").remove();
+			$("#map-adress").remove();
+			$newTbody = $(`<div id="map" style="width:100%;height:350px;"></div>`)
+			$(".modal-map-body").append($newTbody);
+			
+			
+			if(data.mp_number == null){
+				map_lat = 37.566826004661;
+				map_lon = 126.978652258309;
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				
+			    mapOption = {
+			        center: new kakao.maps.LatLng(map_lat, map_lon), // 지도의 중심좌표
+			        level: 3 // 지도의 확대 레벨
+			    };
+				
+			    //지도 생성
+				map = new kakao.maps.Map(mapContainer, mapOption);
+
+				coords = new kakao.maps.LatLng(map_lat, map_lon);
+				var marker = new kakao.maps.Marker({
+					map: map,
+					position: coords
+				});
+				
+				var infowindow = new kakao.maps.InfoWindow({
+		            content: '<div style="width:150px;height:15px;text-align:center;">'+'dd'+'</div>'
+		        });
+		        infowindow.open(map, marker);
+		        fn_relayout();//map.relayout();
+		        
+			}else{
+				
+				//alert(data.mp_address);
+				//alert(data.mp_number);
+				map_lat = data.mp_lat;
+				map_lon = data.mp_lon;
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				
+			    mapOption = {
+			        center: new kakao.maps.LatLng(map_lat, map_lon), // 지도의 중심좌표
+			        level: 3 // 지도의 확대 레벨
+			    };
+				
+			    
+			    //지도 생성
+				map = new kakao.maps.Map(mapContainer, mapOption);
+
+				coords = new kakao.maps.LatLng(data.mp_lat, data.mp_lon);
+				var marker = new kakao.maps.Marker({
+					map: map,
+					position: coords
+				});
+				
+				var infowindow = new kakao.maps.InfoWindow({
+		            content: '<div style="width:150px;height:15px;text-align:center;">'+'마켓'+'</div>'
+		        });
+		        infowindow.open(map, marker);
+		        $newTbodys = $("<p id='map-adress'>위치 : " + data.mp_address + "</p>")
+				$(".modal-map-body").append($newTbodys);
+		        fn_relayout();
+			}
+			
+			
+		},
+		error : function(error){
+			alert("오류");
+		}
+	});
+	
+	//setTimeout(function(){ map.relayout(); }, 0);
+}
+
+function fn_relayout(){
+	//map.relayout();
+	setTimeout(function(){ map.relayout(); }, 200);
+	setTimeout(function(){ map.setCenter(coords); }, 200);
+	//map.setCenter(coords);
+}
+</script>
+	
 	</body>
 </html>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

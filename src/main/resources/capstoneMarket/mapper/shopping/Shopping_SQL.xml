@@ -161,31 +161,6 @@
 		WHERE
 			OD_NUMBER = (SELECT MAX(OD_NUMBER) FROM ORDERS WHERE ID=#{id})
 	</select>
-	
-	<insert id="insertProduct">
-		INSERT
-			INTO PRODUCT (MK_NUMBER, PD_CATEGORY, PD_NAME, PD_AMOUNT, PD_PRICE, PD_IMG)
-		VALUES
-			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
-	</insert>
-	
-	<delete id="deleteProduct">
-		DELETE
-			FROM PRODUCT
-		WHERE
-			PD_NUMBER = #{pd_number}
-	</delete>
-	
-	<update id="updateProducts">
-	<foreach item="item" collection="list" separator=";">
-		UPDATE
-			PRODUCT
-		SET
-			PD_AMOUNT = #{item.pd_amount}
-		WHERE
-			PD_NUMBER = #{item.pd_number}
-	</foreach>
-	</update>
 
 	<select id="selectSalesInfo" resultType="string">
 		SELECT
@@ -205,4 +180,76 @@
 			ID = (SELECT ID FROM USER_INFO WHERE ID = #{id})
 	</select>
 
+	<select id="selectUserOrder" resultType="hashmap">
+		SELECT
+			OD_NUMBER, DATE_FORMAT(OD_TIME, '%y.%m.%d') OD_TIME, OD_PICKUP, OD_STATUS, OD_TOTALPAY, MK_NAME, MK_TEL
+		FROM
+			ORDERS, MARKET
+		WHERE
+			ID = #{id}
+		AND
+			MARKET.MK_NUMBER = ORDERS.MK_NUMBER
+		ORDER BY 
+			OD_NUMBER DESC
+	</select>
+	
+	<select id="selectMarketOrder" resultType="hashmap">
+		SELECT
+			OD_NUMBER, DATE_FORMAT(OD_TIME, '%y.%m.%d') OD_TIME, OD_PICKUP, OD_STATUS, OD_TOTALPAY, NAME, TEL
+		FROM
+			ORDERS, USER_INFO
+		WHERE
+			MK_NUMBER = #{mk_number}
+		AND
+			USER_INFO.ID = ORDERS.ID
+		ORDER BY 
+			OD_NUMBER DESC
+	</select>
+	
+	<select id="selectOrderInfo" resultType="hashmap">
+		SELECT
+			PD_NAME, PD_PRICE, OP_AMOUNT, OD_TOTALPAY
+		FROM
+			ORDERS OD, ORDER_PRODUCT OP, PRODUCT PD
+		WHERE
+			OP.OD_NUMBER = #{od_number}
+		AND
+			OP.OD_NUMBER = OD.OD_NUMBER
+		AND
+			OP.PD_NUMBER = PD.PD_NUMBER
+	</select>
+	
+	<update id="updateOrderStatus">
+		UPDATE
+			ORDERS
+		SET
+			OD_STATUS = #{od_status}
+		WHERE
+			OD_NUMBER = #{od_number}
+	</update>
+	
+	<insert id="insertProduct">
+		INSERT
+			INTO PRODUCT (MK_NUMBER, PD_CATEGORY, PD_NAME, PD_AMOUNT, PD_PRICE, PD_IMG)
+		VALUES
+			(#{mk_number}, #{pd_category}, #{pd_name}, #{pd_amount}, #{pd_price}, #{pd_img})
+	</insert>
+	
+	<delete id="deleteProduct">
+		DELETE
+			FROM PRODUCT
+		WHERE
+			PD_NUMBER = #{pd_number}
+	</delete>
+	
+	<update id="updateProducts">
+		<foreach item="item" collection="list" separator=";">
+			UPDATE
+				PRODUCT
+			SET
+				PD_AMOUNT = #{item.pd_amount}
+			WHERE
+				PD_NUMBER = #{item.pd_number}
+		</foreach>
+	</update>
 </mapper>
