@@ -54,6 +54,21 @@
         top: 0px;
         height: 12px;
         width: 12px; }
+.tail_r {
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      overflow: hidden; }
+      .tail_r:before {
+        border: 1px solid #bbb;
+        background-color: #FFBF00;
+        box-shadow: 0 1px 6px #B2B2B2;
+        content: "\00a0";
+        display: block;
+        position: absolute;
+        top: 0px;
+        height: 12px;
+        width: 12px; }
 
 .bubble.left {
   text-align: left; 
@@ -63,6 +78,7 @@
     left: -18px; }
     .bubble.left .tail:before {
       left: 12px;
+      
       -webkit-transform: skewX(-45deg);
       -moz-transform: skewX(-45deg);
       -o-transform: skewX(-45deg); }
@@ -70,10 +86,10 @@
 .bubble.right {
   text-align: right;
   background-color: #FFBF00; }
-  .bubble.right .tail {
+  .bubble.right .tail_r {
     top: 12px;
     right: -18px; }
-    .bubble.right .tail:before {
+    .bubble.right .tail_r:before {
       right: 12px;
       -webkit-transform: skewX(45deg);
       -moz-transform: skewX(45deg);

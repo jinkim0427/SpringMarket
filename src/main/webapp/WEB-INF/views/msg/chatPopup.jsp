@@ -103,7 +103,7 @@
 		function displaybubble(data) {
 			//message = jsonData.name + " : "+ jsonData.message + '\n';
 			if (data.name == "${UserVO.id}") {
-				$('#chat').append(data.name+"(me)<br/><div class='bubble right'><span class='tail'>&nbsp;</span>"+data.message +"</div>");
+				$('#chat').append(data.name+"(me)<br/><div class='bubble right'><span class='tail_r'>&nbsp;</span>"+data.message +"</div>");
 		      	    
 			} else {
 			    $('#chat').append(data.name+"<br/><div class='bubble left'><span class='tail'>&nbsp;</span>"+data.message+"</div>");
