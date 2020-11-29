@@ -101,10 +101,6 @@ public class ShoppingServiceImpl implements ShoppingService{
 		return shoppingDAO.selectNewOrderInfo(userVO);
 	}
 	@Override
-	public void insertProduct(ShoppingVO vo) {
-		shoppingDAO.insertProduct(vo);
-	}
-	@Override
 	public String selectSalesInfo(FindMarketVO fmv) {
 		// TODO Auto-generated method stub
 		return shoppingDAO.selectSalesInfo(fmv);
@@ -113,6 +109,43 @@ public class ShoppingServiceImpl implements ShoppingService{
 	public Integer selectSalesCheck(UserVO userVO) {
 		// TODO Auto-generated method stub
 		return shoppingDAO.selectSalesCheck(userVO);
+	}
+	
+	@Override
+	public List<Map<String,Object>>  selectUserOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectUserOrder(vo);
+	}
+	@Override
+	public List<Map<String,Object>> selectMarketOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectMarketOrder(vo);
+	}
+	@Override
+	public List<Map<String, Object>> selectOrderInfo(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return shoppingDAO.selectOrderInfo(vo);
+	}
+	@Override
+	public void updateOrderStatus(OrderVO vo) {
+		shoppingDAO.updateOrderStatus(vo);
+	}
+	@Override
+	public void insertProduct(ShoppingVO vo) {
+		shoppingDAO.insertProduct(vo);
+	}
+	@Override
+	public List<ShoppingVO> selectProductList(ShoppingVO vo) {
+		return shoppingDAO.selectProductList(vo);
+	}
+	@Override
+	public void deleteProduct(ShoppingVO vo) {
+		shoppingDAO.deleteProduct(vo);
+		
+	}
+	@Override
+	public void updateProduct(List<ShoppingVO> list) {
+		shoppingDAO.updateProduct(list);
 	}
 
 }

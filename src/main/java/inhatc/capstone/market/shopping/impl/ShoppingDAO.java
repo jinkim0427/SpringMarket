@@ -95,10 +95,6 @@ public class ShoppingDAO extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return (OrderVO) selectOne("shoppingDAO.selectNewOrderInfo",userVO);
 	}
-	
-	public void insertProduct(ShoppingVO vo) {
-		insert("shoppingDAO.insertProduct", vo);
-	}
 
 	public String selectSalesInfo(FindMarketVO fmv) {
 		// TODO Auto-generated method stub
@@ -109,5 +105,43 @@ public class ShoppingDAO extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return (Integer) selectOne("shoppingDAO.selectSalesCheck", userVO);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String,Object>> selectUserOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return selectList("shoppingDAO.selectUserOrder", vo);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String,Object>> selectMarketOrder(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return selectList("shoppingDAO.selectMarketOrder", vo);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String,Object>> selectOrderInfo(OrderVO vo) {
+		// TODO Auto-generated method stub
+		return selectList("shoppingDAO.selectOrderInfo", vo);
+	}
+	
+	public void updateOrderStatus(OrderVO vo) {
+		update("shoppingDAO.updateOrderStatus", vo);
+	}
+	
+	public void insertProduct(ShoppingVO vo) {
+		insert("shoppingDAO.insertProduct", vo);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ShoppingVO> selectProductList(ShoppingVO vo) {
+		return selectList("shoppingDAO.selectShopProductList", vo);
+	}
+	
+	public void deleteProduct(ShoppingVO vo) {
+		delete("shoppingDAO.deleteProduct", vo);
+	}
+	
+	public void updateProduct(List<ShoppingVO> list) {
+		update("shoppingDAO.updateProducts", list);
+	}
 }

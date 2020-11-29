@@ -59,17 +59,4 @@ public class UserDAO extends AbstractDAO{
 	public void updateMarketInfo(FindMarketVO vo) {
 		insert("findMarketDAO.updateMarketInfo", vo);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<ShoppingVO> selectProductList(ShoppingVO vo) {
-		return selectList("shoppingDAO.selectShopProductList", vo);
-	}
-	
-	public void deleteProduct(ShoppingVO vo) {
-		delete("shoppingDAO.deleteProduct", vo);
-	}
-	
-	public void updateProduct(List<ShoppingVO> list) {
-		update("shoppingDAO.updateProducts", list);
-	}
 }

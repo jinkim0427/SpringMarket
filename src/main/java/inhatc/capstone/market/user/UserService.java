@@ -1,9 +1,6 @@
 package inhatc.capstone.market.user;
 
-import java.util.List;
-
 import inhatc.capstone.market.findMarket.FindMarketVO;
-import inhatc.capstone.market.shopping.ShoppingVO;
 
 public interface UserService {
 	
@@ -18,7 +15,4 @@ public interface UserService {
 	FindMarketVO selectMarketInfo(UserVO vo) throws Exception;
 	void insertMarketInfo(FindMarketVO vo)throws Exception;
 	void updateMarketInfo(FindMarketVO vo)throws Exception;
-	List<ShoppingVO> selectProductList(ShoppingVO vo)throws Exception;
-	void deleteProduct(ShoppingVO vo)throws Exception;
-	void updateProduct(List<ShoppingVO> list)throws Exception;
 }

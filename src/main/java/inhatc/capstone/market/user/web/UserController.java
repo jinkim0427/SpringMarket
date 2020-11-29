@@ -1,7 +1,5 @@
 package inhatc.capstone.market.user.web;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import inhatc.capstone.market.findMarket.FindMarketVO;
-import inhatc.capstone.market.shopping.ShoppingVO;
 import inhatc.capstone.market.user.CustomerVO;
 import inhatc.capstone.market.user.SellerVO;
 import inhatc.capstone.market.user.UserService;
@@ -203,44 +200,6 @@ public class UserController {
 		market.setMk_intro(request.getParameter("mk_intro"));
 		if(market.getMk_number() > 0) userService.updateMarketInfo(market);
 		else userService.insertMarketInfo(market);
-	}
-	
-	@RequestMapping(value = "/selectProductList.do", method = RequestMethod.GET)
-	@ResponseBody
-	public List<ShoppingVO> selectProductList(ShoppingVO vo) throws Exception {
-		
-		List<ShoppingVO> productList = userService.selectProductList(vo);
-		return productList;
-	}
-	
-	@RequestMapping(value = "/deleteProduct.do", method = RequestMethod.GET)
-	@ResponseBody
-	public void deleteProduct(ShoppingVO vo) throws Exception {
-		userService.deleteProduct(vo);
-	}
-	
-	@RequestMapping(value = "/updateProduct.do", method = RequestMethod.POST)
-	@ResponseBody
-	public Boolean updateProduct(HttpServletRequest request) throws Exception {
-
-		String[] amountList = request.getParameterValues("pd_amount[]");
-		String[] numberList = request.getParameterValues("pd_number[]");
-		
-		if(amountList == null) return false;
-		else {
-			List<ShoppingVO> list = new ArrayList<ShoppingVO>();
-
-			for(int i = 0; i < amountList.length; i++) {
-				ShoppingVO vo = new ShoppingVO();
-				vo.setPd_amount(Integer.parseInt(amountList[i]));
-				vo.setPd_number(Integer.parseInt(numberList[i]));
-				list.add(vo);
-			}
-			
-			userService.updateProduct(list);
-			return true;
-		}
-		
 	}
 	
 }

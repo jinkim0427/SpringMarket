@@ -344,18 +344,72 @@ public class ShoppingController {
 		//여기서 다시 새로고침하면 결제가 반복되는 문제 발생 [나중에 처리할 것]
 	}
 	
-	@RequestMapping(value = "/insertProductInfo.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/selectMarketOrder.do", method = RequestMethod.GET)
 	@ResponseBody
-	public void insertProductInfo(HttpServletRequest request) throws Exception {
+	public List<Map<String,Object>> selectMarketOrder(OrderVO vo) throws Exception {
+		return shoppingService.selectMarketOrder(vo);
+	}
+	
+	@RequestMapping(value = "/selectUserOrder.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Map<String,Object>> selectUserOrder(OrderVO vo) throws Exception {
+		return shoppingService.selectUserOrder(vo);
+	}
+	
+	@RequestMapping(value = "/selectOrderInfo.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Map<String,Object>> selectOrderInfo(OrderVO vo) throws Exception {
+		return shoppingService.selectOrderInfo(vo);
+	}
+	
+	@RequestMapping(value = "/updateOrderStatus.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void updateOrderStatue(OrderVO vo) throws Exception {
+		if(vo.getOd_status().equals("준비중")) vo.setOd_status("포장완료");
+		else if(vo.getOd_status().equals("포장완료")) vo.setOd_status("거래완료");
+		shoppingService.updateOrderStatus(vo);
+	}
+	
+	@RequestMapping(value = "/insertProductInfo.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void insertProductInfo(ShoppingVO vo) throws Exception {
+		shoppingService.insertProduct(vo);
+	}
+	
+	@RequestMapping(value = "/selectProductList.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ShoppingVO> selectProductList(ShoppingVO vo) throws Exception {
+		return shoppingService.selectProductList(vo);
+	}
+	
+	@RequestMapping(value = "/deleteProduct.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void deleteProduct(ShoppingVO vo) throws Exception {
+		shoppingService.deleteProduct(vo);
+	}
+	
+	@RequestMapping(value = "/updateProduct.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean updateProduct(HttpServletRequest request) throws Exception {
+
+		String[] amountList = request.getParameterValues("pd_amount[]");
+		String[] numberList = request.getParameterValues("pd_number[]");
 		
-		ShoppingVO product = new ShoppingVO();
-		product.setMk_number(Integer.parseInt(request.getParameter("mk_number")));
-		product.setPd_category(Integer.parseInt(request.getParameter("pd_category")));
-		product.setPd_name(request.getParameter("pd_name"));
-		product.setPd_amount(Integer.parseInt(request.getParameter("pd_amount")));
-		product.setPd_price(Integer.parseInt(request.getParameter("pd_price")));
-		product.setPd_img(request.getParameter("pd_img"));
-		shoppingService.insertProduct(product);
+		if(amountList == null) return false;
+		else {
+			List<ShoppingVO> list = new ArrayList<ShoppingVO>();
+
+			for(int i = 0; i < amountList.length; i++) {
+				ShoppingVO vo = new ShoppingVO();
+				vo.setPd_amount(Integer.parseInt(amountList[i]));
+				vo.setPd_number(Integer.parseInt(numberList[i]));
+				list.add(vo);
+			}
+			
+			shoppingService.updateProduct(list);
+			return true;
+		}
+		
 	}
 	
 }
